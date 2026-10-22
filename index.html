@@ -1,277 +1,350 @@
+```html
 <!DOCTYPE html>
 <html lang="te">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart AgroVision</title>
-    <style>
-        body { font-family: sans-serif; margin: 0; padding: 20px; background: #f4f4f9; color: #333; }
-        .card { background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
-        h1 { color: #2e7d32; text-align: center; }
-        h2 { color: #1b5e20; border-bottom: 2px solid #c8e6c9; padding-bottom: 5px; }
-        button { background: #2e7d32; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; width: 100%; font-size: 16px; margin-top: 10px; }
-        input, textarea, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
-        .post { border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px; }
-        .result { font-weight: bold; color: #2e7d32; margin-top: 10px; }
-        .lang-selector { text-align: right; margin-bottom: 15px; }
-        .lang-selector select { width: auto; padding: 5px; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="theme-color" content="#15803d">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="description" content="Smart AgroVision - Offline-first multilingual agricultural platform for smart farming, weather, mandi rates, and community.">
+  <title>Smart AgroVision | రైతు మిత్ర</title>
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Phosphor Icons & FontAwesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Telugu:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&family=Noto+Sans+Tamil:wght@400;600;700&display=swap" rel="stylesheet">
+
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            agro: {
+              50: '#f0fdf4',
+              100: '#dcfce7',
+              200: '#bbf7d0',
+              500: '#22c55e',
+              600: '#16a34a',
+              700: '#15803d',
+              800: '#166534',
+              900: '#14532d',
+            },
+            soil: {
+              500: '#854d0e',
+              600: '#713f12',
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', '"Noto Sans Telugu"', '"Noto Sans Devanagari"', '"Noto Sans Tamil"', 'sans-serif'],
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    /* Smooth Transitions & Safe Padding for Mobile Bottom Bar */
+    body {
+      padding-bottom: 5.5rem;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+    .custom-scroll::-webkit-scrollbar {
+      height: 4px;
+      width: 4px;
+    }
+    .custom-scroll::-webkit-scrollbar-thumb {
+      background-color: #cbd5e1;
+      border-radius: 9999px;
+    }
+    .badge-pulse {
+      animation: pulse-ring 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    @keyframes pulse-ring {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(1.1); }
+    }
+  </style>
 </head>
-<body>
+<body class="bg-slate-50 text-slate-800 antialiased font-sans min-h-screen">
 
-    <div class="lang-selector">
-        <label for="languageSelect" data-key="languageLabel">భాష:</label>
-        <select id="languageSelect" onchange="changeLanguage()">
-            <option value="te">తెలుగు</option>
-            <option value="en">English</option>
-            <option value="hi">हिंदी</option>
-            <option value="ta">தமிழ்</option>
-        </select>
+  <!-- Top App Bar -->
+  <header class="sticky top-0 z-40 bg-white/95 backdrop-blur-md border-b border-slate-200 shadow-sm transition-all">
+    <div class="max-w-5xl mx-auto px-4 py-3 flex items-center justify-between">
+      
+      <!-- Logo & Brand -->
+      <div class="flex items-center space-x-2.5">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-agro-700 to-agro-500 flex items-center justify-center text-white shadow-md shadow-agro-700/20">
+          <i class="fa-solid fa-wheat-awn text-xl"></i>
+        </div>
+        <div>
+          <h1 class="text-lg font-bold leading-tight tracking-tight text-agro-900 flex items-center gap-1.5">
+            AgroVision <span class="text-xs bg-agro-100 text-agro-800 px-1.5 py-0.5 rounded font-semibold uppercase tracking-wider">Pro</span>
+          </h1>
+          <p id="appSubtitle" class="text-xs font-medium text-slate-500">రైతు మిత్ర వేదిక</p>
+        </div>
+      </div>
+
+      <!-- Action items: Network status indicator & Language Picker -->
+      <div class="flex items-center space-x-2">
+        <div id="networkStatusBadge" class="flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-semibold bg-emerald-100 text-emerald-800 border border-emerald-200">
+          <span class="w-2 h-2 rounded-full bg-emerald-500 badge-pulse"></span>
+          <span id="networkStatusText">ఆన్‌లైన్</span>
+        </div>
+
+        <div class="relative">
+          <label for="langSwitcher" class="sr-only">Change Language</label>
+          <div class="flex items-center bg-slate-100 border border-slate-300 rounded-lg px-2 py-1 text-xs font-semibold text-slate-700 shadow-sm">
+            <i class="fa-solid fa-language text-slate-500 mr-1 text-sm"></i>
+            <select id="langSwitcher" onchange="switchLanguage(this.value)" class="bg-transparent focus:outline-none cursor-pointer pr-1">
+              <option value="te">తెలుగు</option>
+              <option value="en">English</option>
+              <option value="hi">हिंदी</option>
+              <option value="ta">தமிழ்</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Container -->
+  <main class="max-w-5xl mx-auto px-3 sm:px-4 pt-4">
+
+    <!-- Emergency Agricultural Banner / Weather Broadcast -->
+    <div id="urgentAlertBox" class="mb-4 bg-gradient-to-r from-amber-500/10 via-amber-500/5 to-transparent border-l-4 border-amber-500 p-3.5 rounded-r-xl flex items-start justify-between shadow-sm">
+      <div class="flex items-start space-x-3">
+        <i class="fa-solid fa-triangle-exclamation text-amber-600 text-lg mt-0.5"></i>
+        <div>
+          <h4 id="alertHeader" class="text-xs font-bold text-amber-900 uppercase tracking-wide">వాతావరణ హెచ్చరిక (Weather Advisory)</h4>
+          <p id="alertBody" class="text-xs sm:text-sm text-amber-800 mt-0.5">రాబోయే 48 గంటల్లో చిరుజల్లులు కురిసే అవకాశం ఉంది. పురుగుమందుల పిచికారీని వాయిదా వేయండి.</p>
+        </div>
+      </div>
+      <button onclick="document.getElementById('urgentAlertBox').classList.add('hidden')" class="text-amber-700 hover:text-amber-900 text-sm px-1.5 py-0.5">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
     </div>
 
-    <h1>Smart AgroVision</h1>
+    <!-- TAB 1: DASHBOARD & WEATHER -->
+    <section id="tab-weather" class="tab-content space-y-4">
+      
+      <!-- Live Weather Card -->
+      <div class="bg-white rounded-2xl p-5 border border-slate-200/80 shadow-sm relative overflow-hidden">
+        <div class="absolute -top-12 -right-12 w-40 h-40 bg-amber-100 rounded-full blur-2xl opacity-70 pointer-events-none"></div>
+        <div class="flex justify-between items-start">
+          <div>
+            <div class="flex items-center gap-2">
+              <span id="locName" class="text-sm font-semibold text-slate-500"><i class="fa-solid fa-location-dot text-rose-500 mr-1"></i>గుంటూరు, ఆంధ్రప్రదేశ్</span>
+              <span id="cacheBadge" class="hidden text-[10px] bg-slate-200 text-slate-700 px-1.5 py-0.2 rounded font-medium">Cached Offline</span>
+            </div>
+            <div class="flex items-baseline gap-2 mt-1">
+              <span id="tempDisplay" class="text-4xl sm:text-5xl font-extrabold text-slate-900">31°C</span>
+              <span id="weatherCond" class="text-sm sm:text-base font-semibold text-agro-700">పాక్షికంగా మేఘావృతం</span>
+            </div>
+          </div>
+          <div class="text-right">
+            <i id="weatherBigIcon" class="fa-solid fa-cloud-sun text-4xl text-amber-500"></i>
+            <button onclick="fetchWeatherData(true)" class="mt-2 block text-xs font-semibold text-agro-700 hover:underline bg-agro-50 px-2.5 py-1 rounded-md border border-agro-200">
+              <i class="fa-solid fa-arrows-rotate mr-1"></i> <span id="btnRefreshWeather">తాజాకరించు</span>
+            </button>
+          </div>
+        </div>
 
-    <!-- వాతావరణ సూచనలు -->
-    <div class="card">
-        <h2 data-key="weatherTitle">వాతావరణ సూచనలు</h2>
-        <p id="weather" data-key="weatherLoading">సమాచారం లోడ్ అవుతోంది...</p>
-        <button onclick="getWeather()" data-key="refreshBtn">రిఫ్రెష్</button>
-    </div>
+        <!-- Weather Stats Grid -->
+        <div class="grid grid-cols-3 gap-2 mt-5 pt-4 border-t border-slate-100">
+          <div class="bg-slate-50 p-2.5 rounded-xl text-center">
+            <span class="text-[11px] font-medium text-slate-500 block"><i class="fa-solid fa-droplet text-blue-500 mr-1"></i><span id="lblHumidity">తేమ</span></span>
+            <span id="valHumidity" class="text-sm sm:text-base font-bold text-slate-800">68%</span>
+          </div>
+          <div class="bg-slate-50 p-2.5 rounded-xl text-center">
+            <span class="text-[11px] font-medium text-slate-500 block"><i class="fa-solid fa-cloud-rain text-indigo-500 mr-1"></i><span id="lblRainChance">వర్ష సూచన</span></span>
+            <span id="valRainChance" class="text-sm sm:text-base font-bold text-slate-800">25%</span>
+          </div>
+          <div class="bg-slate-50 p-2.5 rounded-xl text-center">
+            <span class="text-[11px] font-medium text-slate-500 block"><i class="fa-solid fa-wind text-teal-500 mr-1"></i><span id="lblWind">గాలి వేగం</span></span>
+            <span id="valWind" class="text-sm sm:text-base font-bold text-slate-800">14 కి.మీ/గం</span>
+          </div>
+        </div>
 
-    <!-- ఎరువుల కాలిక్యులేటర్ -->
-    <div class="card">
-        <h2 data-key="fertilizerTitle">ఎరువుల కాలిక్యులేటర్</h2>
-        <label for="landSize" data-key="landSizeLabel">భూమి వైశాల్యం (ఎకరాల్లో):</label>
-        <input type="number" id="landSize" placeholder="ఉదా: 2">
-        <label for="cropType" data-key="cropTypeLabel">పంట రకం:</label>
-        <select id="cropType">
-            <option value="వరి" data-key="cropRice">వరి</option>
-            <option value="ప్రత్తి" data-key="cropCotton">ప్రత్తి</option>
-            <option value="మిరప" data-key="cropChili">మిరప</option>
-        </select>
-        <button onclick="calculateFertilizer()" data-key="calculateBtn">లెక్కించండి</button>
-        <p id="fertilizerResult" class="result"></p>
-    </div>
+        <!-- Agro Advisory based on weather -->
+        <div class="mt-4 p-3 bg-emerald-50/70 border border-emerald-200/80 rounded-xl">
+          <div class="flex items-center gap-2 text-emerald-900 font-bold text-xs uppercase">
+            <i class="fa-solid fa-seedling text-agro-600"></i>
+            <span id="agroAdviceTitle">ఈ రోజు వ్యవసాయ సూచన</span>
+          </div>
+          <p id="agroAdviceText" class="text-xs sm:text-sm text-emerald-800 mt-1">
+            తేమ శాతం అధికంగా ఉండటం వలన వరిలో అగ్గితెగులు సోకే అవకాశం ఉంది. పర్యవేక్షణ పెంచండి. నీటి ఎద్దడి లేకుంటే ప్రస్తుతానికి డ్రిప్ అవసరం తక్కువ.
+          </p>
+        </div>
+      </div>
 
-    <!-- వ్యవసాయ పద్ధతులు - గైడ్ -->
-    <div class="card">
-        <h2 data-key="tipsTitle">వ్యవసాయ చిట్కాలు</h2>
-        <p data-key="tipsDesc">ఎంచుకున్న పంటకు తగిన సూచనలు ఇక్కడ చూడండి.</p>
-        <button onclick="showTips()" data-key="showTipsBtn">చిట్కాలను చూపించు</button>
-        <p id="agroTips" class="result"></p>
-    </div>
+      <!-- Quick Action Shortcuts -->
+      <div class="grid grid-cols-2 sm:grid-cols-4 gap-2.5">
+        <button onclick="switchTab('calculator')" class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm hover:border-agro-500 transition text-left flex items-center space-x-3 group">
+          <div class="w-10 h-10 rounded-lg bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-lg group-hover:scale-105 transition-transform">
+            <i class="fa-solid fa-calculator"></i>
+          </div>
+          <div>
+            <span id="qaCalc" class="text-xs font-bold text-slate-800 block">ఎరువుల ఖర్చు</span>
+            <span id="qaCalcSub" class="text-[10px] text-slate-500">ఖచ్చితమైన కొలత</span>
+          </div>
+        </button>
 
-    <!-- కమ్యూనిటీ ఫోరమ్ -->
-    <div class="card">
-        <h2 data-key="forumTitle">కమ్యూనిటీ ఫోరమ్</h2>
-        <input type="text" id="postTitle">
-        <textarea id="postContent"></textarea>
-        <button onclick="savePost()" data-key="postBtn">పోస్ట్ చేయండి</button>
-        <div id="postsContainer"></div>
-    </div>
+        <button onclick="switchTab('mandi')" class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm hover:border-agro-500 transition text-left flex items-center space-x-3 group">
+          <div class="w-10 h-10 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center font-bold text-lg group-hover:scale-105 transition-transform">
+            <i class="fa-solid fa-chart-line"></i>
+          </div>
+          <div>
+            <span id="qaMandi" class="text-xs font-bold text-slate-800 block">మార్కెట్ ధరలు</span>
+            <span id="qaMandiSub" class="text-[10px] text-slate-500">మండి & MSP</span>
+          </div>
+        </button>
 
-    <script>
-        const translations = {
-            te: {
-                languageLabel: "భాష:",
-                weatherTitle: "వాతావరణ సూచనలు",
-                weatherLoading: "సమాచారం లోడ్ అవుతోంది...",
-                refreshBtn: "రిఫ్రెష్",
-                fertilizerTitle: "ఎరువుల కాలిక్యులేటర్",
-                landSizeLabel: "భూమి వైశాల్యం (ఎకరాల్లో):",
-                cropTypeLabel: "పంట రకం:",
-                cropRice: "వరి",
-                cropCotton: "ప్రత్తి",
-                cropChili: "మిరప",
-                calculateBtn: "లెక్కించండి",
-                tipsTitle: "వ్యవసాయ చిట్కాలు",
-                tipsDesc: "ఎంచుకున్న పంటకు తగిన సూచనలు ఇక్కడ చూడండి.",
-                showTipsBtn: "చిట్కాలను చూపించు",
-                forumTitle: "కమ్యూనిటీ ఫోరమ్",
-                postPlaceholderTitle: "శీర్షిక...",
-                postPlaceholderContent: "మీ సందేశం ఇక్కడ రాయండి...",
-                postBtn: "పోస్ట్ చేయండి",
-                weatherOnline: "ఉష్ణోగ్రత: 30°C, వర్ష సూచన లేదు.",
-                weatherOffline: "ఇంటర్నెట్ లేదు.",
-                calcResult: (crop, acres, nitro, phos) => `${crop} పంటకు, ${acres} ఎకరాలకు గాను ${nitro}కిలోల నత్రజని, ${phos}కిలోల భాస్వరం అవసరం.`,
-                calcError: "సరైన వైశాల్యం నమోదు చేయండి.",
-                tipsResult: "ఎరువులను వేసేటప్పుడు నేలలోని తేమను గమనించండి. తెగుళ్ళ నివారణకు ఆర్గానిక్ పద్ధతులను పాటించండి."
-            },
-            en: {
-                languageLabel: "Language:",
-                weatherTitle: "Weather Forecast",
-                weatherLoading: "Loading information...",
-                refreshBtn: "Refresh",
-                fertilizerTitle: "Fertilizer Calculator",
-                landSizeLabel: "Land Size (in acres):",
-                cropTypeLabel: "Crop Type:",
-                cropRice: "Rice",
-                cropCotton: "Cotton",
-                cropChili: "Chili",
-                calculateBtn: "Calculate",
-                tipsTitle: "Agricultural Tips",
-                tipsDesc: "See appropriate instructions for the selected crop here.",
-                showTipsBtn: "Show Tips",
-                forumTitle: "Community Forum",
-                postPlaceholderTitle: "Title...",
-                postPlaceholderContent: "Write your message here...",
-                postBtn: "Post",
-                weatherOnline: "Temperature: 30°C, No rain forecast.",
-                weatherOffline: "No internet.",
-                calcResult: (crop, acres, nitro, phos) => `For ${acres} acres of ${crop}, you need ${nitro}kg of nitrogen and ${phos}kg of phosphorus.`,
-                calcError: "Please enter a valid size.",
-                tipsResult: "Check soil moisture when applying fertilizer. Follow organic methods to prevent pests."
-            },
-            hi: {
-                languageLabel: "भाषा:",
-                weatherTitle: "मौसम का पूर्वानुमान",
-                weatherLoading: "जानकारी लोड हो रही है...",
-                refreshBtn: "रिफ्रेश",
-                fertilizerTitle: "उर्वरक कैलकुलेटर",
-                landSizeLabel: "भूमि का आकार (एकड़ में):",
-                cropTypeLabel: "फसल का प्रकार:",
-                cropRice: "चावल",
-                cropCotton: "कपास",
-                cropChili: "मिर्च",
-                calculateBtn: "गणना करें",
-                tipsTitle: "कृषि युक्तियाँ",
-                tipsDesc: "चुनी गई फसल के लिए उपयुक्त निर्देश यहां देखें।",
-                showTipsBtn: "टिप्स दिखाएँ",
-                forumTitle: "सामुदायिक मंच",
-                postPlaceholderTitle: "शीर्षक...",
-                postPlaceholderContent: "अपना संदेश यहाँ लिखें...",
-                postBtn: "पोस्ट करें",
-                weatherOnline: "तापमान: 30°C, बारिश की कोई संभावना नहीं।",
-                weatherOffline: "इंटरनेट नहीं है।",
-                calcResult: (crop, acres, nitro, phos) => `${crop} की फसल और ${acres} एकड़ के लिए, ${nitro}kg नाइट्रोजन और ${phos}kg फास्फोरस की आवश्यकता है।`,
-                calcError: "कृपया सही आकार दर्ज करें।",
-                tipsResult: "उर्वरक डालते समय मिट्टी की नमी की जाँच करें। कीटों को रोकने के लिए जैविक तरीकों का पालन करें."
-            },
-            ta: {
-                languageLabel: "மொழி:",
-                weatherTitle: "வானிலை முன்னறிவிப்பு",
-                weatherLoading: "தகவல் ஏற்றப்படுகிறது...",
-                refreshBtn: "புதுப்பிக்கவும்",
-                fertilizerTitle: "உர கால்குலேட்டர்",
-                landSizeLabel: "நிலத்தின் அளவு (ஏக்கரில்):",
-                cropTypeLabel: "பயிர் வகை:",
-                cropRice: "நெல்",
-                cropCotton: "பருத்தி",
-                cropChili: "மிளகாய்",
-                calculateBtn: "கணக்கிடு",
-                tipsTitle: "விவசாய குறிப்புகள்",
-                tipsDesc: "தேர்ந்தெடுக்கப்பட்ட பயிருக்கான பொருத்தமான வழிமுறைகளை இங்கே பார்க்கவும்.",
-                showTipsBtn: "குறிப்புகளைக் காட்டு",
-                forumTitle: "சமூக மன்றம்",
-                postPlaceholderTitle: "தலைப்பு...",
-                postPlaceholderContent: "உங்கள் செய்தியை இங்கே எழுதுங்கள்...",
-                postBtn: "பதிவிடு",
-                weatherOnline: "வெப்பநிலை: 30°C, மழை முன்னறிவிப்பு இல்லை.",
-                weatherOffline: "இணையம் இல்லை.",
-                calcResult: (crop, acres, nitro, phos) => `${acres} ஏக்கர் ${crop} பயிருக்கு, ${nitro} கிலோ நைட்ரஜன் மற்றும் ${phos} கிலோ பாஸ்பரஸ் தேவை.`,
-                calcError: "தயவுசெய்து சரியான அளவை உள்ளிடவும்.",
-                tipsResult: "உரம் போடும்போது மண்ணின் ஈரப்பதத்தை சரிபார்க்கவும். பூச்சிகளைக் கட்டுப்படுத்த இயற்கை முறைகளைப் பின்பற்றவும்."
-            }
-        };
+        <button onclick="switchTab('irrigation')" class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm hover:border-agro-500 transition text-left flex items-center space-x-3 group">
+          <div class="w-10 h-10 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-lg group-hover:scale-105 transition-transform">
+            <i class="fa-solid fa-faucet-drip"></i>
+          </div>
+          <div>
+            <span id="qaWater" class="text-xs font-bold text-slate-800 block">నీటి నిర్వహణ</span>
+            <span id="qaWaterSub" class="text-[10px] text-slate-500">డ్రిప్ షెడ్యూల్</span>
+          </div>
+        </button>
 
-        let currentLang = 'te';
+        <button onclick="switchTab('forum')" class="bg-white p-3.5 rounded-xl border border-slate-200 shadow-sm hover:border-agro-500 transition text-left flex items-center space-x-3 group">
+          <div class="w-10 h-10 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center font-bold text-lg group-hover:scale-105 transition-transform">
+            <i class="fa-solid fa-users"></i>
+          </div>
+          <div>
+            <span id="qaForum" class="text-xs font-bold text-slate-800 block">రైతు వేదిక</span>
+            <span id="qaForumSub" class="text-[10px] text-slate-500">సలహాలు & సమాధానాలు</span>
+          </div>
+        </button>
+      </div>
 
-        function changeLanguage() {
-            const select = document.getElementById('languageSelect');
-            currentLang = select.value;
-            localStorage.setItem('preferredLang', currentLang);
-            updateUI();
-        }
+      <!-- Soil Health & Seasonal Crop Guide -->
+      <div class="bg-white rounded-2xl p-4 border border-slate-200 shadow-sm">
+        <h3 id="secCropAdviceTitle" class="text-sm font-bold text-slate-900 mb-3 flex items-center gap-2">
+          <i class="fa-solid fa-leaf text-agro-600"></i> ఈ కాలంలో ఉత్తమ పద్ధతులు
+        </h3>
+        <div class="space-y-2.5">
+          <div class="flex items-start gap-3 p-2.5 rounded-xl bg-slate-50 border border-slate-100">
+            <span class="text-xs font-bold bg-agro-200 text-agro-900 px-2 py-0.5 rounded">ఖరీఫ్</span>
+            <p id="tipItem1" class="text-xs text-slate-700">విత్తనశుద్ధి తప్పనిసరి. ట్రైకోడెర్మా విరిడేతో విత్తన శుద్ధి చేయడం ద్వారా వేరుకుళ్ళు తెగులును 80% నివారించవచ్చు.</p>
+          </div>
+          <div class="flex items-start gap-3 p-2.5 rounded-xl bg-slate-50 border border-slate-100">
+            <span class="text-xs font-bold bg-amber-200 text-amber-900 px-2 py-0.5 rounded">సేంద్రీయం</span>
+            <p id="tipItem2" class="text-xs text-slate-700">జీవామృతం ప్రతి 15 రోజులకు ఒకసారి పారకపు నీటితో కలిపి ఇవ్వడం వల్ల నేలలో వానపాముల సంతతి పెరుగుతుంది.</p>
+          </div>
+        </div>
+      </div>
+    </section>
 
-        function updateUI() {
-            const langData = translations[currentLang];
-            document.querySelectorAll('[data-key]').forEach(element => {
-                const key = element.getAttribute('data-key');
-                if (langData[key]) {
-                    element.innerText = langData[key];
-                }
-            });
+    <!-- TAB 2: FERTILIZER & COST CALCULATOR -->
+    <section id="tab-calculator" class="tab-content hidden space-y-4">
+      <div class="bg-white rounded-2xl p-5 border border-slate-200 shadow-sm">
+        <div class="flex items-center gap-2 mb-4 border-b border-slate-100 pb-3">
+          <div class="w-9 h-9 rounded-lg bg-agro-100 text-agro-700 flex items-center justify-center font-bold">
+            <i class="fa-solid fa-calculator"></i>
+          </div>
+          <div>
+            <h2 id="calcTitle" class="text-base font-bold text-slate-900">ఖచ్చితమైన ఎరువుల & ఖర్చు కాలిక్యులేటర్</h2>
+            <p id="calcSub" class="text-xs text-slate-500">ఎకరాకు సరిపడే యూరియా, డీఏపీ, పొటాష్ బస్తాలు మరియు అంచనా వ్యయం</p>
+          </div>
+        </div>
 
-            document.getElementById('postTitle').placeholder = langData.postPlaceholderTitle;
-            document.getElementById('postContent').placeholder = langData.postPlaceholderContent;
+        <form id="fertilizerForm" onsubmit="event.preventDefault(); calculateNPK();" class="space-y-4">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             
-            const acres = document.getElementById('landSize').value;
-            const crop = document.getElementById('cropType').options[document.getElementById('cropType').selectedIndex].text;
-            if (acres > 0) {
-                calculateFertilizer();
-            }
-        }
+            <!-- Crop Selection -->
+            <div>
+              <label for="cropSelect" id="lblSelectCrop" class="block text-xs font-bold text-slate-700 mb-1.5">పంటను ఎంచుకోండి</label>
+              <div class="relative">
+                <select id="cropSelect" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:ring-2 focus:ring-agro-600 focus:outline-none">
+                  <option value="paddy">వరి (Paddy / Rice)</option>
+                  <option value="cotton">ప్రత్తి (Cotton)</option>
+                  <option value="chilli">మిరప (Chilli)</option>
+                  <option value="maize">మొక్కజొన్న (Maize)</option>
+                  <option value="groundnut">వేరుశనగ (Groundnut)</option>
+                </select>
+              </div>
+            </div>
 
-        function getWeather() {
-            const weatherDiv = document.getElementById('weather');
-            const langData = translations[currentLang];
-            if (navigator.onLine) {
-                weatherDiv.innerText = langData.weatherOnline;
-                localStorage.setItem('cachedWeather', weatherDiv.innerText);
-            } else {
-                const cached = localStorage.getItem('cachedWeather');
-                weatherDiv.innerText = cached ? cached + " (ఆఫ్లైన్)" : langData.weatherOffline;
-            }
-        }
+            <!-- Land Size -->
+            <div>
+              <label for="landAcres" id="lblLandAcres" class="block text-xs font-bold text-slate-700 mb-1.5">భూమి వైశాల్యం (ఎకరాల్లో)</label>
+              <div class="relative">
+                <input type="number" step="0.25" min="0.25" max="500" id="landAcres" value="1" required class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:ring-2 focus:ring-agro-600 focus:outline-none">
+                <span id="unitAcres" class="absolute right-3 top-2.5 text-xs font-medium text-slate-400">ఎకరాలు</span>
+              </div>
+            </div>
 
-        function calculateFertilizer() {
-            const acres = document.getElementById('landSize').value;
-            const crop = document.getElementById('cropType').value;
-            const resultParagraph = document.getElementById('fertilizerResult');
-            const langData = translations[currentLang];
+            <!-- Soil Nitrogen baseline adjustment -->
+            <div>
+              <label for="soilType" id="lblSoilType" class="block text-xs font-bold text-slate-700 mb-1.5">నేల రకం</label>
+              <select id="soilType" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:ring-2 focus:ring-agro-600 focus:outline-none">
+                <option value="black" id="soilOptBlack">నల్లరేగడి నేల (Black Soil)</option>
+                <option value="red" id="soilOptRed">ఎర్ర నేల (Red Loam Soil)</option>
+                <option value="alluvial" id="soilOptAlluvial">ఒండ్రు మట్టి (Alluvial Soil)</option>
+                <option value="sandy" id="soilOptSandy">ఇసుక నేల (Sandy Loam)</option>
+              </select>
+            </div>
 
-            if (acres > 0) {
-                let nitrogen = acres * 50; 
-                let phosphorus = acres * 25;
-                resultParagraph.innerText = langData.calcResult(crop, acres, nitrogen, phosphorus);
-            } else {
-                resultParagraph.innerText = langData.calcError;
-            }
-        }
+            <!-- Farming Type -->
+            <div>
+              <label for="farmMethod" id="lblFarmMethod" class="block text-xs font-bold text-slate-700 mb-1.5">వ్యవసాయ విధానం</label>
+              <select id="farmMethod" class="w-full bg-slate-50 border border-slate-300 rounded-xl px-3.5 py-2.5 text-sm font-semibold text-slate-800 focus:ring-2 focus:ring-agro-600 focus:outline-none">
+                <option value="conventional" id="methodConv">సాంప్రదాయ రసాయన ఎరువులు (Conventional)</option>
+                <option value="integrated" id="methodInt">సమగ్ర పోషక యాజమాన్యం (IPM - Recommended)</option>
+              </select>
+            </div>
+          </div>
 
-        function showTips() {
-            document.getElementById('agroTips').innerText = translations[currentLang].tipsResult;
-        }
+          <button type="submit" class="w-full bg-agro-700 hover:bg-agro-800 text-white font-bold py-3 px-4 rounded-xl shadow-md shadow-agro-700/20 flex items-center justify-center gap-2 text-sm transition">
+            <i class="fa-solid fa-calculator"></i>
+            <span id="btnCalculate">ఎరువుల మోతాదును లెక్కించండి</span>
+          </button>
+        </form>
 
-        function savePost() {
-            const titleInput = document.getElementById('postTitle');
-            const contentInput = document.getElementById('postContent');
-            const title = titleInput.value;
-            const content = contentInput.value;
-            if (title && content) {
-                const posts = JSON.parse(localStorage.getItem('forumPosts') || '[]');
-                posts.push({ title, content });
-                localStorage.setItem('forumPosts', JSON.stringify(posts));
-                titleInput.value = '';
-                contentInput.value = '';
-                renderPosts();
-            }
-        }
+        <!-- Calculation Results Section -->
+        <div id="calcResultsBox" class="mt-6 pt-5 border-t border-slate-200">
+          <h4 id="calcOutputHeading" class="text-xs font-bold text-slate-500 uppercase tracking-wider mb-3">సిఫార్సు చేయబడిన పోషకాలు & బస్తాల వివరాలు</h4>
+          
+          <!-- Cards Grid for Bags -->
+          <div class="grid grid-cols-3 gap-2.5 mb-4">
+            <div class="p-3 rounded-xl bg-blue-50/80 border border-blue-200 text-center">
+              <span class="text-xs font-bold text-blue-900 block">యూరియా (Urea)</span>
+              <span id="resUreaBags" class="text-xl font-extrabold text-blue-800 mt-1 block">2.2</span>
+              <span class="text-[11px] text-blue-600 font-medium">బస్తాలు (45 Kg)</span>
+            </div>
+            <div class="p-3 rounded-xl bg-amber-50/80 border border-amber-200 text-center">
+              <span class="text-xs font-bold text-amber-900 block">DAP</span>
+              <span id="resDapBags" class="text-xl font-extrabold text-amber-800 mt-1 block">1.1</span>
+              <span class="text-[11px] text-amber-600 font-medium">బస్తాలు (50 Kg)</span>
+            </div>
+            <div class="p-3 rounded-xl bg-rose-50/80 border border-rose-200 text-center">
+              <span class="text-xs font-bold text-rose-900 block">MOP (పొటాష్)</span>
+              <span id="resMopBags" class="text-xl font-extrabold text-rose-800 mt-1 block">0.8</span>
+              <span class="text-[11px] text-rose-600 font-medium">బస్తాలు (50 Kg)</span>
+            </div>
+          </div>
 
-        function renderPosts() {
-            const postsContainer = document.getElementById('postsContainer');
-            postsContainer.innerHTML = '';
-            const posts = JSON.parse(localStorage.getItem('forumPosts') || '[]');
-            posts.forEach(post => {
-                const postDiv = document.createElement('div');
-                postDiv.className = 'post';
-                postDiv.innerHTML = `<h3>${post.title}</h3><p>${post.content}</p>`;
-                postsContainer.appendChild(postDiv);
-            });
-        }
+          <!-- Total Cost Calculation -->
+          <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 flex flex-col sm:flex-row justify-between items-center gap-2">
+            <div>
+              <span id="lblEstimatedCost" class="text-xs font-semibold text-slate-500 block">ఎరువుల అంచనా మొత్తం వ్యయం (Subsidized MSP)</span>
+              <span id="resTotalCost" class="text-2xl font-black text-agro-800">₹2,840</span>
+            </div>
+            <div class="text-right">
+              <span class="text-[11px] text-slate-500 bg-white px-2 py-1 rounded-md border border-slate-200">
+                <i class="fa-solid fa-shield-halved text-agro-600 mr-1"></i>3 దశల విభజన (Split-Dose) సూచించబడింది
+              </span>
+            </div>
+          </div>
 
-        window.onload = () => {
-            const savedLang = localStorage.getItem('preferredLang');
-            if (savedLang) {
-                currentLang = savedLang;
-                document.getElementById('languageSelect').value = savedLang;
-            }
-            updateUI();
-            getWeather();
-            renderPosts();
-        };
-
-        window.addEventListener('online', getWeather);
-    </script>
-</body>
-</html>
+          <!-- Application Schedule note -->
+          <div class="mt-3 p-3 bg-agro-50 rounded-lg text-xs text-agro-900 borde
