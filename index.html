@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="te">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart AgroVision</title>
+    <style>
+        body { font-family: sans-serif; margin: 0; padding: 20px; background: #f4f4f9; color: #333; }
+        .card { background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); }
+        h1 { color: #2e7d32; text-align: center; }
+        h2 { color: #1b5e20; border-bottom: 2px solid #c8e6c9; padding-bottom: 5px; }
+        button { background: #2e7d32; color: white; border: none; padding: 10px 15px; border-radius: 5px; cursor: pointer; width: 100%; font-size: 16px; margin-top: 10px; }
+        input, textarea, select { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ccc; border-radius: 5px; box-sizing: border-box; }
+        .post { border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px; }
+        .result { font-weight: bold; color: #2e7d32; margin-top: 10px; }
+        .lang-selector { text-align: right; margin-bottom: 15px; }
+        .lang-selector select { width: auto; padding: 5px; }
+    </style>
+</head>
+<body>
+
+    <div class="lang-selector">
+        <label for="languageSelect" data-key="languageLabel">భాష:</label>
+        <select id="languageSelect" onchange="changeLanguage()">
+            <option value="te">తెలుగు</option>
+            <option value="en">English</option>
+            <option value="hi">हिंदी</option>
+            <option value="ta">தமிழ்</option>
+        </select>
+    </div>
+
+    <h1>Smart AgroVision</h1>
+
+    <!-- వాతావరణ సూచనలు -->
+    <div class="card">
+        <h2 data-key="weatherTitle">వాతావరణ సూచనలు</h2>
+        <p id="weather" data-key="weatherLoading">సమాచారం లోడ్ అవుతోంది...</p>
+        <button onclick="getWeather()" data-key="refreshBtn">రిఫ్రెష్</button>
+    </div>
+
+    <!-- ఎరువుల కాలిక్యులేటర్ -->
+    <div class="card">
+        <h2 data-key="fertilizerTitle">ఎరువుల కాలిక్యులేటర్</h2>
+        <label for="landSize" data-key="landSizeLabel">భూమి వైశాల్యం (ఎకరాల్లో):</label>
+        <input type="number" id="landSize" placeholder="ఉదా: 2">
+        <label for="cropType" data-key="cropTypeLabel">పంట రకం:</label>
+        <select id="cropType">
+            <option value="వరి" data-key="cropRice">వరి</option>
+            <option value="ప్రత్తి" data-key="cropCotton">ప్రత్తి</option>
+            <option value="మిరప" data-key="cropChili">మిరప</option>
+        </select>
+        <button onclick="calculateFertilizer()" data-key="calculateBtn">లెక్కించండి</button>
+        <p id="fertilizerResult" class="result"></p>
+    </div>
+
+    <!-- వ్యవసాయ పద్ధతులు - గైడ్ -->
+    <div class="card">
+        <h2 data-key="tipsTitle">వ్యవసాయ చిట్కాలు</h2>
+        <p data-key="tipsDesc">ఎంచుకున్న పంటకు తగిన సూచనలు ఇక్కడ చూడండి.</p>
+        <button onclick="showTips()" data-key="showTipsBtn">చిట్కాలను చూపించు</button>
+        <p id="agroTips" class="result"></p>
+    </div>
+
+    <!-- కమ్యూనిటీ ఫోరమ్ -->
+    <div class="card">
+        <h2 data-key="forumTitle">కమ్యూనిటీ ఫోరమ్</h2>
+        <input type="text" id="postTitle">
+        <textarea id="postContent"></textarea>
+        <button onclick="savePost()" data-key="postBtn">పోస్ట్ చేయండి</button>
+        <div id="postsContainer"></div>
+    </div>
+
+    <script>
+        const translations = {
+            te: {
+                languageLabel: "భాష:",
+                weatherTitle: "వాతావరణ సూచనలు",
+                weatherLoading: "సమాచారం లోడ్ అవుతోంది...",
+                refreshBtn: "రిఫ్రెష్",
+                fertilizerTitle: "ఎరువుల కాలిక్యులేటర్",
+                landSizeLabel: "భూమి వైశాల్యం (ఎకరాల్లో):",
+                cropTypeLabel: "పంట రకం:",
+                cropRice: "వరి",
+                cropCotton: "ప్రత్తి",
+                cropChili: "మిరప",
+                calculateBtn: "లెక్కించండి",
+                tipsTitle: "వ్యవసాయ చిట్కాలు",
+                tipsDesc: "ఎంచుకున్న పంటకు తగిన సూచనలు ఇక్కడ చూడండి.",
+                showTipsBtn: "చిట్కాలను చూపించు",
+                forumTitle: "కమ్యూనిటీ ఫోరమ్",
+                postPlaceholderTitle: "శీర్షిక...",
+                postPlaceholderContent: "మీ సందేశం ఇక్కడ రాయండి...",
+                postBtn: "పోస్ట్ చేయండి",
+                weatherOnline: "ఉష్ణోగ్రత: 30°C, వర్ష సూచన లేదు.",
+                weatherOffline: "ఇంటర్నెట్ లేదు.",
+                calcResult: (crop, acres, nitro, phos) => `${crop} పంటకు, ${acres} ఎకరాలకు గాను ${nitro}కిలోల నత్రజని, ${phos}కిలోల భాస్వరం అవసరం.`,
+                calcError: "సరైన వైశాల్యం నమోదు చేయండి.",
+                tipsResult: "ఎరువులను వేసేటప్పుడు నేలలోని తేమను గమనించండి. తెగుళ్ళ నివారణకు ఆర్గానిక్ పద్ధతులను పాటించండి."
+            },
+            en: {
+                languageLabel: "Language:",
+                weatherTitle: "Weather Forecast",
+                weatherLoading: "Loading information...",
+                refreshBtn: "Refresh",
+                fertilizerTitle: "Fertilizer Calculator",
+                landSizeLabel: "Land Size (in acres):",
+                cropTypeLabel: "Crop Type:",
+                cropRice: "Rice",
+                cropCotton: "Cotton",
+                cropChili: "Chili",
+                calculateBtn: "Calculate",
+                tipsTitle: "Agricultural Tips",
+                tipsDesc: "See appropriate instructions for the selected crop here.",
+                showTipsBtn: "Show Tips",
+                forumTitle: "Community Forum",
+                postPlaceholderTitle: "Title...",
+                postPlaceholderContent: "Write your message here...",
+                postBtn: "Post",
+                weatherOnline: "Temperature: 30°C, No rain forecast.",
+                weatherOffline: "No internet.",
+                calcResult: (crop, acres, nitro, phos) => `For ${acres} acres of ${crop}, you need ${nitro}kg of nitrogen and ${phos}kg of phosphorus.`,
+                calcError: "Please enter a valid size.",
+                tipsResult: "Check soil moisture when applying fertilizer. Follow organic methods to prevent pests."
+            },
+            hi: {
+                languageLabel: "भाषा:",
+                weatherTitle: "मौसम का पूर्वानुमान",
+                weatherLoading: "जानकारी लोड हो रही है...",
+                refreshBtn: "रिफ्रेश",
+                fertilizerTitle: "उर्वरक कैलकुलेटर",
+                landSizeLabel: "भूमि का आकार (एकड़ में):",
+                cropTypeLabel: "फसल का प्रकार:",
+                cropRice: "चावल",
+                cropCotton: "कपास",
+                cropChili: "मिर्च",
+                calculateBtn: "गणना करें",
+                tipsTitle: "कृषि युक्तियाँ",
+                tipsDesc: "चुनी गई फसल के लिए उपयुक्त निर्देश यहां देखें।",
+                showTipsBtn: "टिप्स दिखाएँ",
+                forumTitle: "सामुदायिक मंच",
+                postPlaceholderTitle: "शीर्षक...",
+                postPlaceholderContent: "अपना संदेश यहाँ लिखें...",
+                postBtn: "पोस्ट करें",
+                weatherOnline: "तापमान: 30°C, बारिश की कोई संभावना नहीं।",
+                weatherOffline: "इंटरनेट नहीं है।",
+                calcResult: (crop, acres, nitro, phos) => `${crop} की फसल और ${acres} एकड़ के लिए, ${nitro}kg नाइट्रोजन और ${phos}kg फास्फोरस की आवश्यकता है।`,
+                calcError: "कृपया सही आकार दर्ज करें।",
+                tipsResult: "उर्वरक डालते समय मिट्टी की नमी की जाँच करें। कीटों को रोकने के लिए जैविक तरीकों का पालन करें."
+            },
+            ta: {
+                languageLabel: "மொழி:",
+                weatherTitle: "வானிலை முன்னறிவிப்பு",
+                weatherLoading: "தகவல் ஏற்றப்படுகிறது...",
+                refreshBtn: "புதுப்பிக்கவும்",
+                fertilizerTitle: "உர கால்குலேட்டர்",
+                landSizeLabel: "நிலத்தின் அளவு (ஏக்கரில்):",
+                cropTypeLabel: "பயிர் வகை:",
+                cropRice: "நெல்",
+                cropCotton: "பருத்தி",
+                cropChili: "மிளகாய்",
+                calculateBtn: "கணக்கிடு",
+                tipsTitle: "விவசாய குறிப்புகள்",
+                tipsDesc: "தேர்ந்தெடுக்கப்பட்ட பயிருக்கான பொருத்தமான வழிமுறைகளை இங்கே பார்க்கவும்.",
+                showTipsBtn: "குறிப்புகளைக் காட்டு",
+                forumTitle: "சமூக மன்றம்",
+                postPlaceholderTitle: "தலைப்பு...",
+                postPlaceholderContent: "உங்கள் செய்தியை இங்கே எழுதுங்கள்...",
+                postBtn: "பதிவிடு",
+                weatherOnline: "வெப்பநிலை: 30°C, மழை முன்னறிவிப்பு இல்லை.",
+                weatherOffline: "இணையம் இல்லை.",
+                calcResult: (crop, acres, nitro, phos) => `${acres} ஏக்கர் ${crop} பயிருக்கு, ${nitro} கிலோ நைட்ரஜன் மற்றும் ${phos} கிலோ பாஸ்பரஸ் தேவை.`,
+                calcError: "தயவுசெய்து சரியான அளவை உள்ளிடவும்.",
+                tipsResult: "உரம் போடும்போது மண்ணின் ஈரப்பதத்தை சரிபார்க்கவும். பூச்சிகளைக் கட்டுப்படுத்த இயற்கை முறைகளைப் பின்பற்றவும்."
+            }
+        };
+
+        let currentLang = 'te';
+
+        function changeLanguage() {
+            const select = document.getElementById('languageSelect');
+            currentLang = select.value;
+            localStorage.setItem('preferredLang', currentLang);
+            updateUI();
+        }
+
+        function updateUI() {
+            const langData = translations[currentLang];
+            document.querySelectorAll('[data-key]').forEach(element => {
+                const key = element.getAttribute('data-key');
+                if (langData[key]) {
+                    element.innerText = langData[key];
+                }
+            });
+
+            document.getElementById('postTitle').placeholder = langData.postPlaceholderTitle;
+            document.getElementById('postContent').placeholder = langData.postPlaceholderContent;
+            
+            const acres = document.getElementById('landSize').value;
+            const crop = document.getElementById('cropType').options[document.getElementById('cropType').selectedIndex].text;
+            if (acres > 0) {
+                calculateFertilizer();
+            }
+        }
+
+        function getWeather() {
+            const weatherDiv = document.getElementById('weather');
+            const langData = translations[currentLang];
+            if (navigator.onLine) {
+                weatherDiv.innerText = langData.weatherOnline;
+                localStorage.setItem('cachedWeather', weatherDiv.innerText);
+            } else {
+                const cached = localStorage.getItem('cachedWeather');
+                weatherDiv.innerText = cached ? cached + " (ఆఫ్లైన్)" : langData.weatherOffline;
+            }
+        }
+
+        function calculateFertilizer() {
+            const acres = document.getElementById('landSize').value;
+            const crop = document.getElementById('cropType').value;
+            const resultParagraph = document.getElementById('fertilizerResult');
+            const langData = translations[currentLang];
+
+            if (acres > 0) {
+                let nitrogen = acres * 50; 
+                let phosphorus = acres * 25;
+                resultParagraph.innerText = langData.calcResult(crop, acres, nitrogen, phosphorus);
+            } else {
+                resultParagraph.innerText = langData.calcError;
+            }
+        }
+
+        function showTips() {
+            document.getElementById('agroTips').innerText = translations[currentLang].tipsResult;
+        }
+
+        function savePost() {
+            const titleInput = document.getElementById('postTitle');
+            const contentInput = document.getElementById('postContent');
+            const title = titleInput.value;
+            const content = contentInput.value;
+            if (title && content) {
+                const posts = JSON.parse(localStorage.getItem('forumPosts') || '[]');
+                posts.push({ title, content });
+                localStorage.setItem('forumPosts', JSON.stringify(posts));
+                titleInput.value = '';
+                contentInput.value = '';
+                renderPosts();
+            }
+        }
+
+        function renderPosts() {
+            const postsContainer = document.getElementById('postsContainer');
+            postsContainer.innerHTML = '';
+            const posts = JSON.parse(localStorage.getItem('forumPosts') || '[]');
+            posts.forEach(post => {
+                const postDiv = document.createElement('div');
+                postDiv.className = 'post';
+                postDiv.innerHTML = `<h3>${post.title}</h3><p>${post.content}</p>`;
+                postsContainer.appendChild(postDiv);
+            });
+        }
+
+        window.onload = () => {
+            const savedLang = localStorage.getItem('preferredLang');
+            if (savedLang) {
+                currentLang = savedLang;
+                document.getElementById('languageSelect').value = savedLang;
+            }
+            updateUI();
+            getWeather();
+            renderPosts();
+        };
+
+        window.addEventListener('online', getWeather);
+    </script>
+</body>
+</html>
