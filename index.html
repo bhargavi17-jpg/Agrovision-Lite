@@ -30,8 +30,8 @@
 
         body {
             /* ఇక్కడ మీ కొత్త బ్యాక్‌గ్రౌండ్ ఇమేజ్ చేర్చబడింది */
-            background: linear-gradient(rgba(240, 253, 244, 0.90), rgba(240, 253, 244, 0.90)), 
-                        url('https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=1200&q=80') no-repeat center center fixed;
+            background: linear-gradient(rgba(240, 253, 244, 0.85), rgba(240, 253, 244, 0.85)), 
+                        url('image_5.png') no-repeat center center fixed;
             background-size: cover;
             color: var(--dark);
             padding-bottom: 85px;
@@ -85,7 +85,6 @@
             margin: auto;
         }
 
-        /* కార్డులకు బ్యాక్‌గ్రౌండ్ ఇమేజ్ ద్వారా లోపలి టెక్స్ట్ కనిపించకుండా ఉండటానికి కొద్దిగా ట్రాన్స్‌పరెంట్‌గా మార్చాను */
         .card {
             background: rgba(255, 255, 255, 0.95); 
             padding: 18px;
@@ -592,7 +591,7 @@
             maize: [
                 { mandi: "విజయవాడ మార్కెట్", rate: 2150, transportPerQtl: 60 },
                 { mandi: "వరంగల్ మార్కెట్", rate: 2250, transportPerQtl: 150 },
-                { mandi: "নিజామాబాద్", rate: 2200, transportPerQtl: 200 }
+                { mandi: "నిజామాబాద్", rate: 2200, transportPerQtl: 200 }
             ],
             groundnut: [
                 { mandi: "రాయచూరు / కర్నూలు", rate: 6650, transportPerQtl: 160 },
@@ -762,7 +761,7 @@
                 weatherOnline: "ఉష్ణోగ్రత: 31°C | తేమ: 62% | వాతావరణం అనుకూలంగా ఉంది (ఎండ).",
                 weatherOffline: "ఆఫ్‌లైన్: నెట్‌వర్క్ అందుబాటులో లేదు.",
                 likeBtn: "లైక్",
-                commentBtn: "కామెంట్స్",
+                commentBtn: "కాメントస్",
                 shareBtn: "షేర్",
                 commentPlaceholder: "మీ సలహా రాయండి..."
             },
@@ -915,7 +914,7 @@
                 typeIncome: "வருமானம் (விற்பனை)",
                 entryDescLabel: "விவரம்:",
                 entryAmountLabel: "தொகை (₹):",
-                saveEntryBtn: "டைரியில் சேமிக்க",
+                saveEntryBtn: "டைரியே சேமிக்க",
                 calcTitle: "⚖️ உர கால்குலேட்டர் & செலவு மதிப்பீடு",
                 landSizeLabel: "நிலத்தின் அளவு (ஏக்கரில்):",
                 calculateBtn: "கணக்கிடு",
@@ -1056,7 +1055,7 @@
             resultBox.style.display = 'block';
         }
 
-        // Feature 3: Digital Farm Diary Implementation
+        // Feature 3: My Digital Farm Diary Implementation
         function getDiaryEntries() {
             const stored = localStorage.getItem('agroFarmDiary');
             return stored ? JSON.parse(stored) : [
