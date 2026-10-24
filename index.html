@@ -29,7 +29,10 @@
         }
 
         body {
-            background: linear-gradient(180deg, #ecfdf5 0%, #f0fdf4 100%);
+            /* ఇక్కడ మీ కొత్త బ్యాక్‌గ్రౌండ్ ఇమేజ్ చేర్చబడింది */
+            background: linear-gradient(rgba(240, 253, 244, 0.90), rgba(240, 253, 244, 0.90)), 
+                        url('https://images.unsplash.com/photo-1593113598332-cd288d649433?auto=format&fit=crop&w=1200&q=80') no-repeat center center fixed;
+            background-size: cover;
             color: var(--dark);
             padding-bottom: 85px;
             min-height: 100vh;
@@ -82,13 +85,15 @@
             margin: auto;
         }
 
+        /* కార్డులకు బ్యాక్‌గ్రౌండ్ ఇమేజ్ ద్వారా లోపలి టెక్స్ట్ కనిపించకుండా ఉండటానికి కొద్దిగా ట్రాన్స్‌పరెంట్‌గా మార్చాను */
         .card {
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.95); 
             padding: 18px;
             border-radius: 16px;
             margin-bottom: 16px;
             box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
             border: 1px solid var(--border);
+            backdrop-filter: blur(5px); /* గ్లాస్ ఎఫెక్ట్ */
         }
 
         .card-weather { border-top: 5px solid var(--accent-blue); }
@@ -121,7 +126,7 @@
             border: 1.5px solid #d1d5db;
             border-radius: 10px;
             font-size: 0.95rem;
-            background: #fafafa;
+            background: rgba(250, 250, 250, 0.9);
             outline: none;
         }
 
@@ -182,7 +187,7 @@
         }
 
         .market-chip {
-            background: #f0fdf4;
+            background: rgba(240, 253, 244, 0.9);
             border: 1px solid #bbf7d0;
             border-radius: 10px;
             padding: 10px;
@@ -205,7 +210,7 @@
         .diary-summary {
             display: flex;
             justify-content: space-between;
-            background: #fafaf9;
+            background: rgba(250, 250, 249, 0.9);
             padding: 12px;
             border-radius: 10px;
             margin-bottom: 12px;
@@ -249,7 +254,7 @@
 
         /* Forum Post Styling */
         .post {
-            background: #f9fafb;
+            background: rgba(249, 250, 251, 0.9);
             border-radius: 12px;
             padding: 14px;
             margin-top: 14px;
@@ -335,13 +340,14 @@
             left: 0;
             right: 0;
             height: 65px;
-            background: var(--white);
+            background: rgba(255, 255, 255, 0.95);
             display: flex;
             justify-content: space-around;
             align-items: center;
             box-shadow: 0 -3px 15px rgba(0,0,0,0.06);
             z-index: 1000;
             border-top: 1px solid var(--border);
+            backdrop-filter: blur(5px);
         }
 
         .tab-btn {
@@ -586,7 +592,7 @@
             maize: [
                 { mandi: "విజయవాడ మార్కెట్", rate: 2150, transportPerQtl: 60 },
                 { mandi: "వరంగల్ మార్కెట్", rate: 2250, transportPerQtl: 150 },
-                { mandi: "నిజామాబాద్", rate: 2200, transportPerQtl: 200 }
+                { mandi: "নিజామాబాద్", rate: 2200, transportPerQtl: 200 }
             ],
             groundnut: [
                 { mandi: "రాయచూరు / కర్నూలు", rate: 6650, transportPerQtl: 160 },
