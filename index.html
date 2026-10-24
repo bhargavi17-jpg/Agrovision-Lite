@@ -1,1314 +1,941 @@
 <!DOCTYPE html>
 <html lang="te">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart AgroVision | రైతు మిత్ర</title>
-    <style>
-        :root {
-            --primary: #10b981;
-            --primary-dark: #047857;
-            --primary-light: #d1fae5;
-            --accent-orange: #f59e0b;
-            --accent-blue: #0284c7;
-            --accent-purple: #8b5cf6;
-            --accent-green: #15803d;
-            --dark: #1f2937;
-            --light-bg: #f0fdf4;
-            --white: #ffffff;
-            --danger: #ef4444;
-            --border: #e5e7eb;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Smart AgroVision | Raithu Sethu</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    :root {
+      --primary: #117a37;
+      --primary-dark: #095325;
+      --primary-light: #e8f5e9;
+      --accent-orange: #f59e0b;
+      --accent-blue: #0284c7;
+      --accent-purple: #7c3aed;
+      --accent-green: #15803d;
+      --dark: #1f2937;
+      --light-bg: #f8fafc;
+      --white: #ffffff;
+      --danger: #dc2626;
+      --border: #e2e8f0;
+      --glass: rgba(255, 255, 255, 0.92);
+      --glass-border: rgba(255, 255, 255, 0.4);
+    }
 
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-            transition: all 0.2s ease-in-out;
-        }
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Noto Sans Telugu", sans-serif;
+    }
 
-        body {
-            /* ఇక్కడ మీ కొత్త బ్యాక్‌గ్రౌండ్ ఇమేజ్ చేర్చబడింది */
-            background: linear-gradient(rgba(240, 253, 244, 0.85), rgba(240, 253, 244, 0.85)), 
-                        url('1792834626161.png') no-repeat center center fixed;
-            background-size: cover;
-            color: var(--dark);
-            padding-bottom: 85px;
-            min-height: 100vh;
-        }
+    body {
+      background: linear-gradient(rgba(240, 253, 244, 0.88), rgba(240, 253, 244, 0.88)),
+                  url('1792834626161.png') no-repeat center center fixed;
+      background-size: cover;
+      color: var(--dark);
+      padding-bottom: 90px;
+      min-height: 100vh;
+    }
 
-        header {
-            background: linear-gradient(135deg, #059669, #047857);
-            color: var(--white);
-            padding: 14px 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 100;
-            box-shadow: 0 4px 12px rgba(4, 120, 87, 0.2);
-        }
+    /* Header */
+    header {
+      background: linear-gradient(135deg, var(--primary-dark), var(--primary));
+      color: var(--white);
+      padding: 12px 18px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.15);
+    }
 
-        header h1 {
-            font-size: 1.25rem;
-            font-weight: 800;
-        }
+    .brand-wrap {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
 
-        .lang-selector select {
-            width: auto;
-            padding: 6px 12px;
-            font-size: 0.85rem;
-            border-radius: 20px;
-            border: none;
-            background: rgba(255, 255, 255, 0.95);
-            font-weight: 700;
-            color: var(--primary-dark);
-            cursor: pointer;
-            outline: none;
-        }
+    .logo-img {
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      object-fit: cover;
+      background: #fff;
+      border: 2px solid rgba(255,255,255,0.8);
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+    }
 
-        .offline-indicator {
-            background: var(--danger);
-            color: var(--white);
-            text-align: center;
-            padding: 6px;
-            display: none;
-            font-size: 0.8rem;
-            font-weight: 600;
-        }
+    .brand-text h1 {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      line-height: 1.1;
+    }
 
-        .container {
-            padding: 16px;
-            max-width: 540px;
-            margin: auto;
-        }
+    .brand-text span {
+      font-size: 0.72rem;
+      color: #bbf7d0;
+      font-weight: 500;
+      letter-spacing: 0.4px;
+    }
 
-        .card {
-            background: rgba(255, 255, 255, 0.95); 
-            padding: 18px;
-            border-radius: 16px;
-            margin-bottom: 16px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
-            border: 1px solid var(--border);
-            backdrop-filter: blur(5px); /* గ్లాస్ ఎఫెక్ట్ */
-        }
+    .lang-select {
+      background: rgba(255, 255, 255, 0.2);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      padding: 6px 10px;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      outline: none;
+      backdrop-filter: blur(5px);
+    }
 
-        .card-weather { border-top: 5px solid var(--accent-blue); }
-        .card-tips { border-top: 5px solid var(--primary); }
-        .card-market { border-top: 5px solid #16a34a; }
-        .card-diary { border-top: 5px solid #d97706; }
-        .card-water { border-top: 5px solid #06b6d4; }
-        .card-calc { border-top: 5px solid var(--accent-orange); }
-        .card-forum { border-top: 5px solid var(--accent-purple); }
+    .lang-select option {
+      color: var(--dark);
+      background: #fff;
+    }
 
-        h2 {
-            color: var(--primary-dark);
-            font-size: 1.15rem;
-            font-weight: 700;
-            margin-bottom: 10px;
-        }
+    /* Container & Tabs */
+    .container {
+      max-width: 600px;
+      margin: 15px auto;
+      padding: 0 14px;
+    }
 
-        label {
-            font-size: 0.88rem;
-            font-weight: 600;
-            color: #4b5563;
-            display: block;
-            margin-top: 10px;
-            margin-bottom: 4px;
-        }
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.3s ease-in-out;
+    }
 
-        input, textarea, select {
-            width: 100%;
-            padding: 10px 14px;
-            border: 1.5px solid #d1d5db;
-            border-radius: 10px;
-            font-size: 0.95rem;
-            background: rgba(250, 250, 250, 0.9);
-            outline: none;
-        }
+    .tab-content.active {
+      display: block;
+    }
 
-        input:focus, textarea:focus, select:focus {
-            border-color: var(--primary);
-            background: var(--white);
-            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.2);
-        }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-        button.action-btn {
-            background: linear-gradient(135deg, #10b981, #059669);
-            color: var(--white);
-            border: none;
-            padding: 12px 16px;
-            border-radius: 10px;
-            cursor: pointer;
-            width: 100%;
-            font-size: 0.95rem;
-            font-weight: 700;
-            margin-top: 12px;
-            box-shadow: 0 3px 8px rgba(16, 185, 129, 0.3);
-        }
+    /* Cards */
+    .card {
+      background: var(--glass);
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 16px;
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 8px 24px rgba(17, 122, 55, 0.08);
+    }
 
-        button.action-btn:active {
-            transform: scale(0.98);
-        }
+    .card-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--primary-dark);
+      display: flex;
+      align-items: center;
+      gap: 9px;
+      margin-bottom: 14px;
+    }
 
-        .result {
-            font-weight: 600;
-            color: #065f46;
-            margin-top: 12px;
-            padding: 14px;
-            background: var(--primary-light);
-            border-radius: 10px;
-            border: 1px solid #a7f3d0;
-            display: none;
-            line-height: 1.6;
-            font-size: 0.92rem;
-        }
+    /* Forms & Inputs */
+    .form-group {
+      margin-bottom: 13px;
+    }
 
-        .cost-badge {
-            display: block;
-            margin-top: 8px;
-            padding: 8px 12px;
-            background: #fef3c7;
-            border: 1px solid #fde68a;
-            border-radius: 8px;
-            color: #92400e;
-            font-size: 0.95rem;
-        }
+    label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #374151;
+      margin-bottom: 5px;
+    }
 
-        /* Market Cards */
-        .market-rate-box {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-top: 10px;
-        }
+    input, select, textarea {
+      width: 100%;
+      padding: 11px 13px;
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      font-size: 0.92rem;
+      outline: none;
+      background: #fff;
+      transition: border 0.2s;
+    }
 
-        .market-chip {
-            background: rgba(240, 253, 244, 0.9);
-            border: 1px solid #bbf7d0;
-            border-radius: 10px;
-            padding: 10px;
-            text-align: center;
-        }
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(17, 122, 55, 0.15);
+    }
 
-        .market-chip strong {
-            display: block;
-            font-size: 0.85rem;
-            color: #166534;
-        }
+    .btn {
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
 
-        .market-chip span {
-            font-size: 1.1rem;
-            font-weight: 800;
-            color: #047857;
-        }
+    .btn-primary {
+      background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+      color: var(--white);
+      box-shadow: 0 4px 12px rgba(17, 122, 55, 0.25);
+    }
 
-        /* Diary Summary Box */
-        .diary-summary {
-            display: flex;
-            justify-content: space-between;
-            background: rgba(250, 250, 249, 0.9);
-            padding: 12px;
-            border-radius: 10px;
-            margin-bottom: 12px;
-            border: 1px solid var(--border);
-        }
+    .btn-primary:active {
+      transform: scale(0.98);
+    }
 
-        .diary-stat {
-            text-align: center;
-        }
+    /* Weather Widget */
+    .weather-box {
+      background: linear-gradient(135deg, #0284c7, #0369a1);
+      color: #fff;
+      border-radius: 16px;
+      padding: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 16px;
+      box-shadow: 0 6px 18px rgba(2, 132, 199, 0.25);
+    }
 
-        .diary-stat small {
-            display: block;
-            color: #6b7280;
-            font-size: 0.75rem;
-        }
+    .weather-left h3 {
+      font-size: 1.8rem;
+      font-weight: 800;
+    }
 
-        .diary-stat span {
-            font-weight: 800;
-            font-size: 1rem;
-        }
+    .weather-left p {
+      font-size: 0.85rem;
+      opacity: 0.9;
+    }
 
-        .diary-list {
-            max-height: 200px;
-            overflow-y: auto;
-            margin-top: 10px;
-        }
+    /* Results Box */
+    .result-box {
+      background: #f0fdf4;
+      border: 1.5px solid #86efac;
+      border-radius: 14px;
+      padding: 14px;
+      margin-top: 14px;
+      font-size: 0.9rem;
+      line-height: 1.6;
+    }
 
-        .diary-entry {
-            display: flex;
-            justify-content: space-between;
-            padding: 8px 10px;
-            background: #ffffff;
-            border-radius: 8px;
-            border: 1px solid #f3f4f6;
-            margin-bottom: 6px;
-            font-size: 0.85rem;
-        }
+    .result-item {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
 
-        .diary-entry.expense { border-left: 4px solid var(--danger); }
-        .diary-entry.income { border-left: 4px solid var(--primary); }
+    /* Labor Tracker Calendar */
+    .labor-summary {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
 
-        /* Forum Post Styling */
-        .post {
-            background: rgba(249, 250, 251, 0.9);
-            border-radius: 12px;
-            padding: 14px;
-            margin-top: 14px;
-            border: 1px solid var(--border);
-            border-left: 4px solid var(--accent-purple);
-        }
-        .post h3 { font-size: 1rem; color: var(--dark); margin-bottom: 6px; }
-        .post p { font-size: 0.9rem; color: #4b5563; line-height: 1.4; }
+    .summary-tile {
+      background: #f1f5f9;
+      padding: 12px;
+      border-radius: 12px;
+      text-align: center;
+    }
 
-        .post-actions {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            margin-top: 12px;
-            padding-top: 10px;
-            border-top: 1px solid var(--border);
-        }
+    .summary-tile h4 {
+      font-size: 0.78rem;
+      color: #64748b;
+      margin-bottom: 4px;
+    }
 
-        .post-btn {
-            background: var(--white);
-            border: 1px solid var(--border);
-            border-radius: 8px;
-            padding: 5px 10px;
-            font-size: 0.8rem;
-            font-weight: 600;
-            color: #4b5563;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
+    .summary-tile span {
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--primary-dark);
+    }
 
-        .post-btn:hover { background: #f3f4f6; }
-        .post-btn.liked { color: #ef4444; border-color: #fca5a5; background: #fef2f2; }
+    .labor-card-item {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent-orange);
+      padding: 11px 13px;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
 
-        .comment-section {
-            display: none;
-            margin-top: 10px;
-            padding-top: 10px;
-            border-top: 1px dashed var(--border);
-        }
+    /* Pest Scanner UI */
+    .scanner-preview {
+      width: 100%;
+      height: 180px;
+      border: 2px dashed #94a3b8;
+      border-radius: 14px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      color: #64748b;
+      background: #f8fafc;
+      margin-bottom: 14px;
+      cursor: pointer;
+      overflow: hidden;
+      position: relative;
+    }
 
-        .comment-item {
-            background: var(--white);
-            border-radius: 6px;
-            padding: 6px 10px;
-            margin-top: 6px;
-            font-size: 0.82rem;
-            color: #374151;
-            border: 1px solid #f3f4f6;
-        }
+    .scanner-preview img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
 
-        .comment-input-box {
-            display: flex;
-            gap: 6px;
-            margin-top: 8px;
-        }
+    /* Scheme Cards */
+    .scheme-item {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 10px;
+      border-left: 4px solid var(--primary);
+    }
 
-        .comment-input-box input { margin: 0; padding: 6px 10px; font-size: 0.85rem; }
-        .comment-input-box button {
-            background: var(--accent-purple);
-            color: var(--white);
-            border: none;
-            border-radius: 8px;
-            padding: 0 12px;
-            font-weight: 600;
-            cursor: pointer;
-        }
+    .scheme-item h4 {
+      color: var(--primary-dark);
+      font-size: 0.95rem;
+      margin-bottom: 4px;
+    }
 
-        /* Navigation Sections Control */
-        .content-section { display: none; }
-        .content-section.active { display: block; animation: fadeIn 0.2s ease-out; }
+    .scheme-item p {
+      font-size: 0.83rem;
+      color: #4b5563;
+      line-height: 1.4;
+    }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(4px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
+    /* Forum */
+    .forum-post {
+      background: #fff;
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
 
-        /* Fixed Bottom Tab Navigation */
-        .bottom-nav {
-            position: fixed;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 65px;
-            background: rgba(255, 255, 255, 0.95);
-            display: flex;
-            justify-content: space-around;
-            align-items: center;
-            box-shadow: 0 -3px 15px rgba(0,0,0,0.06);
-            z-index: 1000;
-            border-top: 1px solid var(--border);
-            backdrop-filter: blur(5px);
-        }
+    .post-actions {
+      display: flex;
+      gap: 16px;
+      margin-top: 10px;
+      padding-top: 8px;
+      border-top: 1px solid #f1f5f9;
+      font-size: 0.85rem;
+      color: #64748b;
+    }
 
-        .tab-btn {
-            background: transparent;
-            border: none;
-            outline: none;
-            color: #9ca3af;
-            font-size: 0.7rem;
-            font-weight: 700;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            padding: 4px 0;
-            flex: 1;
-            user-select: none;
-        }
+    .action-btn {
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
 
-        .tab-btn svg {
-            width: 20px;
-            height: 20px;
-            fill: currentColor;
-            margin-bottom: 3px;
-            pointer-events: none;
-        }
+    .action-btn.liked {
+      color: var(--danger);
+      font-weight: 700;
+    }
 
-        .tab-btn span { pointer-events: none; }
-        .tab-btn.active { color: var(--primary-dark); transform: translateY(-2px); }
-        .tab-btn.active svg { fill: var(--primary-dark); }
-    </style>
+    /* Bottom Navigation Bar */
+    .bottom-nav {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      width: 100%;
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: space-around;
+      padding: 8px 0 10px;
+      border-top: 1px solid rgba(0, 0, 0, 0.08);
+      z-index: 1000;
+      box-shadow: 0 -4px 15px rgba(0,0,0,0.05);
+    }
+
+    .nav-btn {
+      background: none;
+      border: none;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 3px;
+      color: #64748b;
+      font-size: 0.72rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s;
+      flex: 1;
+    }
+
+    .nav-btn i {
+      font-size: 1.18rem;
+    }
+
+    .nav-btn.active {
+      color: var(--primary);
+      transform: translateY(-2px);
+    }
+  </style>
 </head>
 <body>
 
-    <div id="offlineBanner" class="offline-indicator" data-key="offlineStatus">మీరు ఆఫ్‌లైన్‌లో ఉన్నారు. సేవ్ చేసిన సమాచారం మాత్రమే కనిపిస్తుంది.</div>
+  <!-- Top App Bar -->
+  <header>
+    <div class="brand-wrap">
+      <!-- Logo image with graceful fallback icon -->
+      <img src="logo.png" alt="Smart AgroVision Logo" class="logo-img" onerror="this.src='https://api.iconify.design/lucide:leaf.svg?color=%23117a37&width=40';" />
+      <div class="brand-text">
+        <h1 id="app-title">Smart AgroVision</h1>
+        <span id="app-subtitle">రైతు సేతు (Raithu Sethu)</span>
+      </div>
+    </div>
+    <select id="langSelect" class="lang-select" onchange="changeLanguage(this.value)">
+      <option value="te" selected>తెలుగు</option>
+      <option value="en">English</option>
+      <option value="hi">हिंदी</option>
+      <option value="ta">தமிழ்</option>
+    </select>
+  </header>
 
-    <header>
-        <h1>🌾 AgroVision</h1>
-        <div class="lang-selector">
-            <select id="languageSelect">
-                <option value="te">తెలుగు</option>
-                <option value="en">English</option>
-                <option value="hi">हिंदी</option>
-                <option value="ta">தமிழ்</option>
-            </select>
+  <div class="container">
+
+    <!-- TAB 1: HOME (Advisor + Weather) -->
+    <div id="tab-home" class="tab-content active">
+      <div class="weather-box">
+        <div class="weather-left">
+          <h3 id="weather-temp">31°C</h3>
+          <p id="weather-desc">తేమ: 62% | వాతావరణం అనుకూలంగా ఉంది</p>
         </div>
-    </header>
+        <i class="fa-solid fa-cloud-sun fa-2x"></i>
+      </div>
 
-    <div class="container">
-        <!-- 1. Home Section: Weather + Smart Farming Assistant -->
-        <section id="section-home" class="content-section active">
-            <div class="card card-weather">
-                <h2 data-key="weatherTitle">☀️ వాతావరణ సమాచారం</h2>
-                <p id="weather" data-key="weatherLoading">సమాచారం లోడ్ అవుతోంది...</p>
-                <button type="button" class="action-btn" id="refreshWeatherBtn" data-key="refreshBtn">రిఫ్రెష్ చేయండి</button>
-            </div>
-
-            <!-- Standout Addition 2: Smart Farming Assistant -->
-            <div class="card card-tips">
-                <h2 data-key="assistantTitle">🌿 స్మార్ట్ ఫార్మింగ్ అసిస్టెంట్</h2>
-                <label for="cropTypeHome" data-key="cropTypeLabel">పంట రకం:</label>
-                <select id="cropTypeHome">
-                    <option value="rice" data-key="cropRice">వరి (Paddy)</option>
-                    <option value="cotton" data-key="cropCotton">ప్రత్తి (Cotton)</option>
-                    <option value="chili" data-key="cropChili">మిరప (Chili)</option>
-                    <option value="maize" data-key="cropMaize">మొక్కజొన్న (Maize)</option>
-                    <option value="groundnut" data-key="cropGroundnut">వేరుశనగ (Groundnut)</option>
-                    <option value="sugarcane" data-key="cropSugarcane">చెరకు (Sugarcane)</option>
-                    <option value="tomato" data-key="cropTomato">టమాటో (Tomato)</option>
-                    <option value="pulses" data-key="cropPulses">పప్పుధాన్యాలు (Pulses)</option>
-                </select>
-
-                <label for="cropStage" data-key="cropStageLabel">పంట దశ:</label>
-                <select id="cropStage">
-                    <option value="sowing" data-key="stageSowing">విత్తన దశ / నాట్లు</option>
-                    <option value="growth" data-key="stageGrowth">పెరుగుదల & ఎరువుల దశ</option>
-                    <option value="pest" data-key="stagePest">తెగుళ్ల నివారణ & సస్యరక్షణ</option>
-                    <option value="harvest" data-key="stageHarvest">కోత & దిగుబడి నిల్వ</option>
-                </select>
-
-                <button type="button" class="action-btn" id="tipsBtn" data-key="showTipsBtn">స్మార్ట్ సలహా పొందండి</button>
-                <p id="agroTips" class="result"></p>
-            </div>
-        </section>
-
-        <!-- 2. Standout Addition 1: Where Should I Sell My Crop? -->
-        <section id="section-market" class="content-section">
-            <div class="card card-market">
-                <h2 data-key="marketTitle">💰 ఎక్కడ అమ్ముకుంటే లాభం? (Market Prices)</h2>
-                <p style="font-size: 0.88rem; color: #6b7280; line-height: 1.4;" data-key="marketDesc">వివిధ మార్కెట్ల (మండీలు) ధరలను పోల్చి, రవాణా ఖర్చులు పోను నికర లాభాన్ని లెక్కించండి.</p>
-                
-                <label for="marketCrop" data-key="cropTypeLabel">పంట రకం:</label>
-                <select id="marketCrop" onchange="updateMandiRates()">
-                    <option value="rice" data-key="cropRice">వరి (Paddy)</option>
-                    <option value="cotton" data-key="cropCotton">ప్రత్తి (Cotton)</option>
-                    <option value="chili" data-key="cropChili">మిరప (Chili)</option>
-                    <option value="maize" data-key="cropMaize">మొక్కజొన్న (Maize)</option>
-                    <option value="groundnut" data-key="cropGroundnut">వేరుశనగ (Groundnut)</option>
-                    <option value="tomato" data-key="cropTomato">టమాటో (Tomato)</option>
-                </select>
-
-                <div class="market-rate-box" id="mandiRatesDisplay"></div>
-
-                <label for="produceQuantity" data-key="produceQtyLabel">దిగుబడి పరిమాణం (క్వింటాళ్లలో):</label>
-                <input type="number" id="produceQuantity" placeholder="ఉదా: 25" min="1">
-
-                <button type="button" class="action-btn" id="calcMarketBtn" data-key="calcMarketEarningsBtn">లాభాన్ని పోల్చండి</button>
-                <div id="marketComparisonResult" class="result"></div>
-            </div>
-        </section>
-
-        <!-- 3. Standout Addition 3: My Digital Farm Diary -->
-        <section id="section-diary" class="content-section">
-            <div class="card card-diary">
-                <h2 data-key="diaryTitle">📒 నా డిజిటల్ ఫార్మ్ డైరీ (Farm Diary)</h2>
-                
-                <div class="diary-summary">
-                    <div class="diary-stat">
-                        <small data-key="diaryTotalIncome">మొత్తం ఆదాయం</small>
-                        <span id="diaryIncome" style="color: #16a34a;">₹0</span>
-                    </div>
-                    <div class="diary-stat">
-                        <small data-key="diaryTotalExpense">మొత్తం ఖర్చు</small>
-                        <span id="diaryExpense" style="color: #ef4444;">₹0</span>
-                    </div>
-                    <div class="diary-stat">
-                        <small data-key="diaryNetBalance">నికర లాభం/నష్టం</small>
-                        <span id="diaryNet" style="color: #047857;">₹0</span>
-                    </div>
-                </div>
-
-                <label data-key="entryTypeLabel">లావాదేవీ రకం:</label>
-                <select id="diaryType">
-                    <option value="expense" data-key="typeExpense">ఖర్చు (ఎరువులు, పురుగుమందులు, కూలీలు)</option>
-                    <option value="income" data-key="typeIncome">ఆదాయం (పంట విక్రయం)</option>
-                </select>
-
-                <label data-key="entryDescLabel">వివరణ:</label>
-                <input type="text" id="diaryDesc" placeholder="ఉదా: 2 బస్తాల DAP లేదా కూలీల ఖర్చు">
-
-                <label data-key="entryAmountLabel">మొత్తం (రూపాయలు):</label>
-                <input type="number" id="diaryAmount" placeholder="ఉదా: 3500">
-
-                <button type="button" class="action-btn" id="saveDiaryBtn" data-key="saveEntryBtn">డైరీలో నమోదు చేయండి</button>
-
-                <div class="diary-list" id="diaryEntriesContainer"></div>
-            </div>
-        </section>
-
-        <!-- 4. Calculator & Cost Section -->
-        <section id="section-calc" class="content-section">
-            <div class="card card-calc">
-                <h2 data-key="calcTitle">⚖️ ఎరువుల కాలిక్యులేటర్ & ఖర్చు అంచనా</h2>
-                <label for="landSize" data-key="landSizeLabel">భూమి వైశాల్యం (ఎకరాల్లో):</label>
-                <input type="number" id="landSize" placeholder="ఉదా: 2" min="0.1" step="0.1">
-
-                <label for="cropTypeCalc" data-key="cropTypeLabel">పంట రకం:</label>
-                <select id="cropTypeCalc">
-                    <option value="rice" data-key="cropRice">వరి (Paddy)</option>
-                    <option value="cotton" data-key="cropCotton">ప్రత్తి (Cotton)</option>
-                    <option value="chili" data-key="cropChili">మిరప (Chili)</option>
-                    <option value="maize" data-key="cropMaize">మొక్కజొన్న (Maize)</option>
-                    <option value="groundnut" data-key="cropGroundnut">వేరుశనగ (Groundnut)</option>
-                    <option value="sugarcane" data-key="cropSugarcane">చెరకు (Sugarcane)</option>
-                    <option value="tomato" data-key="cropTomato">టమాటో (Tomato)</option>
-                    <option value="pulses" data-key="cropPulses">పప్పుధాన్యాలు (Pulses)</option>
-                </select>
-                <button type="button" class="action-btn" id="calcFertilizerBtn" data-key="calculateBtn">లెక్కించండి</button>
-                <div id="fertilizerResult" class="result"></div>
-            </div>
-        </section>
-
-        <!-- 5. Community Forum -->
-        <section id="section-forum" class="content-section">
-            <div class="card card-forum">
-                <h2 data-key="forumTitle">💬 రైతు కమ్యూనిటీ ఫోరమ్</h2>
-                <label data-key="postPlaceholderTitle">శీర్షిక</label>
-                <input type="text" id="postTitle">
-                <label data-key="postPlaceholderContent">సందేశం</label>
-                <textarea id="postContent" rows="3"></textarea>
-                <button type="button" class="action-btn" id="savePostBtn" data-key="postBtn">పోస్ట్ చేయండి</button>
-                <div id="postsContainer"></div>
-            </div>
-        </section>
+      <div class="card">
+        <div class="card-title">
+          <i class="fa-solid fa-seedling"></i>
+          <span id="title-advisor">స్మార్ట్ ఫార్మింగ్ అసిస్టెంట్</span>
+        </div>
+        <div class="form-group">
+          <label id="lbl-crop">పంట రకం:</label>
+          <select id="advCrop">
+            <option value="paddy">వరి (Paddy)</option>
+            <option value="cotton">పత్తి (Cotton)</option>
+            <option value="chilli">మిరప (Chilli)</option>
+            <option value="maize">మొక్కజొన్న (Maize)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label id="lbl-stage">పంట దశ:</label>
+          <select id="advStage">
+            <option value="seed">విత్తన దశ / నాట్లు</option>
+            <option value="growth">పెరుగుదల & ఎరువుల దశ</option>
+            <option value="pest">తెగుళ్ల నివారణ & సస్యరక్షణ</option>
+            <option value="harvest">కోత & దిగుబడి నిల్వ</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" onclick="getFarmingAdvice()">
+          <i class="fa-solid fa-lightbulb"></i> <span id="btn-advice">సలహా పొందండి</span>
+        </button>
+        <div id="adviceResult" class="result-box" style="display:none;"></div>
+      </div>
     </div>
 
-    <!-- Fixed Bottom 5-Tab Navigation -->
-    <nav class="bottom-nav">
-        <button type="button" class="tab-btn active" data-target="section-home">
-            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
-            <span data-key="navHome">హోమ్</span>
+    <!-- TAB 2: MARKET PRICES -->
+    <div id="tab-market" class="tab-content">
+      <div class="card">
+        <div class="card-title">
+          <i class="fa-solid fa-scale-balanced"></i>
+          <span id="title-market">ఎక్కడ అమ్ముకుంటే లాభం?</span>
+        </div>
+        <p style="font-size:0.83rem; color:#64748b; margin-bottom:12px;" id="market-sub">రవాణా ఖర్చులను మినహాయించి అత్యధిక నికర లాభాన్ని లెక్కించండి.</p>
+        
+        <div class="form-group">
+          <label id="lbl-market-crop">పంట రకం:</label>
+          <select id="mktCrop">
+            <option value="paddy">వరి (Paddy)</option>
+            <option value="cotton">పత్తి (Cotton)</option>
+            <option value="chilli">మిరప (Chilli)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label id="lbl-qty">దిగుబడి పరిమాణం (క్వింటాళ్లలో):</label>
+          <input type="number" id="mktQty" placeholder="ఉదా: 25" />
+        </div>
+        <button class="btn btn-primary" onclick="calculateMarketProfit()">
+          <i class="fa-solid fa-chart-line"></i> <span id="btn-calc-market">మార్కెట్ లాభాలను పోల్చండి</span>
         </button>
-        <button type="button" class="tab-btn" data-target="section-market">
-            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 16h-2v-2h2v2zm1.07-7.75l-.9.92C12.45 11.9 12 12.5 12 14h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 .88-.36 1.68-.93 2.25z"/></svg>
-            <span data-key="navMarket">ఎక్కడ అమ్మాలి?</span>
+
+        <div id="marketResult" class="result-box" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- TAB 3: LABOR & WORK TRACKER (NEW FEATURE!) -->
+    <div id="tab-labor" class="tab-content">
+      <div class="card">
+        <div class="card-title">
+          <i class="fa-solid fa-calendar-day"></i>
+          <span id="title-labor">రైతు కూలీల క్యాలెండర్</span>
+        </div>
+        <div class="labor-summary">
+          <div class="summary-tile">
+            <h4 id="lbl-tot-lab">మొత్తం కూలీలు</h4>
+            <span id="sumTotalLaborers">0</span>
+          </div>
+          <div class="summary-tile">
+            <h4 id="lbl-tot-wages">మొత్తం ఖర్చు</h4>
+            <span id="sumTotalWages">₹0</span>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label id="lbl-date">తేదీ:</label>
+          <input type="date" id="labDate" />
+        </div>
+        <div class="form-group">
+          <label id="lbl-work">పని రకం:</label>
+          <input type="text" id="labWork" placeholder="ఉదా: నాట్లు / కలుపు తీత / కోత" />
+        </div>
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+          <div class="form-group">
+            <label id="lbl-count">కూలీల సంఖ్య:</label>
+            <input type="number" id="labCount" placeholder="ఉదా: 8" />
+          </div>
+          <div class="form-group">
+            <label id="lbl-rate">ఒక్కొక్కరి కూలీ (₹):</label>
+            <input type="number" id="labRate" placeholder="ఉదా: 450" />
+          </div>
+        </div>
+        <button class="btn btn-primary" onclick="addLaborEntry()">
+          <i class="fa-solid fa-plus-circle"></i> <span id="btn-add-labor">క్యాలెండర్‌లో నమోదు చేయండి</span>
         </button>
-        <button type="button" class="tab-btn" data-target="section-diary">
-            <svg viewBox="0 0 24 24"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
-            <span data-key="navDiary">డైరీ</span>
+
+        <h4 style="margin:16px 0 10px; font-size:0.92rem; color:var(--primary-dark);" id="lbl-rec-ent">ఇటీవలి రోజువారీ రికార్డులు:</h4>
+        <div id="laborEntriesList"></div>
+      </div>
+    </div>
+
+    <!-- TAB 4: CALCULATOR (FERTILIZER) -->
+    <div id="tab-calc" class="tab-content">
+      <div class="card">
+        <div class="card-title">
+          <i class="fa-solid fa-calculator"></i>
+          <span id="title-fert">ఎరువుల కాలిక్యులేటర్ & ఖర్చు అంచనా</span>
+        </div>
+        <div class="form-group">
+          <label id="lbl-acres">భూమి వైశాల్యం (ఎకరాల్లో):</label>
+          <input type="number" id="fertAcres" placeholder="ఉదా: 2" />
+        </div>
+        <div class="form-group">
+          <label id="lbl-fert-crop">పంట రకం:</label>
+          <select id="fertCrop">
+            <option value="paddy">వరి (Paddy)</option>
+            <option value="cotton">పత్తి (Cotton)</option>
+            <option value="chilli">మిరప (Chilli)</option>
+            <option value="maize">మొక్కజొన్న (Maize)</option>
+          </select>
+        </div>
+        <button class="btn btn-primary" onclick="calcFertilizer()">
+          <i class="fa-solid fa-check-double"></i> <span id="btn-calc-fert">లెక్కించండి</span>
         </button>
-        <button type="button" class="tab-btn" data-target="section-calc">
-            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-4 6h-2V7h2v2zm-4 0H9V7h2v2zm4 4h-2v-2h2v2zm-4 0H9v-2h2v2zm-2 4v-2h2v2H9zm4 0v-2h2v2h-2z"/></svg>
-            <span data-key="navCalc">కాలిక్యులేటర్</span>
+        <div id="fertResult" class="result-box" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- TAB 5: AI PEST SCANNER (NEW FEATURE!) -->
+    <div id="tab-scan" class="tab-content">
+      <div class="card">
+        <div class="card-title">
+          <i class="fa-solid fa-camera"></i>
+          <span id="title-scan">పంట తెగులు నిర్ధారణ స్కానర్</span>
+        </div>
+        <p style="font-size:0.83rem; color:#64748b; margin-bottom:12px;" id="scan-sub">బాధిత ఆకు లేదా పంట భాగాన్ని ఫోటో తీసి అప్‌లోడ్ చేయండి.</p>
+
+        <div class="scanner-preview" onclick="document.getElementById('pestInput').click()">
+          <img id="previewImg" src="" style="display:none;" />
+          <div id="scannerPlaceholder" style="text-align:center;">
+            <i class="fa-solid fa-cloud-arrow-up fa-2x" style="color:var(--primary); margin-bottom:8px;"></i>
+            <p style="font-size:0.85rem;" id="lbl-click-photo">ఫోటో ఎంచుకోండి లేదా కెమెరాతో తీయండి</p>
+          </div>
+        </div>
+        <input type="file" id="pestInput" accept="image/*" style="display:none;" onchange="handlePestImage(this)" />
+
+        <button class="btn btn-primary" onclick="diagnoseCropDisease()">
+          <i class="fa-solid fa-microscope"></i> <span id="btn-scan">తెగులును గుర్తించండి</span>
         </button>
-        <button type="button" class="tab-btn" data-target="section-forum">
-            <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-3 9H7V9h10v2zm-4 4H7v-2h6v2z"/></svg>
-            <span data-key="navForum">ఫోరమ్</span>
+
+        <div id="scanResult" class="result-box" style="display:none;"></div>
+      </div>
+
+      <!-- Govt Schemes Card inside Explore -->
+      <div class="card">
+        <div class="card-title">
+          <i class="fa-solid fa-landmark"></i>
+          <span id="title-gov">ప్రభుత్వ రైతు పథకాలు & సబ్సిడీలు</span>
+        </div>
+        <div class="scheme-item">
+          <h4>🌾 పీఎం కిసాన్ & వైఎస్సార్ రైతు భరోసా</h4>
+          <p>ఏటా అర్హులైన రైతులకు పంట సాగు పెట్టుబడి సహాయంగా ₹13,500 నేరుగా బ్యాంక్ ఖాతాలో జమ.</p>
+        </div>
+        <div class="scheme-item">
+          <h4>💧 మైక్రో ఇరిగేషన్ డ్రిప్ సబ్సిడీ</h4>
+          <p>చిన్న, సన్నకారు రైతులకు 90% వరకు బిందు సేద్య పరికరాలపై రాయితీ.</p>
+        </div>
+        <div class="scheme-item">
+          <h4>🛡️ ప్రధాన మంత్రి ఫసల్ బీమా యోజన</h4>
+          <p>తుఫానులు, కరువు వల్ల పంట నష్టం జరిగితే ఆర్థిక రక్షణ మరియు బీమా పరిహారం.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB 6: COMMUNITY FORUM (Fixed Comments Bug) -->
+    <div id="tab-forum" class="tab-content">
+      <div class="card">
+        <div class="card-title">
+          <i class="fa-solid fa-comments"></i>
+          <span id="title-forum">రైతు కమ్యూనిటీ ఫోరం</span>
+        </div>
+        <div class="form-group">
+          <input type="text" id="forumTitle" placeholder="శీర్షిక (ఉదా: వరిలో అగ్గి తెగులు)" />
+        </div>
+        <div class="form-group">
+          <textarea id="forumMsg" rows="3" placeholder="మీ సందేశం లేదా సందేహం ఇక్కడ రాయండి..."></textarea>
+        </div>
+        <button class="btn btn-primary" onclick="postToForum()">
+          <i class="fa-solid fa-paper-plane"></i> <span id="btn-post">పోస్ట్ చేయండి</span>
         </button>
-    </nav>
+      </div>
 
-    <script>
-        const MARKET_PRICES = { urea: 6, dap: 27, potash: 34 };
+      <div id="forumPosts">
+        <div class="forum-post">
+          <h4 style="color:var(--primary-dark); font-size:0.95rem;">వరిలో తెగుళ్ల నివారణ (Pest check in Paddy)</h4>
+          <p style="font-size:0.85rem; color:#4b5563; margin-top:5px;">ఈ వారం ఆకుముడత కనిపిస్తోంది. ట్రైకోడెర్మా లేదా వేపనూనె వాడిన వారు ఫలితాలు చెప్పగలరు?</p>
+          <div class="post-actions">
+            <span class="action-btn" onclick="toggleLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-cnt">3</span> లైక్స్</span>
+            <span class="action-btn"><i class="fa-solid fa-comment"></i> 1 కామెంట్</span>
+            <span class="action-btn"><i class="fa-solid fa-share-nodes"></i> షేర్</span>
+          </div>
+        </div>
+      </div>
+    </div>
 
-        const CROP_DATA = {
-            rice: { urea: 90, dap: 50, potash: 40 },
-            cotton: { urea: 60, dap: 35, potash: 30 },
-            chili: { urea: 70, dap: 45, potash: 50 },
-            maize: { urea: 80, dap: 40, potash: 30 },
-            groundnut: { urea: 20, dap: 45, potash: 35 },
-            sugarcane: { urea: 120, dap: 60, potash: 80 },
-            tomato: { urea: 50, dap: 40, potash: 45 },
-            pulses: { urea: 15, dap: 35, potash: 20 }
-        };
+  </div>
 
-        // Regional Mandi Price Benchmarks per Quintal
-        const MANDI_DATA = {
-            rice: [
-                { mandi: "విజయవాడ / గన్నవరం", rate: 2320, transportPerQtl: 60 },
-                { mandi: "గుంటూరు మార్కెట్ యార్డ్", rate: 2380, transportPerQtl: 90 },
-                { mandi: "ఖమ్మం మార్కెట్", rate: 2290, transportPerQtl: 110 }
-            ],
-            cotton: [
-                { mandi: "గుంటూరు యార్డ్", rate: 7450, transportPerQtl: 100 },
-                { mandi: "వరంగల్ ఎనుమాముల", rate: 7600, transportPerQtl: 180 },
-                { mandi: "నందిగామ మార్కెట్", rate: 7300, transportPerQtl: 50 }
-            ],
-            chili: [
-                { mandi: "గుంటూరు మిర్చి యార్డ్ (ఆసియాలోనే అతిపెద్దది)", rate: 18500, transportPerQtl: 120 },
-                { mandi: "వరంగల్ యార్డ్", rate: 17800, transportPerQtl: 190 },
-                { mandi: "ఖమ్మం మార్కెట్", rate: 18100, transportPerQtl: 140 }
-            ],
-            maize: [
-                { mandi: "విజయవాడ మార్కెట్", rate: 2150, transportPerQtl: 60 },
-                { mandi: "వరంగల్ మార్కెట్", rate: 2250, transportPerQtl: 150 },
-                { mandi: "నిజామాబాద్", rate: 2200, transportPerQtl: 200 }
-            ],
-            groundnut: [
-                { mandi: "రాయచూరు / కర్నూలు", rate: 6650, transportPerQtl: 160 },
-                { mandi: "గుంటూరు యార్డ్", rate: 6450, transportPerQtl: 80 },
-                { mandi: "మహబూబ్‌నగర్", rate: 6550, transportPerQtl: 170 }
-            ],
-            tomato: [
-                { mandi: "మదనపల్లె మార్కెట్", rate: 2800, transportPerQtl: 220 },
-                { mandi: "విజయవాడ మార్కెట్ యార్డ్", rate: 2400, transportPerQtl: 50 },
-                { mandi: "హైదరాబాద్ బోయిన్‌పల్లి", rate: 2650, transportPerQtl: 180 }
-            ]
-        };
+  <!-- Bottom Navigation -->
+  <nav class="bottom-nav">
+    <button class="nav-btn active" onclick="switchTab('tab-home', this)">
+      <i class="fa-solid fa-house"></i>
+      <span id="nav-home">హోమ్</span>
+    </button>
+    <button class="nav-btn" onclick="switchTab('tab-market', this)">
+      <i class="fa-solid fa-store"></i>
+      <span id="nav-mkt">మార్కెట్</span>
+    </button>
+    <button class="nav-btn" onclick="switchTab('tab-labor', this)">
+      <i class="fa-solid fa-calendar-check"></i>
+      <span id="nav-lab">కూలీలు</span>
+    </button>
+    <button class="nav-btn" onclick="switchTab('tab-calc', this)">
+      <i class="fa-solid fa-calculator"></i>
+      <span id="nav-calc">ఎరువులు</span>
+    </button>
+    <button class="nav-btn" onclick="switchTab('tab-scan', this)">
+      <i class="fa-solid fa-camera"></i>
+      <span id="nav-scan">స్కానర్</span>
+    </button>
+    <button class="nav-btn" onclick="switchTab('tab-forum', this)">
+      <i class="fa-solid fa-users"></i>
+      <span id="nav-forum">ఫోరం</span>
+    </button>
+  </nav>
 
-        // Crop Stage Assistant Advice
-        const ASSISTANT_ADVICE = {
-            te: {
-                rice: {
-                    sowing: "విత్తన శుద్ధికి 1 కేజీ విత్తనాలకు 2 గ్రా కార్బండైజిమ్ వాడండి. నారుమడిలో నీరు నిలబడకుండా చూసుకోండి.",
-                    growth: "పిలక దశలో యూరియా వేయండి. పొలంలో 2-3 సెం.మీ నీటి మట్టాన్ని నిర్వహించండి.",
-                    pest: "కాండం తొలుచు పురుగు నివారణకు ఎకరానికి క్లోరాంట్రానిలిప్రోల్ లేదా వేప నూనె పిచికారీ చేయండి.",
-                    harvest: "గింజలు 80-85% బంగారు రంగులోకి మారినప్పుడు కోత ప్రారంభించండి. తేమ శాతం 14%కి ఆరబెట్టండి."
-                },
-                cotton: {
-                    sowing: "సాలుకు సాలుకు 3-4 అడుగులు, మొక్కకు మొక్కకు 1.5 అడుగుల దూరం పాటించండి.",
-                    growth: "పూత మరియు కాయ దశలో జింక్ మరియు బోరాన్ పోషకాలను పిచికారీ చేయండి.",
-                    pest: "గులాబీ రంగు పురుగు నివారణకు ఎకరాకు 4 లింగాకర్షక బుట్టలు (Pheromone traps) తప్పనిసరిగా పెట్టండి.",
-                    harvest: "పత్తిని ఉదయం వేళల్లో పొడి వాతావరణంలో తీయండి. చెత్త రాలకుండా నిల్వ చేయండి."
-                },
-                chili: {
-                    sowing: "నాటేటప్పుడు ఆరోగ్యకరమైన 35 రోజుల నారును ఎంచుకోండి. ట్రైకోడెర్మా ద్రావణంలో వేర్లు ముంచి నాటండి.",
-                    growth: "పూత రాలకుండా ఉండేందుకు ప్లానోఫిక్స్ పిచికారీ చేయండి. తేమ సమృద్ధిగా ఉండాలి.",
-                    pest: "తామర పురుగు (Thrips) నివారణకు నీలి మరియు పసుపు రంగు జిగురు అట్టలు ఎకరాకు 20-30 పెట్టండి.",
-                    harvest: "పూర్తిగా ఎర్రబడిన కాయలను కోసి టార్పాలిన్ షీట్లపై శుభ్రంగా ఆరబెట్టండి."
-                },
-                maize: {
-                    sowing: "ఎకరాకు 7-8 కిలోల నాణ్యమైన హైబ్రిడ్ విత్తనాలను ఉపయోగించండి.",
-                    growth: "మోకాలి ఎత్తు దశలో మరియు వెన్ను దశలో తప్పనిసరిగా తడి మరియు యూరియా అందించండి.",
-                    pest: "కత్తెర పురుగు (Fall Armyworm) నివారణకు కోరజెన్ లేదా ఇమామెక్టిన్ బెంజోయేట్ సుడులలో పడేలా పిచికారీ చేయండి.",
-                    harvest: "కంకి పిప్పి ఎండిన తర్వాత తేమ 15% లోపు ఉన్నప్పుడు నూర్పిడి చేయండి."
-                },
-                groundnut: {
-                    sowing: "రైజోబియం కల్చర్‌తో విత్తన శుద్ధి చేయండి. ఎకరానికి 40-45 కిలోల విత్తనాలు వాడండి.",
-                    growth: "ఊడలు దిగే దశలో నేలను కదల్చకండి. జిప్సం ఎకరానికి 200 కిలోలు తప్పక వేయండి.",
-                    pest: "టిక్కా ఆకుమచ్చ వ్యాధికి మాంకోజెబ్ లేదా సాఫ్ మందును పిచికారీ చేయండి.",
-                    harvest: "ఆకులు పసుపు రంగుకు మారి రాలుతున్నప్పుడు తవ్వి వేరుశనగ కాయలను వేరు చేయండి."
-                },
-                tomato: {
-                    sowing: "మేలైన హైబ్రిడ్ రకాల నారును ఎంచుకోండి, త్రికోణ పద్ధతిలో నాటండి.",
-                    growth: "మొక్కలకు కర్రల సపోర్ట్ (స్టాకింగ్) ఇవ్వడం వల్ల కాయ నాణ్యత పెరుగుతుంది.",
-                    pest: "ఆకుముడత వైరస్ రాకుండా తెల్లదోమలను అరికట్టడానికి పసుపు జిగురు అట్టలు పెట్టండి.",
-                    harvest: "దూర ప్రాంత మార్కెట్లకు బ్రేకర్ దశలో (లేత గులాబీ రంగులో) కోయండి."
-                },
-                sugarcane: {
-                    sowing: "రెండు కళ్ల ముచ్చెలతో 4 అడుగుల కాలువ పద్ధతిలో నాటండి.",
-                    growth: "నాటిన 90-120 రోజులకు మట్టిని ఎగదోయండి (Earthing up).",
-                    pest: "పీక పురుగు రాకుండా తొలి దశలో నీటి ఎద్దడి లేకుండా తడి ఇవ్వండి.",
-                    harvest: "10-12 నెలల వయసులో చక్కెర శాతం గరిష్టంగా ఉన్నప్పుడు చెరకు కొట్టండి."
-                },
-                pulses: {
-                    sowing: "విత్తన శుద్ధి చేసిన విత్తనాలను ఆరుతడి పరిస్థితుల్లో నాటండి.",
-                    growth: "పూత సమయంలో ఒకసారి మరియు కాయ దశలో ఒకసారి తేలికపాటి తడి ఇవ్వండి.",
-                    pest: "మరుకా మచ్చల పురుగు మరియు కాయతొలుచు పురుగుపై నిఘా ఉంచండి.",
-                    harvest: "కాయలు ఎండిన తర్వాత కోసి నూర్పిడి చేసి శుభ్రపరచండి."
-                }
-            },
-            en: {
-                rice: {
-                    sowing: "Treat seed with Carbendazim (2g/kg). Maintain nursery beds with proper drainage.",
-                    growth: "Top-dress Urea at tillering. Maintain 2-3 cm water layer continuously.",
-                    pest: "Apply Chlorantraniliprole or Neem oil spray to prevent stem borer attacks.",
-                    harvest: "Harvest when 80-85% grains turn golden yellow; dry produce to 14% moisture."
-                },
-                cotton: {
-                    sowing: "Maintain 3-4 feet row spacing and 1.5 feet between plants for optimum sunlight.",
-                    growth: "Foliar spray of Boron and Zinc improves square retention and boll weight.",
-                    pest: "Install 4 pheromone traps per acre to monitor and control pink bollworm.",
-                    harvest: "Pick cotton clean during dry morning hours; store free of leaf debris."
-                },
-                chili: {
-                    sowing: "Transplant healthy 35-day seedlings after Trichoderma root dipping.",
-                    growth: "Prevent flower drops by spraying Planofix and sustaining balanced moisture.",
-                    pest: "Install 25 yellow & blue sticky traps per acre for Thrips and Mites management.",
-                    harvest: "Pick fully ripe red fruits and sun-dry on clean tarpaulin sheets."
-                },
-                maize: {
-                    sowing: "Use 7-8 kg/acre high yielding certified hybrid seed varieties.",
-                    growth: "Ensure critical irrigations and Nitrogen application at knee-high and tasseling stages.",
-                    pest: "Target Fall Armyworm with whorl application of Emamectin Benzoate.",
-                    harvest: "Harvest when cob sheath turns completely straw brown; shell below 15% moisture."
-                },
-                groundnut: {
-                    sowing: "Inoculate seeds with Rhizobium culture; sow in well-aerated sandy loam.",
-                    growth: "Apply 200 kg Gypsum/acre at pegging stage without disturbing soil.",
-                    pest: "Prevent Tikka leaf spot with early Mancozeb or Hexaconazole spray.",
-                    harvest: "Harvest when the inner pod shell turns blackish brown."
-                },
-                tomato: {
-                    sowing: "Use certified disease-resistant hybrids; practice raised bed planting.",
-                    growth: "Stake plants with bamboo sticks to improve fruit aeration and grade.",
-                    pest: "Prevent Leaf Curl virus by controlling whiteflies with yellow sticky cards.",
-                    harvest: "Harvest at breaker/turning stage for distant market transportation."
-                },
-                sugarcane: {
-                    sowing: "Plant two-budded setts in wide trenches at 4-foot intervals.",
-                    growth: "Perform earthing up around 90-120 days to support root anchoring.",
-                    pest: "Irrigate timely and apply Trichogramma cards against early shoot borer.",
-                    harvest: "Harvest at 10-12 months when brix sugar reading reaches peak."
-                },
-                pulses: {
-                    sowing: "Seed treatment with Rhizobium and Trichoderma is highly recommended.",
-                    growth: "Provide critical protective irrigation at flowering and pod filling.",
-                    pest: "Monitor and control pod borers with recommended bio-pesticides.",
-                    harvest: "Harvest before pods shatter under extreme dry heat."
-                }
-            }
-        };
+  <script>
+    // Tab Switching
+    function switchTab(tabId, btn) {
+      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
+      document.getElementById(tabId).classList.add('active');
+      btn.classList.add('active');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
 
-        const translations = {
-            te: {
-                offlineStatus: "మీరు ఆఫ్‌లైన్‌లో ఉన్నారు. సేవ్ చేసిన సమాచారం మాత్రమే కనిపిస్తుంది.",
-                navHome: "హోమ్",
-                navMarket: "ఎక్కడ అమ్మాలి?",
-                navDiary: "డైరీ",
-                navCalc: "కాలిక్యులేటర్",
-                navForum: "ఫోరమ్",
-                weatherTitle: "☀️ వాతావరణ సమాచారం",
-                weatherLoading: "సమాచారం లోడ్ అవుతోంది...",
-                refreshBtn: "రిఫ్రెష్ చేయండి",
-                assistantTitle: "🌿 స్మార్ట్ ఫార్మింగ్ అసిస్టెంట్",
-                cropTypeLabel: "పంట రకం:",
-                cropStageLabel: "పంట దశ:",
-                stageSowing: "విత్తన దశ / నాట్లు",
-                stageGrowth: "పెరుగుదల & ఎరువుల దశ",
-                stagePest: "తెగుళ్ల నివారణ & సస్యరక్షణ",
-                stageHarvest: "కోత & దిగుబడి నిల్వ",
-                cropRice: "వరి (Paddy)",
-                cropCotton: "ప్రత్తి (Cotton)",
-                cropChili: "మిరప (Chili)",
-                cropMaize: "మొక్కజొన్న (Maize)",
-                cropGroundnut: "వేరుశనగ (Groundnut)",
-                cropSugarcane: "చెరకు (Sugarcane)",
-                cropTomato: "టమాటో (Tomato)",
-                cropPulses: "పప్పుధాన్యాలు (Pulses)",
-                showTipsBtn: "స్మార్ట్ సలహా పొందండి",
-                marketTitle: "💰 ఎక్కడ అమ్ముకుంటే లాభం? (Market Prices)",
-                marketDesc: "వివిధ మార్కెట్ల (మండీలు) ధరలను పోల్చి, రవాణా ఖర్చులు పోను నికర లాభాన్ని లెక్కించండి.",
-                produceQtyLabel: "దిగుబడి పరిమాణం (క్వింటాళ్లలో):",
-                calcMarketEarningsBtn: "మార్కెట్ లాభాలను పోల్చండి",
-                diaryTitle: "📒 నా డిజిటల్ ఫార్మ్ డైరీ (Farm Diary)",
-                diaryTotalIncome: "మొత్తం ఆదాయం",
-                diaryTotalExpense: "మొత్తం ఖర్చు",
-                diaryNetBalance: "నికర లాభం/నష్టం",
-                entryTypeLabel: "లావాదేవీ రకం:",
-                typeExpense: "ఖర్చు (ఎరువులు, పురుగుమందులు, కూలీలు)",
-                typeIncome: "ఆదాయం (పంట విక్రయం)",
-                entryDescLabel: "వివరణ:",
-                entryAmountLabel: "మొత్తం (రూపాయలు):",
-                saveEntryBtn: "డైరీలో నమోదు చేయండి",
-                calcTitle: "⚖️ ఎరువుల కాలిక్యులేటర్ & ఖర్చు అంచనా",
-                landSizeLabel: "భూమి వైశాల్యం (ఎకరాల్లో):",
-                calculateBtn: "లెక్కించండి",
-                calcError: "దయచేసి సరైన సంఖ్యను నమోదు చేయండి.",
-                forumTitle: "💬 రైతు కమ్యూనిటీ ఫోరమ్",
-                postPlaceholderTitle: "శీర్షిక",
-                postPlaceholderContent: "సందేశం",
-                postBtn: "పోస్ట్ చేయండి",
-                weatherOnline: "ఉష్ణోగ్రత: 31°C | తేమ: 62% | వాతావరణం అనుకూలంగా ఉంది (ఎండ).",
-                weatherOffline: "ఆఫ్‌లైన్: నెట్‌వర్క్ అందుబాటులో లేదు.",
-                likeBtn: "లైక్",
-                commentBtn: "కాメントస్",
-                shareBtn: "షేర్",
-                commentPlaceholder: "మీ సలహా రాయండి..."
-            },
-            en: {
-                offlineStatus: "You are offline. Only cached data is accessible.",
-                navHome: "Home",
-                navMarket: "Where to Sell?",
-                navDiary: "Diary",
-                navCalc: "Calculator",
-                navForum: "Forum",
-                weatherTitle: "☀️ Weather Forecast",
-                weatherLoading: "Loading weather...",
-                refreshBtn: "Refresh Data",
-                assistantTitle: "🌿 Smart Farming Assistant",
-                cropTypeLabel: "Select Crop:",
-                cropStageLabel: "Crop Stage:",
-                stageSowing: "Sowing / Nursery",
-                stageGrowth: "Vegetative Growth & Nutrition",
-                stagePest: "Pest & Disease Management",
-                stageHarvest: "Harvest & Storage",
-                cropRice: "Rice (Paddy)",
-                cropCotton: "Cotton",
-                cropChili: "Chili",
-                cropMaize: "Maize",
-                cropGroundnut: "Groundnut",
-                cropSugarcane: "Sugarcane",
-                cropTomato: "Tomato",
-                cropPulses: "Pulses",
-                showTipsBtn: "Get Smart Advice",
-                marketTitle: "💰 Where Should I Sell My Crop?",
-                marketDesc: "Compare live mandi prices across nearby markets & estimate net profits after transport costs.",
-                produceQtyLabel: "Produce Quantity (Quintals):",
-                calcMarketEarningsBtn: "Compare Market Net Profit",
-                diaryTitle: "📒 My Digital Farm Diary",
-                diaryTotalIncome: "Total Income",
-                diaryTotalExpense: "Total Expense",
-                diaryNetBalance: "Net Profit / Loss",
-                entryTypeLabel: "Transaction Type:",
-                typeExpense: "Expense (Seeds, Fertilizer, Labor)",
-                typeIncome: "Income (Harvest Sales)",
-                entryDescLabel: "Description:",
-                entryAmountLabel: "Amount (₹):",
-                saveEntryBtn: "Save to Diary",
-                calcTitle: "⚖️ Fertilizer Calculator & Cost Estimation",
-                landSizeLabel: "Land Size (in Acres):",
-                calculateBtn: "Calculate Inputs & Cost",
-                calcError: "Please enter a valid number.",
-                forumTitle: "💬 Farmer Community Forum",
-                postPlaceholderTitle: "Title",
-                postPlaceholderContent: "Write your message...",
-                postBtn: "Post Discussion",
-                weatherOnline: "Temperature: 31°C | Humidity: 62% | Clear Sky (Favorable).",
-                weatherOffline: "Offline: Network unavailable.",
-                likeBtn: "Like",
-                commentBtn: "Comments",
-                shareBtn: "Share",
-                commentPlaceholder: "Write a comment..."
-            },
-            hi: {
-                offlineStatus: "आप ऑफ़लाइन हैं। केवल कैश्ड डेटा उपलब्ध है।",
-                navHome: "होम",
-                navMarket: "कहाँ बेचें?",
-                navDiary: "डायरी",
-                navCalc: "कैलकुलेटर",
-                navForum: "मंच",
-                weatherTitle: "☀️ मौसम पूर्वानुमान",
-                weatherLoading: "मौसम की जानकारी लोड हो रही है...",
-                refreshBtn: "रिफ्रेश करें",
-                assistantTitle: "🌿 स्मार्ट फार्मिंग सहायक",
-                cropTypeLabel: "फसल चुनें:",
-                cropStageLabel: "फसल का चरण:",
-                stageSowing: "बुवाई / नर्सरी",
-                stageGrowth: "वृद्धि और पोषण",
-                stagePest: "कीट एवं रोग नियंत्रण",
-                stageHarvest: "कटाई और भंडारण",
-                cropRice: "धान (Paddy)",
-                cropCotton: "कपास (Cotton)",
-                cropChili: "मिर्च (Chili)",
-                cropMaize: "मक्का (Maize)",
-                cropGroundnut: "मूंगफली (Groundnut)",
-                cropSugarcane: "गन्ना (Sugarcane)",
-                cropTomato: "टमाटर (Tomato)",
-                cropPulses: "दालें (Pulses)",
-                showTipsBtn: "स्मार्ट सलाह प्राप्त करें",
-                marketTitle: "💰 मैं अपनी फसल कहाँ बेचूँ?",
-                marketDesc: "विभिन्न मंडियों की कीमतों की तुलना करें और परिवहन लागत घटाकर शुद्ध लाभ जानें।",
-                produceQtyLabel: "उपज की मात्रा (क्विंटल में):",
-                calcMarketEarningsBtn: "मंडी लाभ की तुलना करें",
-                diaryTitle: "📒 मेरी डिजिटल फार्म डायरी",
-                diaryTotalIncome: "कुल आय",
-                diaryTotalExpense: "कुल खर्च",
-                diaryNetBalance: "शुद्ध लाभ / हानि",
-                entryTypeLabel: "लेन-देन का प्रकार:",
-                typeExpense: "खर्च (खाद, बीज, मजदूरी)",
-                typeIncome: "आय (फसल बिक्री)",
-                entryDescLabel: "विवरण:",
-                entryAmountLabel: "राशि (₹):",
-                saveEntryBtn: "डायरी में सहेजें",
-                calcTitle: "⚖️ उर्वरक कैलकुलेटर और लागत",
-                landSizeLabel: "भूमि का आकार (एकड़):",
-                calculateBtn: "गणना करें",
-                calcError: "कृपया सही संख्या दर्ज करें।",
-                forumTitle: "💬 किसान सामुदायिक मंच",
-                postPlaceholderTitle: "शीर्षक",
-                postPlaceholderContent: "अपना संदेश लिखें...",
-                postBtn: "पोस्ट करें",
-                weatherOnline: "तापमान: 31°C | नमी: 62% | मौसम साफ रहेगा।",
-                weatherOffline: "ऑफ़लाइन: नेटवर्क उपलब्ध नहीं है।",
-                likeBtn: "लाइक",
-                commentBtn: "टिप्पणियाँ",
-                shareBtn: "शेयर",
-                commentPlaceholder: "टिप्पणी लिखें..."
-            },
-            ta: {
-                offlineStatus: "நீங்கள் ஆஃப்லைனில் உள்ளீர்கள். பதிவான தரவு மட்டுமே கிடைக்கும்.",
-                navHome: "முகப்பு",
-                navMarket: "எங்கு விற்பது?",
-                navDiary: "டைரி",
-                navCalc: "கால்குலேட்டர்",
-                navForum: "மன்றம்",
-                weatherTitle: "☀️ வானிலை நிலவரம்",
-                weatherLoading: "தகவல் ஏற்றப்படுகிறது...",
-                refreshBtn: "புதுப்பிக்கவும்",
-                assistantTitle: "🌿 ஸ்மார்ட் விவசாய உதவியாளர்",
-                cropTypeLabel: "பயிர் வகை:",
-                cropStageLabel: "பயிர் நிலை:",
-                stageSowing: "விதைப்பு / நாற்று",
-                stageGrowth: "வளர்ச்சி மற்றும் உரம்",
-                stagePest: "பூச்சி மற்றும் நோய் கட்டுப்பாடு",
-                stageHarvest: "அறுவடை மற்றும் சேமிப்பு",
-                cropRice: "நெல் (Paddy)",
-                cropCotton: "பருத்தி (Cotton)",
-                cropChili: "மிளகாய் (Chili)",
-                cropMaize: "மக்காச்சோளம் (Maize)",
-                cropGroundnut: "நிலக்கடலை (Groundnut)",
-                cropSugarcane: "கரும்பு (Sugarcane)",
-                cropTomato: "தக்காளி (Tomato)",
-                cropPulses: "பருப்பு வகைகள் (Pulses)",
-                showTipsBtn: "வழிகாட்டுதலைப் பெறுக",
-                marketTitle: "💰 என் பயிரை எங்கு விற்க வேண்டும்?",
-                marketDesc: "சந்தை விலைகளை ஒப்பிட்டு போக்குவரத்து செலவு போக நிகர லாபத்தை கணக்கிடுங்கள்.",
-                produceQtyLabel: "விளைச்சல் அளவு (குவிண்டால்):",
-                calcMarketEarningsBtn: "லாபத்தை ஒப்பிடுக",
-                diaryTitle: "📒 பண்ணை குறிப்பேடு",
-                diaryTotalIncome: "மொத்த வருமானம்",
-                diaryTotalExpense: "மொத்த செலவு",
-                diaryNetBalance: "நிகர லாபம் / நட்டம்",
-                entryTypeLabel: "பரிவர்த்தனை வகை:",
-                typeExpense: "செலவு (உரம், விதை, கூலி)",
-                typeIncome: "வருமானம் (விற்பனை)",
-                entryDescLabel: "விவரம்:",
-                entryAmountLabel: "தொகை (₹):",
-                saveEntryBtn: "டைரியே சேமிக்க",
-                calcTitle: "⚖️ உர கால்குலேட்டர் & செலவு மதிப்பீடு",
-                landSizeLabel: "நிலத்தின் அளவு (ஏக்கரில்):",
-                calculateBtn: "கணக்கிடு",
-                calcError: "சரியான எண்ணை உள்ளிடவும்.",
-                forumTitle: "💬 உழவர் மன்றம்",
-                postPlaceholderTitle: "தலைப்பு",
-                postPlaceholderContent: "உங்கள் பதிவை எழுதுங்கள்...",
-                postBtn: "பதிவிடு",
-                weatherOnline: "வெப்பநிலை: 31°C | ஈரப்பதம்: 62% | வானிலை சாதகமாக உள்ளது.",
-                weatherOffline: "ஆஃப்லைன்: நெட்வொர்க் கிடைக்கவில்லை.",
-                likeBtn: "விருப்பம்",
-                commentBtn: "கருத்துகள்",
-                shareBtn: "பகிர்",
-                commentPlaceholder: "கருத்தை எழுதவும்..."
-            }
-        };
+    // Advice Logic
+    function getFarmingAdvice() {
+      const crop = document.getElementById('advCrop').value;
+      const stage = document.getElementById('advStage').value;
+      const res = document.getElementById('adviceResult');
+      res.style.display = 'block';
 
-        let currentLang = 'te';
+      const adviceMap = {
+        seed: "విత్తన శుద్ధి కోసం కిలో విత్తనానికి 3 గ్రాముల కార్బెండజిమ్ లేదా 10 గ్రాముల ట్రైకోడెర్మా విరిడే కలిపి ఆరబెట్టి నాటాలి.",
+        growth: "దుక్కిలో సింగిల్ సూపర్ ఫాస్ఫేట్ మరియు పొటాష్ వేయాలి. నాటిన 20 రోజులకు తొలి దఫా యూరియా సమతుల్యంగా వేయండి.",
+        pest: "ఆకుముడత లేదా కాండం తొలిచే పురుగు కనిపిస్తే క్లోరాంట్రానిలిప్రోల్ 0.3 మి.లీ లేదా వేప నూనె 5 మి.లీ లీటరు నీటికి కలపండి.",
+        harvest: "కంకిలో 80% గింజలు బంగారు రంగుకు మారినప్పుడు కోత ప్రారంభించి, తేమ శాతం 14% లోపు ఉండేలా ఎండబెట్టండి."
+      };
 
-        function changeLanguage() {
-            const select = document.getElementById('languageSelect');
-            currentLang = select.value;
-            localStorage.setItem('preferredLang', currentLang);
-            updateUI();
+      res.innerHTML = `<strong>💡 నిపుణుల సలహా:</strong><br>${adviceMap[stage]}`;
+    }
+
+    // Market Profit Calc
+    function calculateMarketProfit() {
+      const qty = parseFloat(document.getElementById('mktQty').value);
+      const res = document.getElementById('marketResult');
+      if (!qty || qty <= 0) {
+        alert("దయచేసి సరైన పరిమాణాన్ని నమోదు చేయండి.");
+        return;
+      }
+      res.style.display = 'block';
+
+      const vjaRate = 2320, vjaTrans = 60 * qty;
+      const gtrRate = 2380, gtrTrans = 90 * qty;
+      const locRate = 2290, locTrans = 10 * qty;
+
+      const vjaNet = (vjaRate * qty) - vjaTrans;
+      const gtrNet = (gtrRate * qty) - gtrTrans;
+      const locNet = (locRate * qty) - locTrans;
+
+      let bestMkt = "గుంటూరు మార్కెట్ యార్డ్";
+      let bestAmt = gtrNet;
+      if (vjaNet > bestAmt) { bestMkt = "విజయవాడ మార్కెట్"; bestAmt = vjaNet; }
+      if (locNet > bestAmt) { bestMkt = "ఖమ్మం మార్కెట్"; bestAmt = locNet; }
+
+      res.innerHTML = `
+        <strong>📊 ${qty} క్వింటాళ్ల విక్రయ లాభాల పోలిక:</strong><br><br>
+        • విజయవాడ: ధర ₹${vjaRate}/Qtl | రవాణా: ₹${vjaTrans} ➔ <b>నికర రాబడి: ₹${vjaNet.toLocaleString()}</b><br>
+        • గుంటూరు: ధర ₹${gtrRate}/Qtl | రవాణా: ₹${gtrTrans} ➔ <b>నికర రాబడి: ₹${gtrNet.toLocaleString()}</b><br>
+        • ఖమ్మం మార్కెట్: ధర ₹${locRate}/Qtl | రవాణా: ₹${locTrans} ➔ <b>నికర రాబడి: ₹${locNet.toLocaleString()}</b><br><br>
+        <span style="color:var(--primary); font-size:1rem;">🏆 <b>ఉత్తమ ఎంపిక: ${bestMkt}</b> (అత్యధిక నికర లాభం ₹${bestAmt.toLocaleString()})</span>
+      `;
+    }
+
+    // Labor Tracker State & Functions
+    let laborRecords = JSON.parse(localStorage.getItem('farm_labors') || '[]');
+
+    function renderLaborRecords() {
+      const list = document.getElementById('laborEntriesList');
+      list.innerHTML = '';
+      let totalL = 0;
+      let totalW = 0;
+
+      laborRecords.forEach((item, index) => {
+        totalL += Number(item.count);
+        totalW += Number(item.total);
+        list.innerHTML += `
+          <div class="labor-card-item">
+            <div>
+              <strong>${item.date}</strong> - ${item.work}<br>
+              <span style="font-size:0.8rem; color:#64748b;">${item.count} మంది కూలీలు @ ₹${item.rate}</span>
+            </div>
+            <div style="text-align:right;">
+              <span style="font-weight:700; color:var(--danger);">₹${item.total.toLocaleString()}</span><br>
+              <i class="fa-solid fa-trash" style="color:#94a3b8; cursor:pointer; font-size:0.8rem; margin-top:4px;" onclick="deleteLaborEntry(${index})"></i>
+            </div>
+          </div>
+        `;
+      });
+
+      document.getElementById('sumTotalLaborers').innerText = totalL;
+      document.getElementById('sumTotalWages').innerText = '₹' + totalW.toLocaleString();
+    }
+
+    function addLaborEntry() {
+      const date = document.getElementById('labDate').value;
+      const work = document.getElementById('labWork').value.trim();
+      const count = parseInt(document.getElementById('labCount').value);
+      const rate = parseFloat(document.getElementById('labRate').value);
+
+      if (!date || !work || !count || !rate) {
+        alert("దయచేసి అన్ని వివరాలను నమోదు చేయండి.");
+        return;
+      }
+
+      laborRecords.unshift({
+        date, work, count, rate, total: count * rate
+      });
+      localStorage.setItem('farm_labors', JSON.stringify(laborRecords));
+      renderLaborRecords();
+
+      document.getElementById('labWork').value = '';
+      document.getElementById('labCount').value = '';
+      document.getElementById('labRate').value = '';
+    }
+
+    function deleteLaborEntry(idx) {
+      laborRecords.splice(idx, 1);
+      localStorage.setItem('farm_labors', JSON.stringify(laborRecords));
+      renderLaborRecords();
+    }
+
+    // Fertilizer Calculator
+    function calcFertilizer() {
+      const acres = parseFloat(document.getElementById('fertAcres').value);
+      const res = document.getElementById('fertResult');
+      if (!acres || acres <= 0) {
+        alert("దయచేసి ఎకరాల సంఖ్య నమోదు చేయండి.");
+        return;
+      }
+      res.style.display = 'block';
+
+      const urea = acres * 90;
+      const dap = acres * 50;
+      const mop = acres * 40;
+
+      const ureaCost = urea * 6;
+      const dapCost = dap * 27;
+      const mopCost = mop * 34;
+      const totalBudget = ureaCost + dapCost + mopCost;
+
+      res.innerHTML = `
+        <strong>🌾 ${acres} ఎకరాలకు సిఫార్సు చేసిన ఎరువుల బడ్జెట్:</strong><br><br>
+        • యూరియా: ${urea} kg (అంచనా ఖర్చు: ₹${ureaCost.toLocaleString()})<br>
+        • DAP: ${dap} kg (అంచనా ఖర్చు: ₹${dapCost.toLocaleString()})<br>
+        • పొటాష్ (MOP): ${mop} kg (అంచనా ఖర్చు: ₹${mopCost.toLocaleString()})<br><br>
+        <span style="color:var(--primary); font-size:1.05rem;">💰 <b>మొత్తం ఎరువుల బడ్జెట్: ₹${totalBudget.toLocaleString()}</b></span>
+      `;
+    }
+
+    // Pest Scanner Handler
+    function handlePestImage(input) {
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          const img = document.getElementById('previewImg');
+          img.src = e.target.result;
+          img.style.display = 'block';
+          document.getElementById('scannerPlaceholder').style.display = 'none';
         }
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
 
-        function updateUI() {
-            const langData = translations[currentLang];
-            document.querySelectorAll('[data-key]').forEach(element => {
-                const key = element.getAttribute('data-key');
-                if (langData && langData[key]) {
-                    element.innerText = langData[key];
-                }
-            });
+    function diagnoseCropDisease() {
+      const res = document.getElementById('scanResult');
+      res.style.display = 'block';
+      res.innerHTML = `
+        <div style="color:var(--primary-dark);">
+          <strong>🔍 నిర్ధారణ ఫలితం:</strong> ఆకుమచ్చ తెగులు (Leaf Spot Disease)<br>
+          <b>తీవ్రత:</b> మధ్యస్థం (Moderate)<br><br>
+          <b>నివారణ చర్యలు:</b><br>
+          1. లీటరు నీటికి మాంకోజెబ్ 2.5 గ్రా లేదా హెక్సాకోనాజోల్ 2 మి.లీ కలిపి పిచికారీ చేయండి.<br>
+          2. పైరుకు నీరు నిలవకుండా డ్రైనేజీ సదుపాయం కల్పించండి.
+        </div>
+      `;
+    }
 
-            document.getElementById('postTitle').placeholder = langData.postPlaceholderTitle;
-            document.getElementById('postContent').placeholder = langData.postPlaceholderContent;
+    // Forum Functions
+    function postToForum() {
+      const title = document.getElementById('forumTitle').value.trim();
+      const msg = document.getElementById('forumMsg').value.trim();
+      if (!title || !msg) {
+        alert("దయచేసి శీర్షిక మరియు సందేశం రాయండి.");
+        return;
+      }
 
-            getWeather();
-            updateMandiRates();
-            renderDiary();
-            renderPosts();
-        }
+      const postDiv = document.createElement('div');
+      postDiv.className = 'forum-post';
+      postDiv.innerHTML = `
+        <h4 style="color:var(--primary-dark); font-size:0.95rem;">${title}</h4>
+        <p style="font-size:0.85rem; color:#4b5563; margin-top:5px;">${msg}</p>
+        <div class="post-actions">
+          <span class="action-btn" onclick="toggleLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-cnt">0</span> లైక్స్</span>
+          <span class="action-btn"><i class="fa-solid fa-comment"></i> 0 కామెంట్స్</span>
+          <span class="action-btn"><i class="fa-solid fa-share-nodes"></i> షేర్</span>
+        </div>
+      `;
+      document.getElementById('forumPosts').prepend(postDiv);
+      document.getElementById('forumTitle').value = '';
+      document.getElementById('forumMsg').value = '';
+    }
 
-        function switchTab(targetId) {
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                if (btn.getAttribute('data-target') === targetId) {
-                    btn.classList.add('active');
-                } else {
-                    btn.classList.remove('active');
-                }
-            });
+    function toggleLike(btn) {
+      const cnt = btn.querySelector('.like-cnt');
+      let val = parseInt(cnt.innerText);
+      if (btn.classList.contains('liked')) {
+        btn.classList.remove('liked');
+        cnt.innerText = val - 1;
+      } else {
+        btn.classList.add('liked');
+        cnt.innerText = val + 1;
+      }
+    }
 
-            document.querySelectorAll('.content-section').forEach(section => {
-                section.classList.remove('active');
-            });
+    // Multi-Language Strings
+    const translations = {
+      te: {
+        appTitle: "Smart AgroVision",
+        appSubtitle: "రైతు సేతు (Raithu Sethu)",
+        home: "హోమ్",
+        mkt: "మార్కెట్",
+        lab: "కూలీలు",
+        calc: "ఎరువులు",
+        scan: "స్కానర్",
+        forum: "ఫోరం"
+      },
+      en: {
+        appTitle: "Smart AgroVision",
+        appSubtitle: "Farmer's Bridge (Raithu Sethu)",
+        home: "Home",
+        mkt: "Market",
+        lab: "Labor",
+        calc: "Fertilizer",
+        scan: "Scanner",
+        forum: "Forum"
+      },
+      hi: {
+        appTitle: "Smart AgroVision",
+        appSubtitle: "किसान सेतु (Raithu Sethu)",
+        home: "होम",
+        mkt: "बाजार",
+        lab: "मजदूरी",
+        calc: "उर्वरक",
+        scan: "स्कैनर",
+        forum: "मंच"
+      },
+      ta: {
+        appTitle: "Smart AgroVision",
+        appSubtitle: "உழவர் பாலம் (Raithu Sethu)",
+        home: "முகப்பு",
+        mkt: "சந்தை",
+        lab: "கூலி",
+        calc: "உரம்",
+        scan: "ஸ்கேனர்",
+        forum: "மன்றம்"
+      }
+    };
 
-            const activeSection = document.getElementById(targetId);
-            if (activeSection) {
-                activeSection.classList.add('active');
-            }
-        }
+    function changeLanguage(lang) {
+      const t = translations[lang] || translations.te;
+      document.getElementById('app-title').innerText = t.appTitle;
+      document.getElementById('app-subtitle').innerText = t.appSubtitle;
+      document.getElementById('nav-home').innerText = t.home;
+      document.getElementById('nav-mkt').innerText = t.mkt;
+      document.getElementById('nav-lab').innerText = t.lab;
+      document.getElementById('nav-calc').innerText = t.calc;
+      document.getElementById('nav-scan').innerText = t.scan;
+      document.getElementById('nav-forum').innerText = t.forum;
+    }
 
-        function getWeather() {
-            const weatherDiv = document.getElementById('weather');
-            const langData = translations[currentLang];
-            if (navigator.onLine) {
-                weatherDiv.innerText = langData.weatherOnline;
-                localStorage.setItem('cachedWeather', weatherDiv.innerText);
-            } else {
-                const cached = localStorage.getItem('cachedWeather');
-                weatherDiv.innerText = cached ? cached + " (Saved)" : langData.weatherOffline;
-            }
-        }
-
-        // Smart Assistant Action
-        function showSmartAdvice() {
-            const crop = document.getElementById('cropTypeHome').value;
-            const stage = document.getElementById('cropStage').value;
-            const resultParagraph = document.getElementById('agroTips');
-            const langAdvices = ASSISTANT_ADVICE[currentLang] || ASSISTANT_ADVICE.en;
-
-            if (langAdvices[crop] && langAdvices[crop][stage]) {
-                resultParagraph.innerText = langAdvices[crop][stage];
-            } else {
-                resultParagraph.innerText = "సకాలంలో తగిన యాజమాన్య పద్ధతులు పాటించండి.";
-            }
-            resultParagraph.style.display = 'block';
-        }
-
-        // Feature 1: Mandi Rates & Net Sell Comparison
-        function updateMandiRates() {
-            const crop = document.getElementById('marketCrop').value;
-            const container = document.getElementById('mandiRatesDisplay');
-            const mandis = MANDI_DATA[crop] || MANDI_DATA.rice;
-
-            container.innerHTML = mandis.map(m => `
-                <div class="market-chip">
-                    <strong>${m.mandi}</strong>
-                    <span>₹${m.rate.toLocaleString('en-IN')}/Qtl</span>
-                </div>
-            `).join('');
-        }
-
-        function compareMarketEarnings() {
-            const crop = document.getElementById('marketCrop').value;
-            const qtl = parseFloat(document.getElementById('produceQuantity').value);
-            const resultBox = document.getElementById('marketComparisonResult');
-            const lang = translations[currentLang];
-
-            if (isNaN(qtl) || qtl <= 0) {
-                resultBox.innerText = lang.calcError;
-                resultBox.style.display = 'block';
-                return;
-            }
-
-            const mandis = MANDI_DATA[crop] || MANDI_DATA.rice;
-            let bestMandi = null;
-            let maxNetEarnings = -1;
-
-            let html = `<strong>📊 ${qtl} క్వింటాళ్ల విక్రయ లాభాల పోలిక:</strong><br><br>`;
-
-            mandis.forEach(m => {
-                const gross = m.rate * qtl;
-                const transport = m.transportPerQtl * qtl;
-                const net = gross - transport;
-
-                if (net > maxNetEarnings) {
-                    maxNetEarnings = net;
-                    bestMandi = m.mandi;
-                }
-
-                html += `• <strong>${m.mandi}</strong>: ధర: ₹${m.rate}/Qtl | రవాణా ఖర్చు: ₹${transport.toLocaleString('en-IN')} ➔ <strong>నికర రాబడి: ₹${net.toLocaleString('en-IN')}</strong><br>`;
-            });
-
-            html += `<span class="cost-badge">🏆 <strong>ఉత్తమ ఎంపిక: ${bestMandi}</strong> (అన్ని ఖర్చులు పోను అత్యధిక నికర లాభం ₹${maxNetEarnings.toLocaleString('en-IN')})</span>`;
-            resultBox.innerHTML = html;
-            resultBox.style.display = 'block';
-        }
-
-        // Feature 3: My Digital Farm Diary Implementation
-        function getDiaryEntries() {
-            const stored = localStorage.getItem('agroFarmDiary');
-            return stored ? JSON.parse(stored) : [
-                { id: 1, type: 'expense', desc: 'DAP మరియు యూరియా ఎరువులు', amount: 3200, date: '15/10/2026' },
-                { id: 2, type: 'expense', desc: 'ట్రాక్టర్ దుక్కి ఖర్చు', amount: 2500, date: '18/10/2026' },
-                { id: 3, type: 'income', desc: 'మొదటి విడత కూరగాయల విక్రయం', amount: 9500, date: '22/10/2026' }
-            ];
-        }
-
-        function saveDiaryEntry() {
-            const type = document.getElementById('diaryType').value;
-            const desc = document.getElementById('diaryDesc').value.trim();
-            const amount = parseFloat(document.getElementById('diaryAmount').value);
-
-            if (desc && !isNaN(amount) && amount > 0) {
-                const entries = getDiaryEntries();
-                entries.unshift({
-                    id: Date.now(),
-                    type,
-                    desc,
-                    amount,
-                    date: new Date().toLocaleDateString('en-IN')
-                });
-                localStorage.setItem('agroFarmDiary', JSON.stringify(entries));
-                document.getElementById('diaryDesc').value = '';
-                document.getElementById('diaryAmount').value = '';
-                renderDiary();
-            }
-        }
-
-        function renderDiary() {
-            const entries = getDiaryEntries();
-            const listContainer = document.getElementById('diaryEntriesContainer');
-            listContainer.innerHTML = '';
-
-            let totalIncome = 0;
-            let totalExpense = 0;
-
-            entries.forEach(item => {
-                if (item.type === 'income') totalIncome += item.amount;
-                if (item.type === 'expense') totalExpense += item.amount;
-
-                const entryDiv = document.createElement('div');
-                entryDiv.className = `diary-entry ${item.type}`;
-                entryDiv.innerHTML = `
-                    <div>
-                        <strong>${item.desc}</strong>
-                        <div style="font-size:0.75rem; color:#6b7280;">${item.date}</div>
-                    </div>
-                    <div style="font-weight:700; color:${item.type === 'income' ? '#16a34a' : '#ef4444'}">
-                        ${item.type === 'income' ? '+' : '-'}₹${item.amount.toLocaleString('en-IN')}
-                    </div>
-                `;
-                listContainer.appendChild(entryDiv);
-            });
-
-            const net = totalIncome - totalExpense;
-            document.getElementById('diaryIncome').innerText = `₹${totalIncome.toLocaleString('en-IN')}`;
-            document.getElementById('diaryExpense').innerText = `₹${totalExpense.toLocaleString('en-IN')}`;
-            document.getElementById('diaryNet').innerText = `${net >= 0 ? '+' : ''}₹${net.toLocaleString('en-IN')}`;
-            document.getElementById('diaryNet').style.color = net >= 0 ? '#15803d' : '#ef4444';
-        }
-
-        // Fertilizer & Cost Calculator
-        function calculateFertilizer() {
-            const acres = parseFloat(document.getElementById('landSize').value);
-            const cropKey = document.getElementById('cropTypeCalc').value;
-            const cropName = document.getElementById('cropTypeCalc').options[document.getElementById('cropTypeCalc').selectedIndex].text;
-            const resultBox = document.getElementById('fertilizerResult');
-            const langData = translations[currentLang];
-
-            if (!isNaN(acres) && acres > 0) {
-                const standard = CROP_DATA[cropKey] || CROP_DATA.rice;
-                const ureaQty = Math.round(acres * standard.urea);
-                const dapQty = Math.round(acres * standard.dap);
-                const potashQty = Math.round(acres * standard.potash);
-
-                const ureaCost = ureaQty * MARKET_PRICES.urea;
-                const dapCost = dapQty * MARKET_PRICES.dap;
-                const potashCost = potashQty * MARKET_PRICES.potash;
-                const totalCost = ureaCost + dapCost + potashCost;
-
-                resultBox.innerHTML = `
-                    <strong>🌾 ${cropName} (${acres} ఎకరాలు) ఎరువుల మోతాదు & ఖర్చు:</strong><br>
-                    • యూరియా: ${ureaQty} kg (అంచనా ఖర్చు: ₹${ureaCost.toLocaleString('en-IN')})<br>
-                    • DAP: ${dapQty} kg (అంచనా ఖర్చు: ₹${dapCost.toLocaleString('en-IN')})<br>
-                    • పొటాష్ (MOP): ${potashQty} kg (అంచనా ఖర్చు: ₹${potashCost.toLocaleString('en-IN')})<br>
-                    <span class="cost-badge">💰 <strong>మొత్తం ఎరువుల బడ్జెట్: ₹${totalCost.toLocaleString('en-IN')}</strong></span>
-                `;
-                resultBox.style.display = 'block';
-            } else {
-                resultBox.innerText = langData.calcError;
-                resultBox.style.display = 'block';
-            }
-        }
-
-        // Forum with Likes, Comments & Native Share
-        function getStoredPosts() {
-            const defaultPosts = [
-                {
-                    id: 1,
-                    title: "వరిలో తెగుళ్ల నివారణ (Pest check in Paddy)",
-                    content: "ఈ వారం ఆకుమచ్చ కనిపిస్తోంది. ట్రైకోడెర్మా లేదా వేపనూనె వాడిన వారు ఫలితాలు చెప్పగలరు?",
-                    likes: 4,
-                    liked: false,
-                    comments: ["వేపనూనె 5ml లీటరు నీటికి కలిపి కొట్టండి, బాగా పనిచేస్తుంది."]
-                }
-            ];
-            const stored = localStorage.getItem('agroForumPosts');
-            return stored ? JSON.parse(stored) : defaultPosts;
-        }
-
-        function savePost() {
-            const titleInput = document.getElementById('postTitle');
-            const contentInput = document.getElementById('postContent');
-            const title = titleInput.value.trim();
-            const content = contentInput.value.trim();
-
-            if (title && content) {
-                const posts = getStoredPosts();
-                posts.unshift({
-                    id: Date.now(),
-                    title: title,
-                    content: content,
-                    likes: 0,
-                    liked: false,
-                    comments: []
-                });
-                localStorage.setItem('agroForumPosts', JSON.stringify(posts));
-                titleInput.value = '';
-                contentInput.value = '';
-                renderPosts();
-            }
-        }
-
-        function toggleLike(postId) {
-            const posts = getStoredPosts();
-            const post = posts.find(p => p.id === postId);
-            if (post) {
-                post.liked = !post.liked;
-                post.likes += post.liked ? 1 : -1;
-                localStorage.setItem('agroForumPosts', JSON.stringify(posts));
-                renderPosts();
-            }
-        }
-
-        function toggleComments(postId) {
-            const box = document.getElementById(`comments-${postId}`);
-            if (box) {
-                box.style.display = box.style.display === 'block' ? 'none' : 'block';
-            }
-        }
-
-        function addComment(postId) {
-            const input = document.getElementById(`comment-input-${postId}`);
-            const commentText = input.value.trim();
-            if (commentText) {
-                const posts = getStoredPosts();
-                const post = posts.find(p => p.id === postId);
-                if (post) {
-                    post.comments.push(commentText);
-                    localStorage.setItem('agroForumPosts', JSON.stringify(posts));
-                    renderPosts();
-                }
-            }
-        }
-
-        function sharePost(title, content) {
-            const cleanTitle = decodeURIComponent(title);
-            const cleanContent = decodeURIComponent(content);
-            if (navigator.share) {
-                navigator.share({
-                    title: cleanTitle,
-                    text: `${cleanTitle}\n\n${cleanContent}\n- Via Smart AgroVision App`,
-                    url: window.location.href
-                }).catch(() => {});
-            } else {
-                navigator.clipboard.writeText(`${cleanTitle} - ${cleanContent}`);
-                alert("పోస్ట్ కాపీ చేయబడింది! (Copied to Clipboard)");
-            }
-        }
-
-        function renderPosts() {
-            const postsContainer = document.getElementById('postsContainer');
-            postsContainer.innerHTML = '';
-            const posts = getStoredPosts();
-            const lang = translations[currentLang];
-
-            posts.forEach(post => {
-                const postDiv = document.createElement('div');
-                postDiv.className = 'post';
-                const commentsHtml = post.comments.map(c => `<div class="comment-item">💬 ${c}</div>`).join('');
-
-                postDiv.innerHTML = `
-                    <h3>${post.title}</h3>
-                    <p>${post.content}</p>
-                    <div class="post-actions">
-                        <button class="post-btn ${post.liked ? 'liked' : ''}" onclick="toggleLike(${post.id})">
-                            ❤️ ${post.likes} ${lang.likeBtn}
-                        </button>
-                        <button class="post-btn" onclick="toggleComments(${post.id})">
-                            💬 ${post.comments.length} ${lang.commentBtn}
-                        </button>
-                        <button class="post-btn" onclick="sharePost('${encodeURIComponent(post.title)}', '${encodeURIComponent(post.content)}')">
-                            ↗️ ${lang.shareBtn}
-                        </button>
-                    </div>
-                    <div class="comment-section" id="comments-${post.id}">
-                        <div id="comment-list-${post.id}">${commentsHtml}</div>
-                        <div class="comment-input-box">
-                            <input type="text" id="comment-input-${post.id}" placeholder="${lang.commentPlaceholder}">
-                            <button type="button" onclick="addComment(${post.id})">Add</button>
-                        </div>
-                    </div>
-                `;
-                postsContainer.appendChild(postDiv);
-            });
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('data-target');
-                    switchTab(targetId);
-                });
-            });
-
-            document.getElementById('languageSelect').addEventListener('change', changeLanguage);
-            document.getElementById('refreshWeatherBtn').addEventListener('click', getWeather);
-            document.getElementById('tipsBtn').addEventListener('click', showSmartAdvice);
-            document.getElementById('calcMarketBtn').addEventListener('click', compareMarketEarnings);
-            document.getElementById('saveDiaryBtn').addEventListener('click', saveDiaryEntry);
-            document.getElementById('calcFertilizerBtn').addEventListener('click', calculateFertilizer);
-            document.getElementById('savePostBtn').addEventListener('click', savePost);
-
-            const savedLang = localStorage.getItem('preferredLang');
-            if (savedLang) {
-                currentLang = savedLang;
-                document.getElementById('languageSelect').value = savedLang;
-            }
-
-            updateUI();
-
-            window.addEventListener('online', () => {
-                document.getElementById('offlineBanner').style.display = 'none';
-                getWeather();
-            });
-            window.addEventListener('offline', () => {
-                document.getElementById('offlineBanner').style.display = 'block';
-                getWeather();
-            });
-        });
-    </script>
+    // Set today's date on labor tracker & initial render
+    document.addEventListener('DOMContentLoaded', () => {
+      document.getElementById('labDate').valueAsDate = new Date();
+      renderLaborRecords();
+    });
+  </script>
 </body>
 </html>
