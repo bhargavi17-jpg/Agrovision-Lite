@@ -1,0 +1,22 @@
+{
+  "name": "Smart AgroVision - Raithu Sethu",
+  "short_name": "AgroVision",
+  "description": "స్మార్ట్ ఫార్మింగ్ అసిస్టెంట్ మరియు రైతు సేవలు",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#117a37",
+  "theme_color": "#117a37",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "IMG_20261024_155337.jpg",
+      "sizes": "192x192",
+      "type": "image/jpeg"
+    },
+    {
+      "src": "IMG_20261024_155337.jpg",
+      "sizes": "512x512",
+      "type": "image/jpeg"
+    }
+  ]
+}
