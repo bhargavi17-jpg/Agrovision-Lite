@@ -4,6 +4,15 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Smart AgroVision | Raithu Sethu</title>
+  
+  <!-- PWA Manifest & Theme Settings -->
+  <link rel="manifest" href="manifest.json" />
+  <meta name="theme-color" content="#117a37" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <meta name="apple-mobile-web-app-title" content="AgroVision" />
+  <link rel="apple-touch-icon" href="IMG_20261024_155337.jpg" />
+
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <style>
     :root {
@@ -12,9 +21,7 @@
       --primary-light: #e8f5e9;
       --accent-orange: #f59e0b;
       --accent-blue: #0284c7;
-      --accent-purple: #7c3aed;
       --dark: #1f2937;
-      --light-bg: #f8fafc;
       --white: #ffffff;
       --danger: #dc2626;
       --border: #e2e8f0;
@@ -36,6 +43,26 @@
       color: var(--dark);
       padding-bottom: 95px;
       min-height: 100vh;
+    }
+
+    #pwa-install-banner {
+      display: none;
+      background: #117a37;
+      color: #fff;
+      padding: 10px 16px;
+      justify-content: space-between;
+      align-items: center;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    }
+
+    #pwa-install-banner button {
+      background: #fff;
+      color: #117a37;
+      border: none;
+      padding: 6px 14px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
     }
 
     /* Header */
@@ -98,7 +125,6 @@
       background: #fff;
     }
 
-    /* Container & Tabs */
     .container {
       max-width: 600px;
       margin: 14px auto;
@@ -119,7 +145,6 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    /* Cards */
     .card {
       background: var(--glass);
       backdrop-filter: blur(12px);
@@ -141,7 +166,6 @@
       margin-bottom: 14px;
     }
 
-    /* Form Controls */
     .form-group {
       margin-bottom: 13px;
     }
@@ -219,7 +243,6 @@
       opacity: 0.92;
     }
 
-    /* Result Box */
     .result-box {
       background: #f0fdf4;
       border: 1.5px solid #86efac;
@@ -317,20 +340,115 @@
       font-size: 0.82rem;
       font-weight: 700;
       border-radius: 8px;
-      transition: background 0.2s;
     }
 
-    .apply-btn:hover {
-      background: var(--primary-dark);
-    }
-
-    /* Forum */
+    /* Forum Upgrades: Farmer Details & Media Upload */
     .forum-post {
       background: #fff;
       border: 1px solid var(--border);
       border-radius: 14px;
       padding: 14px;
+      margin-bottom: 14px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.03);
+    }
+
+    .post-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 10px;
+    }
+
+    .post-avatar {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #e0f2fe;
+      color: #0284c7;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      font-weight: 700;
+    }
+
+    .post-user-info h5 {
+      font-size: 0.92rem;
+      color: #111827;
+      font-weight: 700;
+    }
+
+    .post-user-info span {
+      font-size: 0.74rem;
+      color: #64748b;
+    }
+
+    .post-media {
+      margin-top: 10px;
+      border-radius: 10px;
+      overflow: hidden;
+      max-height: 280px;
+      background: #000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .post-media img, .post-media video {
+      width: 100%;
+      max-height: 280px;
+      object-fit: contain;
+    }
+
+    .media-upload-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: #f1f5f9;
+      color: #334155;
+      padding: 8px 14px;
+      border-radius: 10px;
+      font-size: 0.83rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1px dashed #cbd5e1;
+      width: 100%;
+      justify-content: center;
       margin-bottom: 12px;
+    }
+
+    .media-preview-box {
+      display: none;
+      position: relative;
+      margin-bottom: 12px;
+      border-radius: 10px;
+      overflow: hidden;
+      max-height: 160px;
+      background: #f8fafc;
+      border: 1px solid var(--border);
+    }
+
+    .media-preview-box img, .media-preview-box video {
+      width: 100%;
+      max-height: 160px;
+      object-fit: cover;
+    }
+
+    .remove-media-btn {
+      position: absolute;
+      top: 6px;
+      right: 6px;
+      background: rgba(0,0,0,0.65);
+      color: #fff;
+      border: none;
+      width: 24px;
+      height: 24px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
     }
 
     .post-actions {
@@ -397,11 +515,16 @@
 </head>
 <body>
 
-  <!-- Top App Header with Custom Logo -->
+  <!-- In-app Install Banner -->
+  <div id="pwa-install-banner">
+    <span>📲 యాప్‌ను మీ ఫోన్‌లో ఇన్‌స్టాల్ చేసుకోండి</span>
+    <button id="pwa-install-btn">ఇన్‌స్టాల్</button>
+  </div>
+
+  <!-- Header with Logo -->
   <header>
     <div class="brand-wrap">
-      <!-- Your logo file updated here -->
-      <img src="IMG_20261024_155337.jpg" alt="Smart AgroVision Logo" class="logo-img" onerror="this.src='https://api.iconify.design/lucide:leaf.svg?color=%23117a37&width=40';" />
+      <img src="IMG_20261024_155337.jpg" alt="Logo" class="logo-img" onerror="this.src='https://api.iconify.design/lucide:leaf.svg?color=%23117a37&width=40';" />
       <div class="brand-text">
         <h1 id="app-title">Smart AgroVision</h1>
         <span id="app-subtitle">రైతు సేతు (Raithu Sethu)</span>
@@ -417,7 +540,7 @@
 
   <div class="container">
 
-    <!-- 1. HOME TAB (Crop Advisor + Weather) -->
+    <!-- 1. HOME TAB -->
     <div id="tab-home" class="tab-content active">
       <div class="weather-box">
         <div class="weather-left">
@@ -434,17 +557,15 @@
         </div>
         <div class="form-group">
           <label id="lbl-crop">పంట రకం ఎంచుకోండి:</label>
-          <select id="advCrop" class="crop-dropdown">
-            <!-- 8 Crops populated dynamically -->
-          </select>
+          <select id="advCrop" class="crop-dropdown"></select>
         </div>
         <div class="form-group">
           <label id="lbl-stage">పంట దశ:</label>
           <select id="advStage">
-            <option value="seed" id="opt-stage-1">విత్తన దశ / నాట్లు</option>
-            <option value="growth" id="opt-stage-2">పెరుగుదల & ఎరువుల దశ</option>
-            <option value="pest" id="opt-stage-3">తెగుళ్ల నివారణ & సస్యరక్షణ</option>
-            <option value="harvest" id="opt-stage-4">కోత & దిగుబడి నిల్వ</option>
+            <option value="seed">విత్తన దశ / నాట్లు</option>
+            <option value="growth">పెరుగుదల & ఎరువుల దశ</option>
+            <option value="pest">తెగుళ్ల నివారణ & సస్యరక్షణ</option>
+            <option value="harvest">కోత & దిగుబడి నిల్వ</option>
           </select>
         </div>
         <button class="btn btn-primary" onclick="getFarmingAdvice()">
@@ -545,7 +666,7 @@
       </div>
     </div>
 
-    <!-- 5. GOVT SCHEMES & SUBSIDIES TAB (Dedicated Navigation & Official Links) -->
+    <!-- 5. GOVT SCHEMES & SUBSIDIES TAB -->
     <div id="tab-schemes" class="tab-content">
       <div class="card">
         <div class="card-title">
@@ -554,7 +675,6 @@
         </div>
         <p style="font-size:0.83rem; color:#64748b; margin-bottom:14px;" id="txt-schemes-sub">అర్హత ఉన్న రైతులు ఇక్కడి నుంచే నేరుగా అధికారిక పోర్టల్స్‌లో దరఖాస్తు చేసుకోవచ్చు.</p>
 
-        <!-- Scheme 1 -->
         <div class="scheme-card">
           <span class="scheme-badge">కేంద్ర / రాష్ట్ర సహాయం</span>
           <h4>🌾 పీఎం కిసాన్ & వైఎస్సార్ రైతు భరోసా</h4>
@@ -564,7 +684,6 @@
           </a>
         </div>
 
-        <!-- Scheme 2 -->
         <div class="scheme-card">
           <span class="scheme-badge">90% వరకు రాయితీ</span>
           <h4>💧 మైక్రో ఇరిగేషన్ డ్రిప్ & స్ప్రింక్లర్ సబ్సిడీ</h4>
@@ -574,7 +693,6 @@
           </a>
         </div>
 
-        <!-- Scheme 3 -->
         <div class="scheme-card">
           <span class="scheme-badge">పంట రక్షణ బీమా</span>
           <h4>🛡️ ప్రధాన మంత్రి ఫసల్ బీమా యోజన (PMFBY)</h4>
@@ -584,7 +702,6 @@
           </a>
         </div>
 
-        <!-- Scheme 4 -->
         <div class="scheme-card">
           <span class="scheme-badge">రైతు యంత్రాలు</span>
           <h4>🚜 వ్యవసాయ యాంత్రీకరణ సబ్సిడీ (SMAM)</h4>
@@ -596,31 +713,63 @@
       </div>
     </div>
 
-    <!-- 6. COMMUNITY FORUM TAB -->
+    <!-- 6. UPGRADED COMMUNITY FORUM (Author Details + Photo/Video) -->
     <div id="tab-forum" class="tab-content">
       <div class="card">
         <div class="card-title">
           <i class="fa-solid fa-comments"></i>
           <span id="txt-forum-title">రైతు కమ్యూనిటీ ఫోరం</span>
         </div>
-        <div class="form-group">
-          <input type="text" id="forumTitle" placeholder="శీర్షిక (ఉదా: వరిలో అగ్గి తెగులు నివారణ)" />
+        
+        <div style="display:grid; grid-template-columns: 1fr 1fr; gap:10px;">
+          <div class="form-group">
+            <input type="text" id="forumAuthor" placeholder="మీ పేరు (రైతు పేరు)" />
+          </div>
+          <div class="form-group">
+            <input type="text" id="forumVillage" placeholder="ఊరు / జిల్లా (ఉదా: విజయవాడ)" />
+          </div>
         </div>
+
         <div class="form-group">
-          <textarea id="forumMsg" rows="3" placeholder="మీ సందేశం లేదా సందేహం ఇక్కడ రాయండి..."></textarea>
+          <input type="text" id="forumTitle" placeholder="శీర్షిక (ఉదా: వరిలో ఆకుముడత తెగులు)" />
         </div>
+        
+        <div class="form-group">
+          <textarea id="forumMsg" rows="3" placeholder="మీ పంట సమస్య లేదా అనుభవాన్ని ఇక్కడ వివరంగా రాయండి..."></textarea>
+        </div>
+
+        <!-- Media Attachment (Photo / Video) -->
+        <label class="media-upload-label" for="forumMediaInput">
+          <i class="fa-solid fa-camera"></i> <span id="lbl-add-media">ఫోటో లేదా వీడియో జతచేయండి (Photo/Video)</span>
+        </label>
+        <input type="file" id="forumMediaInput" accept="image/*,video/*" style="display:none;" onchange="handleForumMediaUpload(this)" />
+
+        <div id="mediaPreviewBox" class="media-preview-box">
+          <div id="previewMediaContainer"></div>
+          <button type="button" class="remove-media-btn" onclick="clearForumMedia()"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+
         <button class="btn btn-primary" onclick="postToForum()">
           <i class="fa-solid fa-paper-plane"></i> <span id="btn-post">పోస్ట్ చేయండి</span>
         </button>
       </div>
 
+      <!-- Feed Container -->
       <div id="forumPosts">
+        <!-- Sample Post -->
         <div class="forum-post">
+          <div class="post-header">
+            <div class="post-avatar">రా</div>
+            <div class="post-user-info">
+              <h5>రాముడు (రైతు)</h5>
+              <span>కంచికచర్ల, కృష్ణా జిల్లా • ఈ రోజే</span>
+            </div>
+          </div>
           <h4 style="color:var(--primary-dark); font-size:0.95rem;">వరిలో తెగుళ్ల నివారణ (Pest check in Paddy)</h4>
           <p style="font-size:0.85rem; color:#4b5563; margin-top:5px;">ఈ వారం ఆకుముడత కనిపిస్తోంది. ట్రైకోడెర్మా లేదా వేపనూనె వాడిన వారు ఫలితాలు చెప్పగలరు?</p>
           <div class="post-actions">
-            <span class="action-btn" onclick="toggleLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-cnt">3</span> <span class="txt-like">లైక్స్</span></span>
-            <span class="action-btn"><i class="fa-solid fa-comment"></i> 1 <span class="txt-comment">కామెంట్స్</span></span>
+            <span class="action-btn" onclick="toggleLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-cnt">5</span> <span class="txt-like">లైక్స్</span></span>
+            <span class="action-btn"><i class="fa-solid fa-comment"></i> 2 <span class="txt-comment">కామెంట్స్</span></span>
             <span class="action-btn"><i class="fa-solid fa-share-nodes"></i> <span class="txt-share">షేర్</span></span>
           </div>
         </div>
@@ -629,7 +778,7 @@
 
   </div>
 
-  <!-- Bottom Navigation with 6 Tabs -->
+  <!-- Bottom Navigation -->
   <nav class="bottom-nav">
     <button class="nav-btn active" onclick="switchTab('tab-home', this)">
       <i class="fa-solid fa-house"></i>
@@ -658,6 +807,34 @@
   </nav>
 
   <script>
+    // PWA Service Worker Registration
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('./sw.js')
+          .then(reg => console.log('Service Worker active:', reg.scope))
+          .catch(err => console.log('Service Worker error:', err));
+      });
+    }
+
+    let deferredPrompt;
+    window.addEventListener('beforeinstallprompt', (e) => {
+      e.preventDefault();
+      deferredPrompt = e;
+      const banner = document.getElementById('pwa-install-banner');
+      if (banner) banner.style.display = 'flex';
+    });
+
+    document.getElementById('pwa-install-btn')?.addEventListener('click', async () => {
+      if (deferredPrompt) {
+        deferredPrompt.prompt();
+        const { outcome } = await deferredPrompt.userChoice;
+        if (outcome === 'accepted') {
+          document.getElementById('pwa-install-banner').style.display = 'none';
+        }
+        deferredPrompt = null;
+      }
+    });
+
     // 8 Expanded Crops
     const cropsList = [
       { id: "paddy", te: "వరి (Paddy)", en: "Paddy (Rice)", hi: "धान (Paddy)", ta: "நெல் (Paddy)", rate: 2320, urea: 90, dap: 50, mop: 40 },
@@ -687,7 +864,6 @@
       });
     }
 
-    // Tab Navigation
     function switchTab(tabId, btn) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.nav-btn').forEach(el => el.classList.remove('active'));
@@ -712,9 +888,9 @@
         },
         en: {
           seed: "Treat seeds with 3g Carbendazim or Trichoderma per kg before sowing to prevent fungal infection.",
-          growth: "Apply balanced NPK fertilizers and ensure proper irrigation during the vegetative stage.",
-          pest: "Spray 5ml Neem oil per liter of water as preventive care against sucking pests and borers.",
-          harvest: "Harvest when 85% of crop turns golden mature, ensure grain moisture is kept under 14%."
+          growth: "Apply balanced NPK fertilizers and ensure proper irrigation during vegetative growth.",
+          pest: "Spray 5ml Neem oil per liter of water as preventive care against sucking pests and caterpillars.",
+          harvest: "Harvest when 85% of crop is golden mature, keep grain moisture under 14%."
         }
       };
 
@@ -758,7 +934,7 @@
       `;
     }
 
-    // Labor Calendar Tracker State & Functions
+    // Labor Calendar Tracker
     let laborRecords = JSON.parse(localStorage.getItem('farm_labors') || '[]');
 
     function renderLaborRecords() {
@@ -799,9 +975,7 @@
         return;
       }
 
-      laborRecords.unshift({
-        date, work, count, rate, total: count * rate
-      });
+      laborRecords.unshift({ date, work, count, rate, total: count * rate });
       localStorage.setItem('farm_labors', JSON.stringify(laborRecords));
       renderLaborRecords();
 
@@ -846,29 +1020,95 @@
       `;
     }
 
-    // Forum Functions
+    // Forum Media Upload & Preview
+    let currentAttachedMedia = null; // { type: 'image' | 'video', url: string }
+
+    function handleForumMediaUpload(input) {
+      const file = input.files[0];
+      if (!file) return;
+
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        const previewContainer = document.getElementById('previewMediaContainer');
+        previewContainer.innerHTML = '';
+
+        if (file.type.startsWith('video/')) {
+          currentAttachedMedia = { type: 'video', url: e.target.result };
+          previewContainer.innerHTML = `<video controls src="${e.target.result}" style="width:100%; max-height:160px;"></video>`;
+        } else {
+          currentAttachedMedia = { type: 'image', url: e.target.result };
+          previewContainer.innerHTML = `<img src="${e.target.result}" style="width:100%; max-height:160px; object-fit:cover;" />`;
+        }
+
+        document.getElementById('mediaPreviewBox').style.display = 'block';
+      };
+      reader.readAsDataURL(file);
+    }
+
+    function clearForumMedia() {
+      currentAttachedMedia = null;
+      document.getElementById('forumMediaInput').value = '';
+      document.getElementById('previewMediaContainer').innerHTML = '';
+      document.getElementById('mediaPreviewBox').style.display = 'none';
+    }
+
+    // Upgraded Post to Forum Function
     function postToForum() {
+      const author = document.getElementById('forumAuthor').value.trim() || (currentLang === 'te' ? "అజ్ఞాత రైతు" : "Farmer");
+      const village = document.getElementById('forumVillage').value.trim() || (currentLang === 'te' ? "ఆంధ్రప్రదేశ్" : "AP");
       const title = document.getElementById('forumTitle').value.trim();
       const msg = document.getElementById('forumMsg').value.trim();
+
       if (!title || !msg) {
-        alert(currentLang === 'te' ? "దయచేసి శీర్షిక మరియు సందేశం రాయండి." : "Please fill title and message.");
+        alert(currentLang === 'te' ? "దయచేసి శీర్షిక మరియు సందేశం నమోదు చేయండి." : "Please fill in title and description.");
         return;
+      }
+
+      const initialChar = author.charAt(0).toUpperCase();
+
+      let mediaHtml = '';
+      if (currentAttachedMedia) {
+        if (currentAttachedMedia.type === 'video') {
+          mediaHtml = `
+            <div class="post-media">
+              <video controls src="${currentAttachedMedia.url}"></video>
+            </div>
+          `;
+        } else {
+          mediaHtml = `
+            <div class="post-media">
+              <img src="${currentAttachedMedia.url}" alt="Farmer Crop Photo" />
+            </div>
+          `;
+        }
       }
 
       const postDiv = document.createElement('div');
       postDiv.className = 'forum-post';
       postDiv.innerHTML = `
+        <div class="post-header">
+          <div class="post-avatar">${initialChar}</div>
+          <div class="post-user-info">
+            <h5>${author}</h5>
+            <span>${village} • ఇప్పుడే</span>
+          </div>
+        </div>
         <h4 style="color:var(--primary-dark); font-size:0.95rem;">${title}</h4>
-        <p style="font-size:0.85rem; color:#4b5563; margin-top:5px;">${msg}</p>
+        <p style="font-size:0.85rem; color:#4b5563; margin-top:6px;">${msg}</p>
+        ${mediaHtml}
         <div class="post-actions">
           <span class="action-btn" onclick="toggleLike(this)"><i class="fa-solid fa-heart"></i> <span class="like-cnt">0</span> <span class="txt-like">${currentLang === 'te' ? 'లైక్స్' : 'Likes'}</span></span>
           <span class="action-btn"><i class="fa-solid fa-comment"></i> 0 <span class="txt-comment">${currentLang === 'te' ? 'కామెంట్స్' : 'Comments'}</span></span>
           <span class="action-btn"><i class="fa-solid fa-share-nodes"></i> <span class="txt-share">${currentLang === 'te' ? 'షేర్' : 'Share'}</span></span>
         </div>
       `;
+
       document.getElementById('forumPosts').prepend(postDiv);
+
+      // Reset fields
       document.getElementById('forumTitle').value = '';
       document.getElementById('forumMsg').value = '';
+      clearForumMedia();
     }
 
     function toggleLike(btn) {
@@ -883,7 +1123,7 @@
       }
     }
 
-    // Multi-Language Translation Map
+    // Translations Dictionary
     const translations = {
       te: {
         appTitle: "Smart AgroVision",
@@ -911,6 +1151,7 @@
         schTitle: "ప్రభుత్వ రైతు పథకాలు & సబ్సిడీ పోర్టల్",
         schSub: "అర్హత ఉన్న రైతులు ఇక్కడి నుంచే నేరుగా అధికారిక పోర్టల్స్‌లో దరఖాస్తు చేసుకోవచ్చు.",
         forumTitle: "రైతు కమ్యూనిటీ ఫోరం",
+        addMedia: "ఫోటో లేదా వీడియో జతచేయండి (Photo/Video)",
         btnPost: "పోస్ట్ చేయండి",
         likeTxt: "లైక్స్",
         commentTxt: "కామెంట్స్",
@@ -942,6 +1183,7 @@
         schTitle: "Government Schemes & Subsidy Portal",
         schSub: "Eligible farmers can apply directly online through official portals.",
         forumTitle: "Farmer Community Forum",
+        addMedia: "Attach Photo or Video",
         btnPost: "Post Discussion",
         likeTxt: "Likes",
         commentTxt: "Comments",
@@ -973,6 +1215,7 @@
         schTitle: "सरकारी किसान योजनाएं एवं सब्सिडी",
         schSub: "पात्र किसान आधिकारिक पोर्टल के माध्यम से सीधे आवेदन कर सकते हैं।",
         forumTitle: "किसान समुदाय मंच",
+        addMedia: "फोटो या वीडियो संलग्न करें",
         btnPost: "पोस्ट करें",
         likeTxt: "पसंद",
         commentTxt: "टिप्पणियाँ",
@@ -1004,6 +1247,7 @@
         schTitle: "அரசு விவசாய நலத்திட்டங்கள்",
         schSub: "விவசாயிகள் நேரடியாக இணையத்தில் விண்ணப்பிக்கலாம்.",
         forumTitle: "விவசாயிகள் மன்றம்",
+        addMedia: "புகைப்படம் அல்லது வீடியோ இணைக்கவும்",
         btnPost: "பதிவிடுக",
         likeTxt: "விருப்பங்கள்",
         commentTxt: "கருத்துகள்",
@@ -1047,6 +1291,7 @@
       document.getElementById('txt-schemes-sub').innerText = t.schSub;
 
       document.getElementById('txt-forum-title').innerText = t.forumTitle;
+      document.getElementById('lbl-add-media').innerText = t.addMedia;
       document.getElementById('btn-post').innerText = t.btnPost;
 
       document.querySelectorAll('.txt-like').forEach(el => el.innerText = t.likeTxt);
@@ -1056,7 +1301,6 @@
       populateCropDropdowns(lang);
     }
 
-    // Initialization
     document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('labDate').valueAsDate = new Date();
       populateCropDropdowns('te');
