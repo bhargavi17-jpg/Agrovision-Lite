@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart AgroVision</title>
+    <title>Smart AgroVision | రైతు మిత్ర</title>
     <style>
         :root {
             --primary: #10b981;
@@ -12,6 +12,7 @@
             --accent-orange: #f59e0b;
             --accent-blue: #0284c7;
             --accent-purple: #8b5cf6;
+            --accent-green: #15803d;
             --dark: #1f2937;
             --light-bg: #f0fdf4;
             --white: #ffffff;
@@ -92,6 +93,8 @@
 
         .card-weather { border-top: 5px solid var(--accent-blue); }
         .card-tips { border-top: 5px solid var(--primary); }
+        .card-market { border-top: 5px solid #16a34a; }
+        .card-diary { border-top: 5px solid #d97706; }
         .card-water { border-top: 5px solid #06b6d4; }
         .card-calc { border-top: 5px solid var(--accent-orange); }
         .card-forum { border-top: 5px solid var(--accent-purple); }
@@ -170,6 +173,80 @@
             font-size: 0.95rem;
         }
 
+        /* Market Cards */
+        .market-rate-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .market-chip {
+            background: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-radius: 10px;
+            padding: 10px;
+            text-align: center;
+        }
+
+        .market-chip strong {
+            display: block;
+            font-size: 0.85rem;
+            color: #166534;
+        }
+
+        .market-chip span {
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #047857;
+        }
+
+        /* Diary Summary Box */
+        .diary-summary {
+            display: flex;
+            justify-content: space-between;
+            background: #fafaf9;
+            padding: 12px;
+            border-radius: 10px;
+            margin-bottom: 12px;
+            border: 1px solid var(--border);
+        }
+
+        .diary-stat {
+            text-align: center;
+        }
+
+        .diary-stat small {
+            display: block;
+            color: #6b7280;
+            font-size: 0.75rem;
+        }
+
+        .diary-stat span {
+            font-weight: 800;
+            font-size: 1rem;
+        }
+
+        .diary-list {
+            max-height: 200px;
+            overflow-y: auto;
+            margin-top: 10px;
+        }
+
+        .diary-entry {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 10px;
+            background: #ffffff;
+            border-radius: 8px;
+            border: 1px solid #f3f4f6;
+            margin-bottom: 6px;
+            font-size: 0.85rem;
+        }
+
+        .diary-entry.expense { border-left: 4px solid var(--danger); }
+        .diary-entry.income { border-left: 4px solid var(--primary); }
+
         /* Forum Post Styling */
         .post {
             background: #f9fafb;
@@ -205,15 +282,8 @@
             gap: 4px;
         }
 
-        .post-btn:hover {
-            background: #f3f4f6;
-        }
-
-        .post-btn.liked {
-            color: #ef4444;
-            border-color: #fca5a5;
-            background: #fef2f2;
-        }
+        .post-btn:hover { background: #f3f4f6; }
+        .post-btn.liked { color: #ef4444; border-color: #fca5a5; background: #fef2f2; }
 
         .comment-section {
             display: none;
@@ -238,12 +308,7 @@
             margin-top: 8px;
         }
 
-        .comment-input-box input {
-            margin: 0;
-            padding: 6px 10px;
-            font-size: 0.85rem;
-        }
-
+        .comment-input-box input { margin: 0; padding: 6px 10px; font-size: 0.85rem; }
         .comment-input-box button {
             background: var(--accent-purple);
             color: var(--white);
@@ -255,13 +320,8 @@
         }
 
         /* Navigation Sections Control */
-        .content-section {
-            display: none;
-        }
-        .content-section.active {
-            display: block;
-            animation: fadeIn 0.2s ease-out;
-        }
+        .content-section { display: none; }
+        .content-section.active { display: block; animation: fadeIn 0.2s ease-out; }
 
         @keyframes fadeIn {
             from { opacity: 0; transform: translateY(4px); }
@@ -274,7 +334,7 @@
             bottom: 0;
             left: 0;
             right: 0;
-            height: 62px;
+            height: 65px;
             background: var(--white);
             display: flex;
             justify-content: space-around;
@@ -289,7 +349,7 @@
             border: none;
             outline: none;
             color: #9ca3af;
-            font-size: 0.72rem;
+            font-size: 0.7rem;
             font-weight: 700;
             display: flex;
             flex-direction: column;
@@ -302,25 +362,16 @@
         }
 
         .tab-btn svg {
-            width: 22px;
-            height: 22px;
+            width: 20px;
+            height: 20px;
             fill: currentColor;
             margin-bottom: 3px;
             pointer-events: none;
         }
 
-        .tab-btn span {
-            pointer-events: none;
-        }
-
-        .tab-btn.active {
-            color: var(--primary-dark);
-            transform: translateY(-2px);
-        }
-
-        .tab-btn.active svg {
-            fill: var(--primary-dark);
-        }
+        .tab-btn span { pointer-events: none; }
+        .tab-btn.active { color: var(--primary-dark); transform: translateY(-2px); }
+        .tab-btn.active svg { fill: var(--primary-dark); }
     </style>
 </head>
 <body>
@@ -340,7 +391,7 @@
     </header>
 
     <div class="container">
-        <!-- 1. Home Section -->
+        <!-- 1. Home Section: Weather + Smart Farming Assistant -->
         <section id="section-home" class="content-section active">
             <div class="card card-weather">
                 <h2 data-key="weatherTitle">☀️ వాతావరణ సమాచారం</h2>
@@ -348,8 +399,9 @@
                 <button type="button" class="action-btn" id="refreshWeatherBtn" data-key="refreshBtn">రిఫ్రెష్ చేయండి</button>
             </div>
 
+            <!-- Standout Addition 2: Smart Farming Assistant -->
             <div class="card card-tips">
-                <h2 data-key="tipsTitle">🌱 సాగు & తెగుళ్ల నివారణ చిట్కాలు</h2>
+                <h2 data-key="assistantTitle">🌿 స్మార్ట్ ఫార్మింగ్ అసిస్టెంట్</h2>
                 <label for="cropTypeHome" data-key="cropTypeLabel">పంట రకం:</label>
                 <select id="cropTypeHome">
                     <option value="rice" data-key="cropRice">వరి (Paddy)</option>
@@ -361,33 +413,85 @@
                     <option value="tomato" data-key="cropTomato">టమాటో (Tomato)</option>
                     <option value="pulses" data-key="cropPulses">పప్పుధాన్యాలు (Pulses)</option>
                 </select>
-                <button type="button" class="action-btn" id="tipsBtn" data-key="showTipsBtn">సూచనలు చూపించు</button>
+
+                <label for="cropStage" data-key="cropStageLabel">పంట దశ:</label>
+                <select id="cropStage">
+                    <option value="sowing" data-key="stageSowing">విత్తన దశ / నాట్లు</option>
+                    <option value="growth" data-key="stageGrowth">పెరుగుదల & ఎరువుల దశ</option>
+                    <option value="pest" data-key="stagePest">తెగుళ్ల నివారణ & సస్యరక్షణ</option>
+                    <option value="harvest" data-key="stageHarvest">కోత & దిగుబడి నిల్వ</option>
+                </select>
+
+                <button type="button" class="action-btn" id="tipsBtn" data-key="showTipsBtn">స్మార్ట్ సలహా పొందండి</button>
                 <p id="agroTips" class="result"></p>
             </div>
         </section>
 
-        <!-- 2. Irrigation Section -->
-        <section id="section-irrigation" class="content-section">
-            <div class="card card-water">
-                <h2 data-key="irrigationTitle">💧 నీటి ప్రణాళిక (Irrigation)</h2>
-                <p style="font-size: 0.88rem; color: #6b7280; line-height: 1.4;" data-key="irrigationDesc">ఈ రోజు వాతావరణం, పంట రకానికి తగిన నీటి సమయాన్ని లెక్కించండి.</p>
-                <label for="irrigationCrop" data-key="cropTypeLabel">పంట రకం:</label>
-                <select id="irrigationCrop">
+        <!-- 2. Standout Addition 1: Where Should I Sell My Crop? -->
+        <section id="section-market" class="content-section">
+            <div class="card card-market">
+                <h2 data-key="marketTitle">💰 ఎక్కడ అమ్ముకుంటే లాభం? (Market Prices)</h2>
+                <p style="font-size: 0.88rem; color: #6b7280; line-height: 1.4;" data-key="marketDesc">వివిధ మార్కెట్ల (మండీలు) ధరలను పోల్చి, రవాణా ఖర్చులు పోను నికర లాభాన్ని లెక్కించండి.</p>
+                
+                <label for="marketCrop" data-key="cropTypeLabel">పంట రకం:</label>
+                <select id="marketCrop" onchange="updateMandiRates()">
                     <option value="rice" data-key="cropRice">వరి (Paddy)</option>
                     <option value="cotton" data-key="cropCotton">ప్రత్తి (Cotton)</option>
                     <option value="chili" data-key="cropChili">మిరప (Chili)</option>
                     <option value="maize" data-key="cropMaize">మొక్కజొన్న (Maize)</option>
                     <option value="groundnut" data-key="cropGroundnut">వేరుశనగ (Groundnut)</option>
-                    <option value="sugarcane" data-key="cropSugarcane">చెరకు (Sugarcane)</option>
                     <option value="tomato" data-key="cropTomato">టమాటో (Tomato)</option>
-                    <option value="pulses" data-key="cropPulses">పప్పుధాన్యాలు (Pulses)</option>
                 </select>
-                <button type="button" class="action-btn" id="irrigationBtn" data-key="calcIrrigationBtn">నీటి అవసరాన్ని లెక్కించు</button>
-                <p id="irrigationResult" class="result"></p>
+
+                <div class="market-rate-box" id="mandiRatesDisplay"></div>
+
+                <label for="produceQuantity" data-key="produceQtyLabel">దిగుబడి పరిమాణం (క్వింటాళ్లలో):</label>
+                <input type="number" id="produceQuantity" placeholder="ఉదా: 25" min="1">
+
+                <button type="button" class="action-btn" id="calcMarketBtn" data-key="calcMarketEarningsBtn">లాభాన్ని పోల్చండి</button>
+                <div id="marketComparisonResult" class="result"></div>
             </div>
         </section>
 
-        <!-- 3. Calculator Section -->
+        <!-- 3. Standout Addition 3: My Digital Farm Diary -->
+        <section id="section-diary" class="content-section">
+            <div class="card card-diary">
+                <h2 data-key="diaryTitle">📒 నా డిజిటల్ ఫార్మ్ డైరీ (Farm Diary)</h2>
+                
+                <div class="diary-summary">
+                    <div class="diary-stat">
+                        <small data-key="diaryTotalIncome">మొత్తం ఆదాయం</small>
+                        <span id="diaryIncome" style="color: #16a34a;">₹0</span>
+                    </div>
+                    <div class="diary-stat">
+                        <small data-key="diaryTotalExpense">మొత్తం ఖర్చు</small>
+                        <span id="diaryExpense" style="color: #ef4444;">₹0</span>
+                    </div>
+                    <div class="diary-stat">
+                        <small data-key="diaryNetBalance">నికర లాభం/నష్టం</small>
+                        <span id="diaryNet" style="color: #047857;">₹0</span>
+                    </div>
+                </div>
+
+                <label data-key="entryTypeLabel">లావాదేవీ రకం:</label>
+                <select id="diaryType">
+                    <option value="expense" data-key="typeExpense">ఖర్చు (ఎరువులు, పురుగుమందులు, కూలీలు)</option>
+                    <option value="income" data-key="typeIncome">ఆదాయం (పంట విక్రయం)</option>
+                </select>
+
+                <label data-key="entryDescLabel">వివరణ:</label>
+                <input type="text" id="diaryDesc" placeholder="ఉదా: 2 బస్తాల DAP లేదా కూలీల ఖర్చు">
+
+                <label data-key="entryAmountLabel">మొత్తం (రూపాయలు):</label>
+                <input type="number" id="diaryAmount" placeholder="ఉదా: 3500">
+
+                <button type="button" class="action-btn" id="saveDiaryBtn" data-key="saveEntryBtn">డైరీలో నమోదు చేయండి</button>
+
+                <div class="diary-list" id="diaryEntriesContainer"></div>
+            </div>
+        </section>
+
+        <!-- 4. Calculator & Cost Section -->
         <section id="section-calc" class="content-section">
             <div class="card card-calc">
                 <h2 data-key="calcTitle">⚖️ ఎరువుల కాలిక్యులేటర్ & ఖర్చు అంచనా</h2>
@@ -410,7 +514,7 @@
             </div>
         </section>
 
-        <!-- 4. Forum Section -->
+        <!-- 5. Community Forum -->
         <section id="section-forum" class="content-section">
             <div class="card card-forum">
                 <h2 data-key="forumTitle">💬 రైతు కమ్యూనిటీ ఫోరమ్</h2>
@@ -424,15 +528,19 @@
         </section>
     </div>
 
-    <!-- Fixed Bottom Navigation -->
+    <!-- Fixed Bottom 5-Tab Navigation -->
     <nav class="bottom-nav">
         <button type="button" class="tab-btn active" data-target="section-home">
             <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
             <span data-key="navHome">హోమ్</span>
         </button>
-        <button type="button" class="tab-btn" data-target="section-irrigation">
-            <svg viewBox="0 0 24 24"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>
-            <span data-key="navWater">నీటి సరఫరా</span>
+        <button type="button" class="tab-btn" data-target="section-market">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 16h-2v-2h2v2zm1.07-7.75l-.9.92C12.45 11.9 12 12.5 12 14h-2v-.5c0-1.1.45-2.1 1.17-2.83l1.24-1.26c.37-.36.59-.86.59-1.41 0-1.1-.9-2-2-2s-2 .9-2 2H7c0-2.76 2.24-5 5-5s5 2.24 5 5c0 .88-.36 1.68-.93 2.25z"/></svg>
+            <span data-key="navMarket">ఎక్కడ అమ్మాలి?</span>
+        </button>
+        <button type="button" class="tab-btn" data-target="section-diary">
+            <svg viewBox="0 0 24 24"><path d="M19 3h-4.18C14.4 1.84 13.3 1 12 1c-1.3 0-2.4.84-2.82 2H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-7 0c.55 0 1 .45 1 1s-.45 1-1 1-1-.45-1-1 .45-1 1-1zm2 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/></svg>
+            <span data-key="navDiary">డైరీ</span>
         </button>
         <button type="button" class="tab-btn" data-target="section-calc">
             <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-4 6h-2V7h2v2zm-4 0H9V7h2v2zm4 4h-2v-2h2v2zm-4 0H9v-2h2v2zm-2 4v-2h2v2H9zm4 0v-2h2v2h-2z"/></svg>
@@ -445,63 +553,154 @@
     </nav>
 
     <script>
-        const MARKET_PRICES = {
-            urea: 6,
-            dap: 27,
-            potash: 34
-        };
+        const MARKET_PRICES = { urea: 6, dap: 27, potash: 34 };
 
         const CROP_DATA = {
-            rice: { urea: 90, dap: 50, potash: 40, water: "రోజుకు 45-50 లీటర్లు / నిలకడ నీరు", hours: "3-4 గంటలు (కాల్వ/బోరు)" },
-            cotton: { urea: 60, dap: 35, potash: 30, water: "రోజుకు 20-25 లీటర్లు", hours: "1.5 - 2 గంటలు" },
-            chili: { urea: 70, dap: 45, potash: 50, water: "రోజుకు 15-20 లీటర్లు", hours: "1 - 1.5 గంటలు" },
-            maize: { urea: 80, dap: 40, potash: 30, water: "రోజుకు 25-30 లీటర్లు", hours: "2 గంటలు" },
-            groundnut: { urea: 20, dap: 45, potash: 35, water: "రోజుకు 15-18 లీటర్లు", hours: "1.2 గంటలు" },
-            sugarcane: { urea: 120, dap: 60, potash: 80, water: "రోజుకు 55-60 లీటర్లు", hours: "3.5 గంటలు" },
-            tomato: { urea: 50, dap: 40, potash: 45, water: "రోజుకు 18-22 లీటర్లు", hours: "1.2 గంటలు" },
-            pulses: { urea: 15, dap: 35, potash: 20, water: "రోజుకు 10-12 లీటర్లు", hours: "1 గంట" }
+            rice: { urea: 90, dap: 50, potash: 40 },
+            cotton: { urea: 60, dap: 35, potash: 30 },
+            chili: { urea: 70, dap: 45, potash: 50 },
+            maize: { urea: 80, dap: 40, potash: 30 },
+            groundnut: { urea: 20, dap: 45, potash: 35 },
+            sugarcane: { urea: 120, dap: 60, potash: 80 },
+            tomato: { urea: 50, dap: 40, potash: 45 },
+            pulses: { urea: 15, dap: 35, potash: 20 }
         };
 
-        const CROP_TIPS = {
+        // Regional Mandi Price Benchmarks per Quintal
+        const MANDI_DATA = {
+            rice: [
+                { mandi: "విజయవాడ / గన్నవరం", rate: 2320, transportPerQtl: 60 },
+                { mandi: "గుంటూరు మార్కెట్ యార్డ్", rate: 2380, transportPerQtl: 90 },
+                { mandi: "ఖమ్మం మార్కెట్", rate: 2290, transportPerQtl: 110 }
+            ],
+            cotton: [
+                { mandi: "గుంటూరు యార్డ్", rate: 7450, transportPerQtl: 100 },
+                { mandi: "వరంగల్ ఎనుమాముల", rate: 7600, transportPerQtl: 180 },
+                { mandi: "నందిగామ మార్కెట్", rate: 7300, transportPerQtl: 50 }
+            ],
+            chili: [
+                { mandi: "గుంటూరు మిర్చి యార్డ్ (ఆసియాలోనే అతిపెద్దది)", rate: 18500, transportPerQtl: 120 },
+                { mandi: "వరంగల్ యార్డ్", rate: 17800, transportPerQtl: 190 },
+                { mandi: "ఖమ్మం మార్కెట్", rate: 18100, transportPerQtl: 140 }
+            ],
+            maize: [
+                { mandi: "విజయవాడ మార్కెట్", rate: 2150, transportPerQtl: 60 },
+                { mandi: "వరంగల్ మార్కెట్", rate: 2250, transportPerQtl: 150 },
+                { mandi: "నిజామాబాద్", rate: 2200, transportPerQtl: 200 }
+            ],
+            groundnut: [
+                { mandi: "రాయచూరు / కర్నూలు", rate: 6650, transportPerQtl: 160 },
+                { mandi: "గుంటూరు యార్డ్", rate: 6450, transportPerQtl: 80 },
+                { mandi: "మహబూబ్‌నగర్", rate: 6550, transportPerQtl: 170 }
+            ],
+            tomato: [
+                { mandi: "మదనపల్లె మార్కెట్", rate: 2800, transportPerQtl: 220 },
+                { mandi: "విజయవాడ మార్కెట్ యార్డ్", rate: 2400, transportPerQtl: 50 },
+                { mandi: "హైదరాబాద్ బోయిన్‌పల్లి", rate: 2650, transportPerQtl: 180 }
+            ]
+        };
+
+        // Crop Stage Assistant Advice
+        const ASSISTANT_ADVICE = {
             te: {
-                rice: "వరికి ఆకుమచ్చ లేదా కాండం తొలుచు పురుగు నివారణకు వేపనూనె లేదా క్లోరిపైరిఫాస్ పిచికారీ చేయండి.",
-                cotton: "గులాబీ రంగు కాయతొలుచు పురుగు నివారణకు ఎకరానికి 4 లింగాకర్షక బుట్టలు (Pheromone traps) అమర్చండి.",
-                chili: "తామర పురుగులు, నల్లి నివారణకు నీలి/పసుపు జిగురు అట్టలు పెట్టండి. పూత దశలో తేమ తగ్గకుండా చూడండి.",
-                maize: "కత్తెర పురుగు నివారణకు ఎకరాకు 5 కిలోల వేప పిండి లేదా ఇమామెక్టిన్ బెంజోయేట్ మందు పిచికారీ చేయండి.",
-                groundnut: "టిక్కా ఆకుమచ్చ వ్యాధి నివారణకు మాంకోజెబ్ లేదా సాఫ్ మందును పిచికారీ చేయండి.",
-                sugarcane: "పీక పురుగు రాకుండా తొలి దశలో నీటి ఎద్దడి లేకుండా తడి ఇవ్వండి మరియు ట్రైకోడెర్మా వాడండి.",
-                tomato: "ఆకుముడత వైరస్ నివారణకు తెల్లదోమలను అరికట్టండి. పసుపు అట్టలను వాడండి.",
-                pulses: "మొలక దశలో వేరుకుళ్లు నివారణకు ట్రైకోడెర్మా విరిడేతో విత్తన శుద్ధి చేయండి."
+                rice: {
+                    sowing: "విత్తన శుద్ధికి 1 కేజీ విత్తనాలకు 2 గ్రా కార్బండైజిమ్ వాడండి. నారుమడిలో నీరు నిలబడకుండా చూసుకోండి.",
+                    growth: "పిలక దశలో యూరియా వేయండి. పొలంలో 2-3 సెం.మీ నీటి మట్టాన్ని నిర్వహించండి.",
+                    pest: "కాండం తొలుచు పురుగు నివారణకు ఎకరానికి క్లోరాంట్రానిలిప్రోల్ లేదా వేప నూనె పిచికారీ చేయండి.",
+                    harvest: "గింజలు 80-85% బంగారు రంగులోకి మారినప్పుడు కోత ప్రారంభించండి. తేమ శాతం 14%కి ఆరబెట్టండి."
+                },
+                cotton: {
+                    sowing: "సాలుకు సాలుకు 3-4 అడుగులు, మొక్కకు మొక్కకు 1.5 అడుగుల దూరం పాటించండి.",
+                    growth: "పూత మరియు కాయ దశలో జింక్ మరియు బోరాన్ పోషకాలను పిచికారీ చేయండి.",
+                    pest: "గులాబీ రంగు పురుగు నివారణకు ఎకరాకు 4 లింగాకర్షక బుట్టలు (Pheromone traps) తప్పనిసరిగా పెట్టండి.",
+                    harvest: "పత్తిని ఉదయం వేళల్లో పొడి వాతావరణంలో తీయండి. చెత్త రాలకుండా నిల్వ చేయండి."
+                },
+                chili: {
+                    sowing: "నాటేటప్పుడు ఆరోగ్యకరమైన 35 రోజుల నారును ఎంచుకోండి. ట్రైకోడెర్మా ద్రావణంలో వేర్లు ముంచి నాటండి.",
+                    growth: "పూత రాలకుండా ఉండేందుకు ప్లానోఫిక్స్ పిచికారీ చేయండి. తేమ సమృద్ధిగా ఉండాలి.",
+                    pest: "తామర పురుగు (Thrips) నివారణకు నీలి మరియు పసుపు రంగు జిగురు అట్టలు ఎకరాకు 20-30 పెట్టండి.",
+                    harvest: "పూర్తిగా ఎర్రబడిన కాయలను కోసి టార్పాలిన్ షీట్లపై శుభ్రంగా ఆరబెట్టండి."
+                },
+                maize: {
+                    sowing: "ఎకరాకు 7-8 కిలోల నాణ్యమైన హైబ్రిడ్ విత్తనాలను ఉపయోగించండి.",
+                    growth: "మోకాలి ఎత్తు దశలో మరియు వెన్ను దశలో తప్పనిసరిగా తడి మరియు యూరియా అందించండి.",
+                    pest: "కత్తెర పురుగు (Fall Armyworm) నివారణకు కోరజెన్ లేదా ఇమామెక్టిన్ బెంజోయేట్ సుడులలో పడేలా పిచికారీ చేయండి.",
+                    harvest: "కంకి పిప్పి ఎండిన తర్వాత తేమ 15% లోపు ఉన్నప్పుడు నూర్పిడి చేయండి."
+                },
+                groundnut: {
+                    sowing: "రైజోబియం కల్చర్‌తో విత్తన శుద్ధి చేయండి. ఎకరానికి 40-45 కిలోల విత్తనాలు వాడండి.",
+                    growth: "ఊడలు దిగే దశలో నేలను కదల్చకండి. జిప్సం ఎకరానికి 200 కిలోలు తప్పక వేయండి.",
+                    pest: "టిక్కా ఆకుమచ్చ వ్యాధికి మాంకోజెబ్ లేదా సాఫ్ మందును పిచికారీ చేయండి.",
+                    harvest: "ఆకులు పసుపు రంగుకు మారి రాలుతున్నప్పుడు తవ్వి వేరుశనగ కాయలను వేరు చేయండి."
+                },
+                tomato: {
+                    sowing: "మేలైన హైబ్రిడ్ రకాల నారును ఎంచుకోండి, త్రికోణ పద్ధతిలో నాటండి.",
+                    growth: "మొక్కలకు కర్రల సపోర్ట్ (స్టాకింగ్) ఇవ్వడం వల్ల కాయ నాణ్యత పెరుగుతుంది.",
+                    pest: "ఆకుముడత వైరస్ రాకుండా తెల్లదోమలను అరికట్టడానికి పసుపు జిగురు అట్టలు పెట్టండి.",
+                    harvest: "దూర ప్రాంత మార్కెట్లకు బ్రేకర్ దశలో (లేత గులాబీ రంగులో) కోయండి."
+                },
+                sugarcane: {
+                    sowing: "రెండు కళ్ల ముచ్చెలతో 4 అడుగుల కాలువ పద్ధతిలో నాటండి.",
+                    growth: "నాటిన 90-120 రోజులకు మట్టిని ఎగదోయండి (Earthing up).",
+                    pest: "పీక పురుగు రాకుండా తొలి దశలో నీటి ఎద్దడి లేకుండా తడి ఇవ్వండి.",
+                    harvest: "10-12 నెలల వయసులో చక్కెర శాతం గరిష్టంగా ఉన్నప్పుడు చెరకు కొట్టండి."
+                },
+                pulses: {
+                    sowing: "విత్తన శుద్ధి చేసిన విత్తనాలను ఆరుతడి పరిస్థితుల్లో నాటండి.",
+                    growth: "పూత సమయంలో ఒకసారి మరియు కాయ దశలో ఒకసారి తేలికపాటి తడి ఇవ్వండి.",
+                    pest: "మరుకా మచ్చల పురుగు మరియు కాయతొలుచు పురుగుపై నిఘా ఉంచండి.",
+                    harvest: "కాయలు ఎండిన తర్వాత కోసి నూర్పిడి చేసి శుభ్రపరచండి."
+                }
             },
             en: {
-                rice: "Apply Neem oil or Chlorpyrifos for stem borer and leaf blast management in paddy.",
-                cotton: "Install 4 pheromone traps per acre to monitor and control pink bollworm infestation.",
-                chili: "Install yellow and blue sticky traps to manage thrips and mites. Maintain regular soil moisture.",
-                maize: "Spray Emamectin Benzoate early to defend against Fall Armyworm infestation.",
-                groundnut: "Apply Mancozeb or Carbendazim spray to prevent Tikka leaf spot disease.",
-                sugarcane: "Ensure timely light irrigation to prevent early shoot borer; apply Trichoderma.",
-                tomato: "Control whiteflies with sticky traps to prevent Leaf Curl virus infections.",
-                pulses: "Treat seeds with Trichoderma viride to prevent collar rot and root wilt diseases."
-            },
-            hi: {
-                rice: "धान में तना छेदक के लिए नीम का तेल या अनुशंसित कीटनाशक का छिड़काव करें।",
-                cotton: "गुलाबी सुंडी से बचाव के लिए प्रति एकड़ 4 फेरोमोन ट्रैप लगाएं।",
-                chili: "थ्रिप्स और माइट्स के नियंत्रण के लिए नीले और पीले चिपचिपे जाल का प्रयोग करें।",
-                maize: "फॉल आर्मीवॉर्म की रोकथाम के लिए इमामेक्टिन बेंजोएट का छिड़काव करें।",
-                groundnut: "टिक्का रोग से बचाव के लिए मैंकोजेब का छिड़काव करें।",
-                sugarcane: "शुरुआती तना छेदक से बचाव के लिए खेत में समय पर सिंचाई करें।",
-                tomato: "पत्ती मरोड़ वायरस से बचाव के लिए सफेद मक्खी को पीले ट्रैप से नियंत्रित करें।",
-                pulses: "जड़ गलन से बचाव के लिए बीजों को ट्राइकोडर्मा से उपचारित करें।"
-            },
-            ta: {
-                rice: "நெற்பயிரில் தண்டு துளைப்பான் மற்றும் இலைக்கருகல் கட்டுப்படுத்த வேப்ப எண்ணெய் தெளிக்கவும்.",
-                cotton: "பருத்தியில் இளஞ்சிவப்பு காய்ப்புழுவை கட்டுப்படுத்த ஏக்கருக்கு 4 இனக்கவர்ச்சி பொறிகளை வைக்கவும்.",
-                chili: "இலைப்பேன் மற்றும் அசுவணிகளுக்கு மஞ்சள்/நீல ஒட்டும் பொறிகளைப் பயன்படுத்தவும்.",
-                maize: "படைப்புழு தாக்குதலைத் தடுக்க இமாமெக்டின் பென்சோயேட் தெளிக்கவும்.",
-                groundnut: "டிக்கா இலைப்புள்ளி நோயைக் கட்டுப்படுத்த மான்கோசெப் தெளிக்கவும்.",
-                sugarcane: "குருத்து துளைப்பானைத் தடுக்க நிலத்தில் தேவையான ஈரப்பதத்தை பராமரிக்கவும்.",
-                tomato: "இலைச்சுருள் வைரஸைத் தடுக்க வெள்ளை ஈக்களை கட்டுப்படுத்துங்கள்.",
-                pulses: "வேரழுகல் நோயைத் தடுக்க விதை நேர்த்தி செய்ய ட்ரைக்கோடெர்மா பயன்படுத்தவும்."
+                rice: {
+                    sowing: "Treat seed with Carbendazim (2g/kg). Maintain nursery beds with proper drainage.",
+                    growth: "Top-dress Urea at tillering. Maintain 2-3 cm water layer continuously.",
+                    pest: "Apply Chlorantraniliprole or Neem oil spray to prevent stem borer attacks.",
+                    harvest: "Harvest when 80-85% grains turn golden yellow; dry produce to 14% moisture."
+                },
+                cotton: {
+                    sowing: "Maintain 3-4 feet row spacing and 1.5 feet between plants for optimum sunlight.",
+                    growth: "Foliar spray of Boron and Zinc improves square retention and boll weight.",
+                    pest: "Install 4 pheromone traps per acre to monitor and control pink bollworm.",
+                    harvest: "Pick cotton clean during dry morning hours; store free of leaf debris."
+                },
+                chili: {
+                    sowing: "Transplant healthy 35-day seedlings after Trichoderma root dipping.",
+                    growth: "Prevent flower drops by spraying Planofix and sustaining balanced moisture.",
+                    pest: "Install 25 yellow & blue sticky traps per acre for Thrips and Mites management.",
+                    harvest: "Pick fully ripe red fruits and sun-dry on clean tarpaulin sheets."
+                },
+                maize: {
+                    sowing: "Use 7-8 kg/acre high yielding certified hybrid seed varieties.",
+                    growth: "Ensure critical irrigations and Nitrogen application at knee-high and tasseling stages.",
+                    pest: "Target Fall Armyworm with whorl application of Emamectin Benzoate.",
+                    harvest: "Harvest when cob sheath turns completely straw brown; shell below 15% moisture."
+                },
+                groundnut: {
+                    sowing: "Inoculate seeds with Rhizobium culture; sow in well-aerated sandy loam.",
+                    growth: "Apply 200 kg Gypsum/acre at pegging stage without disturbing soil.",
+                    pest: "Prevent Tikka leaf spot with early Mancozeb or Hexaconazole spray.",
+                    harvest: "Harvest when the inner pod shell turns blackish brown."
+                },
+                tomato: {
+                    sowing: "Use certified disease-resistant hybrids; practice raised bed planting.",
+                    growth: "Stake plants with bamboo sticks to improve fruit aeration and grade.",
+                    pest: "Prevent Leaf Curl virus by controlling whiteflies with yellow sticky cards.",
+                    harvest: "Harvest at breaker/turning stage for distant market transportation."
+                },
+                sugarcane: {
+                    sowing: "Plant two-budded setts in wide trenches at 4-foot intervals.",
+                    growth: "Perform earthing up around 90-120 days to support root anchoring.",
+                    pest: "Irrigate timely and apply Trichogramma cards against early shoot borer.",
+                    harvest: "Harvest at 10-12 months when brix sugar reading reaches peak."
+                },
+                pulses: {
+                    sowing: "Seed treatment with Rhizobium and Trichoderma is highly recommended.",
+                    growth: "Provide critical protective irrigation at flowering and pod filling.",
+                    pest: "Monitor and control pod borers with recommended bio-pesticides.",
+                    harvest: "Harvest before pods shatter under extreme dry heat."
+                }
             }
         };
 
@@ -509,14 +708,20 @@
             te: {
                 offlineStatus: "మీరు ఆఫ్‌లైన్‌లో ఉన్నారు. సేవ్ చేసిన సమాచారం మాత్రమే కనిపిస్తుంది.",
                 navHome: "హోమ్",
-                navWater: "నీటి సరఫరా",
+                navMarket: "ఎక్కడ అమ్మాలి?",
+                navDiary: "డైరీ",
                 navCalc: "కాలిక్యులేటర్",
                 navForum: "ఫోరమ్",
                 weatherTitle: "☀️ వాతావరణ సమాచారం",
                 weatherLoading: "సమాచారం లోడ్ అవుతోంది...",
                 refreshBtn: "రిఫ్రెష్ చేయండి",
-                tipsTitle: "🌱 సాగు & తెగుళ్ల నివారణ చిట్కాలు",
+                assistantTitle: "🌿 స్మార్ట్ ఫార్మింగ్ అసిస్టెంట్",
                 cropTypeLabel: "పంట రకం:",
+                cropStageLabel: "పంట దశ:",
+                stageSowing: "విత్తన దశ / నాట్లు",
+                stageGrowth: "పెరుగుదల & ఎరువుల దశ",
+                stagePest: "తెగుళ్ల నివారణ & సస్యరక్షణ",
+                stageHarvest: "కోత & దిగుబడి నిల్వ",
                 cropRice: "వరి (Paddy)",
                 cropCotton: "ప్రత్తి (Cotton)",
                 cropChili: "మిరప (Chili)",
@@ -525,14 +730,25 @@
                 cropSugarcane: "చెరకు (Sugarcane)",
                 cropTomato: "టమాటో (Tomato)",
                 cropPulses: "పప్పుధాన్యాలు (Pulses)",
-                showTipsBtn: "సూచనలు చూపించు",
+                showTipsBtn: "స్మార్ట్ సలహా పొందండి",
+                marketTitle: "💰 ఎక్కడ అమ్ముకుంటే లాభం? (Market Prices)",
+                marketDesc: "వివిధ మార్కెట్ల (మండీలు) ధరలను పోల్చి, రవాణా ఖర్చులు పోను నికర లాభాన్ని లెక్కించండి.",
+                produceQtyLabel: "దిగుబడి పరిమాణం (క్వింటాళ్లలో):",
+                calcMarketEarningsBtn: "మార్కెట్ లాభాలను పోల్చండి",
+                diaryTitle: "📒 నా డిజిటల్ ఫార్మ్ డైరీ (Farm Diary)",
+                diaryTotalIncome: "మొత్తం ఆదాయం",
+                diaryTotalExpense: "మొత్తం ఖర్చు",
+                diaryNetBalance: "నికర లాభం/నష్టం",
+                entryTypeLabel: "లావాదేవీ రకం:",
+                typeExpense: "ఖర్చు (ఎరువులు, పురుగుమందులు, కూలీలు)",
+                typeIncome: "ఆదాయం (పంట విక్రయం)",
+                entryDescLabel: "వివరణ:",
+                entryAmountLabel: "మొత్తం (రూపాయలు):",
+                saveEntryBtn: "డైరీలో నమోదు చేయండి",
                 calcTitle: "⚖️ ఎరువుల కాలిక్యులేటర్ & ఖర్చు అంచనా",
                 landSizeLabel: "భూమి వైశాల్యం (ఎకరాల్లో):",
                 calculateBtn: "లెక్కించండి",
-                calcError: "దయచేసి సరైన ఎకరాల సంఖ్యను నమోదు చేయండి.",
-                irrigationTitle: "💧 నీటి ప్రణాళిక (Irrigation)",
-                irrigationDesc: "ఈ రోజు వాతావరణం, పంట రకానికి తగిన నీటి సమయాన్ని లెక్కించండి.",
-                calcIrrigationBtn: "నీటి అవసరాన్ని లెక్కించు",
+                calcError: "దయచేసి సరైన సంఖ్యను నమోదు చేయండి.",
                 forumTitle: "💬 రైతు కమ్యూనిటీ ఫోరమ్",
                 postPlaceholderTitle: "శీర్షిక",
                 postPlaceholderContent: "సందేశం",
@@ -547,14 +763,20 @@
             en: {
                 offlineStatus: "You are offline. Only cached data is accessible.",
                 navHome: "Home",
-                navWater: "Irrigation",
+                navMarket: "Where to Sell?",
+                navDiary: "Diary",
                 navCalc: "Calculator",
                 navForum: "Forum",
                 weatherTitle: "☀️ Weather Forecast",
                 weatherLoading: "Loading weather...",
                 refreshBtn: "Refresh Data",
-                tipsTitle: "🌱 Farming Tips & Pest Control",
+                assistantTitle: "🌿 Smart Farming Assistant",
                 cropTypeLabel: "Select Crop:",
+                cropStageLabel: "Crop Stage:",
+                stageSowing: "Sowing / Nursery",
+                stageGrowth: "Vegetative Growth & Nutrition",
+                stagePest: "Pest & Disease Management",
+                stageHarvest: "Harvest & Storage",
                 cropRice: "Rice (Paddy)",
                 cropCotton: "Cotton",
                 cropChili: "Chili",
@@ -563,14 +785,25 @@
                 cropSugarcane: "Sugarcane",
                 cropTomato: "Tomato",
                 cropPulses: "Pulses",
-                showTipsBtn: "Show Guidelines",
+                showTipsBtn: "Get Smart Advice",
+                marketTitle: "💰 Where Should I Sell My Crop?",
+                marketDesc: "Compare live mandi prices across nearby markets & estimate net profits after transport costs.",
+                produceQtyLabel: "Produce Quantity (Quintals):",
+                calcMarketEarningsBtn: "Compare Market Net Profit",
+                diaryTitle: "📒 My Digital Farm Diary",
+                diaryTotalIncome: "Total Income",
+                diaryTotalExpense: "Total Expense",
+                diaryNetBalance: "Net Profit / Loss",
+                entryTypeLabel: "Transaction Type:",
+                typeExpense: "Expense (Seeds, Fertilizer, Labor)",
+                typeIncome: "Income (Harvest Sales)",
+                entryDescLabel: "Description:",
+                entryAmountLabel: "Amount (₹):",
+                saveEntryBtn: "Save to Diary",
                 calcTitle: "⚖️ Fertilizer Calculator & Cost Estimation",
                 landSizeLabel: "Land Size (in Acres):",
                 calculateBtn: "Calculate Inputs & Cost",
-                calcError: "Please enter a valid acreage number.",
-                irrigationTitle: "💧 Irrigation Planner",
-                irrigationDesc: "Calculate optimal watering requirements based on current weather.",
-                calcIrrigationBtn: "Calculate Water Requirement",
+                calcError: "Please enter a valid number.",
                 forumTitle: "💬 Farmer Community Forum",
                 postPlaceholderTitle: "Title",
                 postPlaceholderContent: "Write your message...",
@@ -585,14 +818,20 @@
             hi: {
                 offlineStatus: "आप ऑफ़लाइन हैं। केवल कैश्ड डेटा उपलब्ध है।",
                 navHome: "होम",
-                navWater: "सिंचाई",
+                navMarket: "कहाँ बेचें?",
+                navDiary: "डायरी",
                 navCalc: "कैलकुलेटर",
                 navForum: "मंच",
                 weatherTitle: "☀️ मौसम पूर्वानुमान",
                 weatherLoading: "मौसम की जानकारी लोड हो रही है...",
                 refreshBtn: "रिफ्रेश करें",
-                tipsTitle: "🌱 कृषि सुझाव और कीट नियंत्रण",
+                assistantTitle: "🌿 स्मार्ट फार्मिंग सहायक",
                 cropTypeLabel: "फसल चुनें:",
+                cropStageLabel: "फसल का चरण:",
+                stageSowing: "बुवाई / नर्सरी",
+                stageGrowth: "वृद्धि और पोषण",
+                stagePest: "कीट एवं रोग नियंत्रण",
+                stageHarvest: "कटाई और भंडारण",
                 cropRice: "धान (Paddy)",
                 cropCotton: "कपास (Cotton)",
                 cropChili: "मिर्च (Chili)",
@@ -601,36 +840,53 @@
                 cropSugarcane: "गन्ना (Sugarcane)",
                 cropTomato: "टमाटर (Tomato)",
                 cropPulses: "दालें (Pulses)",
-                showTipsBtn: "सुझाव देखें",
-                calcTitle: "⚖️ उर्वरक कैलकुलेटर और लागत अनुमान",
+                showTipsBtn: "स्मार्ट सलाह प्राप्त करें",
+                marketTitle: "💰 मैं अपनी फसल कहाँ बेचूँ?",
+                marketDesc: "विभिन्न मंडियों की कीमतों की तुलना करें और परिवहन लागत घटाकर शुद्ध लाभ जानें।",
+                produceQtyLabel: "उपज की मात्रा (क्विंटल में):",
+                calcMarketEarningsBtn: "मंडी लाभ की तुलना करें",
+                diaryTitle: "📒 मेरी डिजिटल फार्म डायरी",
+                diaryTotalIncome: "कुल आय",
+                diaryTotalExpense: "कुल खर्च",
+                diaryNetBalance: "शुद्ध लाभ / हानि",
+                entryTypeLabel: "लेन-देन का प्रकार:",
+                typeExpense: "खर्च (खाद, बीज, मजदूरी)",
+                typeIncome: "आय (फसल बिक्री)",
+                entryDescLabel: "विवरण:",
+                entryAmountLabel: "राशि (₹):",
+                saveEntryBtn: "डायरी में सहेजें",
+                calcTitle: "⚖️ उर्वरक कैलकुलेटर और लागत",
                 landSizeLabel: "भूमि का आकार (एकड़):",
                 calculateBtn: "गणना करें",
-                calcError: "कृपया सही एकड़ संख्या दर्ज करें।",
-                irrigationTitle: "💧 सिंचाई योजनाकार",
-                irrigationDesc: "मौसम और फसल के अनुसार पानी की आवश्यकता की गणना करें।",
-                calcIrrigationBtn: "पानी की आवश्यकता जांचें",
+                calcError: "कृपया सही संख्या दर्ज करें।",
                 forumTitle: "💬 किसान सामुदायिक मंच",
                 postPlaceholderTitle: "शीर्षक",
                 postPlaceholderContent: "अपना संदेश लिखें...",
                 postBtn: "पोस्ट करें",
-                weatherOnline: "तापमान: 31°C | नमी: 62% | मौसम साफ और धूप खिली रहेगी।",
+                weatherOnline: "तापमान: 31°C | नमी: 62% | मौसम साफ रहेगा।",
                 weatherOffline: "ऑफ़लाइन: नेटवर्क उपलब्ध नहीं है।",
                 likeBtn: "लाइक",
                 commentBtn: "टिप्पणियाँ",
                 shareBtn: "शेयर",
-                commentPlaceholder: "अपनी राय लिखें..."
+                commentPlaceholder: "टिप्पणी लिखें..."
             },
             ta: {
                 offlineStatus: "நீங்கள் ஆஃப்லைனில் உள்ளீர்கள். பதிவான தரவு மட்டுமே கிடைக்கும்.",
                 navHome: "முகப்பு",
-                navWater: "நீர்ப்பாசனம்",
+                navMarket: "எங்கு விற்பது?",
+                navDiary: "டைரி",
                 navCalc: "கால்குலேட்டர்",
                 navForum: "மன்றம்",
                 weatherTitle: "☀️ வானிலை நிலவரம்",
                 weatherLoading: "தகவல் ஏற்றப்படுகிறது...",
                 refreshBtn: "புதுப்பிக்கவும்",
-                tipsTitle: "🌱 விவசாய குறிப்புகள் & பூச்சிக் கட்டுப்பாடு",
+                assistantTitle: "🌿 ஸ்மார்ட் விவசாய உதவியாளர்",
                 cropTypeLabel: "பயிர் வகை:",
+                cropStageLabel: "பயிர் நிலை:",
+                stageSowing: "விதைப்பு / நாற்று",
+                stageGrowth: "வளர்ச்சி மற்றும் உரம்",
+                stagePest: "பூச்சி மற்றும் நோய் கட்டுப்பாடு",
+                stageHarvest: "அறுவடை மற்றும் சேமிப்பு",
                 cropRice: "நெல் (Paddy)",
                 cropCotton: "பருத்தி (Cotton)",
                 cropChili: "மிளகாய் (Chili)",
@@ -639,14 +895,25 @@
                 cropSugarcane: "கரும்பு (Sugarcane)",
                 cropTomato: "தக்காளி (Tomato)",
                 cropPulses: "பருப்பு வகைகள் (Pulses)",
-                showTipsBtn: "குறிப்புகளைக் காட்டு",
-                calcTitle: "⚖️ உர கால்குலேட்டர் மற்றும் செலவு மதிப்பீடு",
+                showTipsBtn: "வழிகாட்டுதலைப் பெறுக",
+                marketTitle: "💰 என் பயிரை எங்கு விற்க வேண்டும்?",
+                marketDesc: "சந்தை விலைகளை ஒப்பிட்டு போக்குவரத்து செலவு போக நிகர லாபத்தை கணக்கிடுங்கள்.",
+                produceQtyLabel: "விளைச்சல் அளவு (குவிண்டால்):",
+                calcMarketEarningsBtn: "லாபத்தை ஒப்பிடுக",
+                diaryTitle: "📒 பண்ணை குறிப்பேடு",
+                diaryTotalIncome: "மொத்த வருமானம்",
+                diaryTotalExpense: "மொத்த செலவு",
+                diaryNetBalance: "நிகர லாபம் / நட்டம்",
+                entryTypeLabel: "பரிவர்த்தனை வகை:",
+                typeExpense: "செலவு (உரம், விதை, கூலி)",
+                typeIncome: "வருமானம் (விற்பனை)",
+                entryDescLabel: "விவரம்:",
+                entryAmountLabel: "தொகை (₹):",
+                saveEntryBtn: "டைரியில் சேமிக்க",
+                calcTitle: "⚖️ உர கால்குலேட்டர் & செலவு மதிப்பீடு",
                 landSizeLabel: "நிலத்தின் அளவு (ஏக்கரில்):",
                 calculateBtn: "கணக்கிடு",
-                calcError: "சரியான ஏக்கர் அளவை உள்ளிடவும்.",
-                irrigationTitle: "💧 நீர்ப்பாசன வழிகாட்டி",
-                irrigationDesc: "பயிர் மற்றும் வானிலைக்கேற்ப நீரின் தேவையை கணக்கிடுங்கள்.",
-                calcIrrigationBtn: "நீரின் தேவையை கணக்கிடு",
+                calcError: "சரியான எண்ணை உள்ளிடவும்.",
                 forumTitle: "💬 உழவர் மன்றம்",
                 postPlaceholderTitle: "தலைப்பு",
                 postPlaceholderContent: "உங்கள் பதிவை எழுதுங்கள்...",
@@ -656,7 +923,7 @@
                 likeBtn: "விருப்பம்",
                 commentBtn: "கருத்துகள்",
                 shareBtn: "பகிர்",
-                commentPlaceholder: "உங்கள் கருத்தை எழுதுங்கள்..."
+                commentPlaceholder: "கருத்தை எழுதவும்..."
             }
         };
 
@@ -682,6 +949,8 @@
             document.getElementById('postContent').placeholder = langData.postPlaceholderContent;
 
             getWeather();
+            updateMandiRates();
+            renderDiary();
             renderPosts();
         }
 
@@ -716,6 +985,136 @@
             }
         }
 
+        // Smart Assistant Action
+        function showSmartAdvice() {
+            const crop = document.getElementById('cropTypeHome').value;
+            const stage = document.getElementById('cropStage').value;
+            const resultParagraph = document.getElementById('agroTips');
+            const langAdvices = ASSISTANT_ADVICE[currentLang] || ASSISTANT_ADVICE.en;
+
+            if (langAdvices[crop] && langAdvices[crop][stage]) {
+                resultParagraph.innerText = langAdvices[crop][stage];
+            } else {
+                resultParagraph.innerText = "సకాలంలో తగిన యాజమాన్య పద్ధతులు పాటించండి.";
+            }
+            resultParagraph.style.display = 'block';
+        }
+
+        // Feature 1: Mandi Rates & Net Sell Comparison
+        function updateMandiRates() {
+            const crop = document.getElementById('marketCrop').value;
+            const container = document.getElementById('mandiRatesDisplay');
+            const mandis = MANDI_DATA[crop] || MANDI_DATA.rice;
+
+            container.innerHTML = mandis.map(m => `
+                <div class="market-chip">
+                    <strong>${m.mandi}</strong>
+                    <span>₹${m.rate.toLocaleString('en-IN')}/Qtl</span>
+                </div>
+            `).join('');
+        }
+
+        function compareMarketEarnings() {
+            const crop = document.getElementById('marketCrop').value;
+            const qtl = parseFloat(document.getElementById('produceQuantity').value);
+            const resultBox = document.getElementById('marketComparisonResult');
+            const lang = translations[currentLang];
+
+            if (isNaN(qtl) || qtl <= 0) {
+                resultBox.innerText = lang.calcError;
+                resultBox.style.display = 'block';
+                return;
+            }
+
+            const mandis = MANDI_DATA[crop] || MANDI_DATA.rice;
+            let bestMandi = null;
+            let maxNetEarnings = -1;
+
+            let html = `<strong>📊 ${qtl} క్వింటాళ్ల విక్రయ లాభాల పోలిక:</strong><br><br>`;
+
+            mandis.forEach(m => {
+                const gross = m.rate * qtl;
+                const transport = m.transportPerQtl * qtl;
+                const net = gross - transport;
+
+                if (net > maxNetEarnings) {
+                    maxNetEarnings = net;
+                    bestMandi = m.mandi;
+                }
+
+                html += `• <strong>${m.mandi}</strong>: ధర: ₹${m.rate}/Qtl | రవాణా ఖర్చు: ₹${transport.toLocaleString('en-IN')} ➔ <strong>నికర రాబడి: ₹${net.toLocaleString('en-IN')}</strong><br>`;
+            });
+
+            html += `<span class="cost-badge">🏆 <strong>ఉత్తమ ఎంపిక: ${bestMandi}</strong> (అన్ని ఖర్చులు పోను అత్యధిక నికర లాభం ₹${maxNetEarnings.toLocaleString('en-IN')})</span>`;
+            resultBox.innerHTML = html;
+            resultBox.style.display = 'block';
+        }
+
+        // Feature 3: Digital Farm Diary Implementation
+        function getDiaryEntries() {
+            const stored = localStorage.getItem('agroFarmDiary');
+            return stored ? JSON.parse(stored) : [
+                { id: 1, type: 'expense', desc: 'DAP మరియు యూరియా ఎరువులు', amount: 3200, date: '15/10/2026' },
+                { id: 2, type: 'expense', desc: 'ట్రాక్టర్ దుక్కి ఖర్చు', amount: 2500, date: '18/10/2026' },
+                { id: 3, type: 'income', desc: 'మొదటి విడత కూరగాయల విక్రయం', amount: 9500, date: '22/10/2026' }
+            ];
+        }
+
+        function saveDiaryEntry() {
+            const type = document.getElementById('diaryType').value;
+            const desc = document.getElementById('diaryDesc').value.trim();
+            const amount = parseFloat(document.getElementById('diaryAmount').value);
+
+            if (desc && !isNaN(amount) && amount > 0) {
+                const entries = getDiaryEntries();
+                entries.unshift({
+                    id: Date.now(),
+                    type,
+                    desc,
+                    amount,
+                    date: new Date().toLocaleDateString('en-IN')
+                });
+                localStorage.setItem('agroFarmDiary', JSON.stringify(entries));
+                document.getElementById('diaryDesc').value = '';
+                document.getElementById('diaryAmount').value = '';
+                renderDiary();
+            }
+        }
+
+        function renderDiary() {
+            const entries = getDiaryEntries();
+            const listContainer = document.getElementById('diaryEntriesContainer');
+            listContainer.innerHTML = '';
+
+            let totalIncome = 0;
+            let totalExpense = 0;
+
+            entries.forEach(item => {
+                if (item.type === 'income') totalIncome += item.amount;
+                if (item.type === 'expense') totalExpense += item.amount;
+
+                const entryDiv = document.createElement('div');
+                entryDiv.className = `diary-entry ${item.type}`;
+                entryDiv.innerHTML = `
+                    <div>
+                        <strong>${item.desc}</strong>
+                        <div style="font-size:0.75rem; color:#6b7280;">${item.date}</div>
+                    </div>
+                    <div style="font-weight:700; color:${item.type === 'income' ? '#16a34a' : '#ef4444'}">
+                        ${item.type === 'income' ? '+' : '-'}₹${item.amount.toLocaleString('en-IN')}
+                    </div>
+                `;
+                listContainer.appendChild(entryDiv);
+            });
+
+            const net = totalIncome - totalExpense;
+            document.getElementById('diaryIncome').innerText = `₹${totalIncome.toLocaleString('en-IN')}`;
+            document.getElementById('diaryExpense').innerText = `₹${totalExpense.toLocaleString('en-IN')}`;
+            document.getElementById('diaryNet').innerText = `${net >= 0 ? '+' : ''}₹${net.toLocaleString('en-IN')}`;
+            document.getElementById('diaryNet').style.color = net >= 0 ? '#15803d' : '#ef4444';
+        }
+
+        // Fertilizer & Cost Calculator
         function calculateFertilizer() {
             const acres = parseFloat(document.getElementById('landSize').value);
             const cropKey = document.getElementById('cropTypeCalc').value;
@@ -734,39 +1133,13 @@
                 const potashCost = potashQty * MARKET_PRICES.potash;
                 const totalCost = ureaCost + dapCost + potashCost;
 
-                if (currentLang === 'te') {
-                    resultBox.innerHTML = `
-                        <strong>🌾 ${cropName} (${acres} ఎకరాలు) ఎరువుల అవసరం:</strong><br>
-                        • యూరియా: ${ureaQty} kg (అంచనా ఖర్చు: ₹${ureaCost})<br>
-                        • DAP: ${dapQty} kg (అంచనా ఖర్చు: ₹${dapCost})<br>
-                        • పొటాష్ (MOP): ${potashQty} kg (అంచనా ఖర్చు: ₹${potashCost})<br>
-                        <span class="cost-badge">💰 <strong>మొత్తం ఎరువుల బడ్జెట్ (సుమారుగా): ₹${totalCost.toLocaleString('en-IN')}</strong></span>
-                    `;
-                } else if (currentLang === 'hi') {
-                    resultBox.innerHTML = `
-                        <strong>🌾 ${cropName} (${acres} एकड़) के लिए उर्वरक आवश्यकता:</strong><br>
-                        • यूरिया: ${ureaQty} kg (अनुमानित लागत: ₹${ureaCost})<br>
-                        • डीएपी: ${dapQty} kg (अनुमानित लागत: ₹${dapCost})<br>
-                        • पोटाश: ${potashQty} kg (अनुमानित लागत: ₹${potashCost})<br>
-                        <span class="cost-badge">💰 <strong>कुल उर्वरक लागत (लगभग): ₹${totalCost.toLocaleString('en-IN')}</strong></span>
-                    `;
-                } else if (currentLang === 'ta') {
-                    resultBox.innerHTML = `
-                        <strong>🌾 ${cropName} (${acres} ஏக்கர்) உரத் தேவைகள்:</strong><br>
-                        • யூரியா: ${ureaQty} kg (செலவு: ₹${ureaCost})<br>
-                        • DAP: ${dapQty} kg (செலவு: ₹${dapCost})<br>
-                        • பொட்டாஷ்: ${potashQty} kg (செலவு: ₹${potashCost})<br>
-                        <span class="cost-badge">💰 <strong>மொத்த உரச் செலவு (தோராயமாக): ₹${totalCost.toLocaleString('en-IN')}</strong></span>
-                    `;
-                } else {
-                    resultBox.innerHTML = `
-                        <strong>🌾 ${cropName} (${acres} Acre(s)) Requirement:</strong><br>
-                        • Urea: ${ureaQty} kg (Est. Cost: ₹${ureaCost})<br>
-                        • DAP: ${dapQty} kg (Est. Cost: ₹${dapCost})<br>
-                        • MOP (Potash): ${potashQty} kg (Est. Cost: ₹${potashCost})<br>
-                        <span class="cost-badge">💰 <strong>Total Est. Fertilizer Cost: ₹${totalCost.toLocaleString('en-IN')}</strong></span>
-                    `;
-                }
+                resultBox.innerHTML = `
+                    <strong>🌾 ${cropName} (${acres} ఎకరాలు) ఎరువుల మోతాదు & ఖర్చు:</strong><br>
+                    • యూరియా: ${ureaQty} kg (అంచనా ఖర్చు: ₹${ureaCost.toLocaleString('en-IN')})<br>
+                    • DAP: ${dapQty} kg (అంచనా ఖర్చు: ₹${dapCost.toLocaleString('en-IN')})<br>
+                    • పొటాష్ (MOP): ${potashQty} kg (అంచనా ఖర్చు: ₹${potashCost.toLocaleString('en-IN')})<br>
+                    <span class="cost-badge">💰 <strong>మొత్తం ఎరువుల బడ్జెట్: ₹${totalCost.toLocaleString('en-IN')}</strong></span>
+                `;
                 resultBox.style.display = 'block';
             } else {
                 resultBox.innerText = langData.calcError;
@@ -774,38 +1147,14 @@
             }
         }
 
-        function showTips() {
-            const cropKey = document.getElementById('cropTypeHome').value;
-            const resultParagraph = document.getElementById('agroTips');
-            const tips = CROP_TIPS[currentLang] || CROP_TIPS.en;
-            resultParagraph.innerText = tips[cropKey] || "సరియైన యాజమాన్య పద్ధతులను పాటించండి.";
-            resultParagraph.style.display = 'block';
-        }
-
-        function calculateIrrigation() {
-            const cropKey = document.getElementById('irrigationCrop').value;
-            const resultParagraph = document.getElementById('irrigationResult');
-            const data = CROP_DATA[cropKey] || CROP_DATA.rice;
-
-            if (currentLang === 'te') {
-                resultParagraph.innerText = `ప్రస్తుత ఎండ తీవ్రతకు: ${data.water} అవసరం. డ్రిప్ / నీటి సరఫరా రన్‌టైమ్: సుమారు ${data.hours} అందించండి.`;
-            } else if (currentLang === 'hi') {
-                resultParagraph.innerText = `वर्तमान तापमान के अनुसार: लगभग पानी की आवश्यकता और ड्रिप समय: ${data.hours} चलाना उचित रहेगा।`;
-            } else if (currentLang === 'ta') {
-                resultParagraph.innerText = `தற்போதைய காலநிலைக்கு: சொட்டுநீர் பாசன நேரம் சுமார் ${data.hours} இயக்குவது சிறந்தது.`;
-            } else {
-                resultParagraph.innerText = `Based on current weather: Crop requirement is ${data.water}. Recommended drip runtime: ~${data.hours}.`;
-            }
-            resultParagraph.style.display = 'block';
-        }
-
+        // Forum with Likes, Comments & Native Share
         function getStoredPosts() {
             const defaultPosts = [
                 {
                     id: 1,
                     title: "వరిలో తెగుళ్ల నివారణ (Pest check in Paddy)",
                     content: "ఈ వారం ఆకుమచ్చ కనిపిస్తోంది. ట్రైకోడెర్మా లేదా వేపనూనె వాడిన వారు ఫలితాలు చెప్పగలరు?",
-                    likes: 3,
+                    likes: 4,
                     liked: false,
                     comments: ["వేపనూనె 5ml లీటరు నీటికి కలిపి కొట్టండి, బాగా పనిచేస్తుంది."]
                 }
@@ -880,7 +1229,7 @@
                 }).catch(() => {});
             } else {
                 navigator.clipboard.writeText(`${cleanTitle} - ${cleanContent}`);
-                alert("పోస్ట్ లింక్/టెక్స్ట్ కాపీ చేయబడింది! (Copied to Clipboard)");
+                alert("పోస్ట్ కాపీ చేయబడింది! (Copied to Clipboard)");
             }
         }
 
@@ -893,7 +1242,6 @@
             posts.forEach(post => {
                 const postDiv = document.createElement('div');
                 postDiv.className = 'post';
-
                 const commentsHtml = post.comments.map(c => `<div class="comment-item">💬 ${c}</div>`).join('');
 
                 postDiv.innerHTML = `
@@ -933,8 +1281,9 @@
 
             document.getElementById('languageSelect').addEventListener('change', changeLanguage);
             document.getElementById('refreshWeatherBtn').addEventListener('click', getWeather);
-            document.getElementById('tipsBtn').addEventListener('click', showTips);
-            document.getElementById('irrigationBtn').addEventListener('click', calculateIrrigation);
+            document.getElementById('tipsBtn').addEventListener('click', showSmartAdvice);
+            document.getElementById('calcMarketBtn').addEventListener('click', compareMarketEarnings);
+            document.getElementById('saveDiaryBtn').addEventListener('click', saveDiaryEntry);
             document.getElementById('calcFertilizerBtn').addEventListener('click', calculateFertilizer);
             document.getElementById('savePostBtn').addEventListener('click', savePost);
 
