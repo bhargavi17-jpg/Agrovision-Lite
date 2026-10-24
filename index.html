@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Smart AgroVision | Raithu Sethu</title>
   
-  <!-- PWA Manifest & Theme Settings -->
+  <!-- PWA Manifest & App Configuration -->
   <link rel="manifest" href="manifest.json" />
   <meta name="theme-color" content="#117a37" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
@@ -45,6 +45,7 @@
       min-height: 100vh;
     }
 
+    /* PWA Prompt Header */
     #pwa-install-banner {
       display: none;
       background: #117a37;
@@ -125,6 +126,7 @@
       background: #fff;
     }
 
+    /* Layout Containers */
     .container {
       max-width: 600px;
       margin: 14px auto;
@@ -145,6 +147,7 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
+    /* Card Panels */
     .card {
       background: var(--glass);
       backdrop-filter: blur(12px);
@@ -220,7 +223,7 @@
       transform: scale(0.98);
     }
 
-    /* Weather */
+    /* Weather Overview */
     .weather-box {
       background: linear-gradient(135deg, #0284c7, #0369a1);
       color: #fff;
@@ -253,7 +256,7 @@
       line-height: 1.6;
     }
 
-    /* Labor Calendar */
+    /* Labor Calendar Details */
     .labor-summary {
       display: grid;
       grid-template-columns: 1fr 1fr;
@@ -292,7 +295,7 @@
       align-items: center;
     }
 
-    /* Schemes UI */
+    /* Govt Schemes & Portals */
     .scheme-card {
       background: #fff;
       border: 1px solid var(--border);
@@ -340,9 +343,10 @@
       font-size: 0.82rem;
       font-weight: 700;
       border-radius: 8px;
+      transition: background 0.2s;
     }
 
-    /* Forum Upgrades: Farmer Details & Media Upload */
+    /* Community Forum Styles */
     .forum-post {
       background: #fff;
       border: 1px solid var(--border);
@@ -473,7 +477,7 @@
       font-weight: 700;
     }
 
-    /* Bottom Navigation */
+    /* Bottom Navigation Bar */
     .bottom-nav {
       position: fixed;
       bottom: 0;
@@ -515,13 +519,13 @@
 </head>
 <body>
 
-  <!-- In-app Install Banner -->
+  <!-- In-app PWA Prompt Banner -->
   <div id="pwa-install-banner">
     <span>📲 యాప్‌ను మీ ఫోన్‌లో ఇన్‌స్టాల్ చేసుకోండి</span>
     <button id="pwa-install-btn">ఇన్‌స్టాల్</button>
   </div>
 
-  <!-- Header with Logo -->
+  <!-- Header with User Defined Logo -->
   <header>
     <div class="brand-wrap">
       <img src="IMG_20261024_155337.jpg" alt="Logo" class="logo-img" onerror="this.src='https://api.iconify.design/lucide:leaf.svg?color=%23117a37&width=40';" />
@@ -713,7 +717,7 @@
       </div>
     </div>
 
-    <!-- 6. UPGRADED COMMUNITY FORUM (Author Details + Photo/Video) -->
+    <!-- 6. UPGRADED FORUM (Identification + Photo/Video Attachments) -->
     <div id="tab-forum" class="tab-content">
       <div class="card">
         <div class="card-title">
@@ -738,7 +742,7 @@
           <textarea id="forumMsg" rows="3" placeholder="మీ పంట సమస్య లేదా అనుభవాన్ని ఇక్కడ వివరంగా రాయండి..."></textarea>
         </div>
 
-        <!-- Media Attachment (Photo / Video) -->
+        <!-- Attachment Picker -->
         <label class="media-upload-label" for="forumMediaInput">
           <i class="fa-solid fa-camera"></i> <span id="lbl-add-media">ఫోటో లేదా వీడియో జతచేయండి (Photo/Video)</span>
         </label>
@@ -756,7 +760,6 @@
 
       <!-- Feed Container -->
       <div id="forumPosts">
-        <!-- Sample Post -->
         <div class="forum-post">
           <div class="post-header">
             <div class="post-avatar">రా</div>
@@ -807,7 +810,7 @@
   </nav>
 
   <script>
-    // PWA Service Worker Registration
+    // Register Service Worker for PWA
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
         navigator.serviceWorker.register('./sw.js')
@@ -835,7 +838,7 @@
       }
     });
 
-    // 8 Expanded Crops
+    // 8 Expanded Crop Database
     const cropsList = [
       { id: "paddy", te: "వరి (Paddy)", en: "Paddy (Rice)", hi: "धान (Paddy)", ta: "நெல் (Paddy)", rate: 2320, urea: 90, dap: 50, mop: 40 },
       { id: "cotton", te: "పత్తి (Cotton)", en: "Cotton", hi: "कपास (Cotton)", ta: "பருத்தி (Cotton)", rate: 7100, urea: 100, dap: 60, mop: 50 },
@@ -872,7 +875,7 @@
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
-    // Advice Logic
+    // Expert Farming Advice
     function getFarmingAdvice() {
       const crop = document.getElementById('advCrop').value;
       const stage = document.getElementById('advStage').value;
@@ -898,7 +901,7 @@
       res.innerHTML = `<strong>💡 ${currentLang === 'te' ? 'నిపుణుల సలహా' : 'Expert Advice'}:</strong><br>${adviceMap[langKey][stage]}`;
     }
 
-    // Market Profit Calc
+    // Market Comparison Logic
     function calculateMarketProfit() {
       const cropId = document.getElementById('mktCrop').value;
       const qty = parseFloat(document.getElementById('mktQty').value);
@@ -934,7 +937,7 @@
       `;
     }
 
-    // Labor Calendar Tracker
+    // Labor Calendar Tracker State
     let laborRecords = JSON.parse(localStorage.getItem('farm_labors') || '[]');
 
     function renderLaborRecords() {
@@ -990,7 +993,7 @@
       renderLaborRecords();
     }
 
-    // Fertilizer Calc
+    // Fertilizer Calculator
     function calcFertilizer() {
       const acres = parseFloat(document.getElementById('fertAcres').value);
       const cropId = document.getElementById('fertCrop').value;
@@ -1021,7 +1024,7 @@
     }
 
     // Forum Media Upload & Preview
-    let currentAttachedMedia = null; // { type: 'image' | 'video', url: string }
+    let currentAttachedMedia = null;
 
     function handleForumMediaUpload(input) {
       const file = input.files[0];
@@ -1052,9 +1055,9 @@
       document.getElementById('mediaPreviewBox').style.display = 'none';
     }
 
-    // Upgraded Post to Forum Function
+    // Forum Post Logic with Author Details & Media
     function postToForum() {
-      const author = document.getElementById('forumAuthor').value.trim() || (currentLang === 'te' ? "అజ్ఞాత రైతు" : "Farmer");
+      const author = document.getElementById('forumAuthor').value.trim() || (currentLang === 'te' ? "రైతు" : "Farmer");
       const village = document.getElementById('forumVillage').value.trim() || (currentLang === 'te' ? "ఆంధ్రప్రదేశ్" : "AP");
       const title = document.getElementById('forumTitle').value.trim();
       const msg = document.getElementById('forumMsg').value.trim();
@@ -1105,7 +1108,6 @@
 
       document.getElementById('forumPosts').prepend(postDiv);
 
-      // Reset fields
       document.getElementById('forumTitle').value = '';
       document.getElementById('forumMsg').value = '';
       clearForumMedia();
@@ -1123,7 +1125,7 @@
       }
     }
 
-    // Translations Dictionary
+    // Multi-Language Localization
     const translations = {
       te: {
         appTitle: "Smart AgroVision",
