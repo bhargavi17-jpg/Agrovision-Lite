@@ -413,7 +413,7 @@
         <!-- 4. Forum Section -->
         <section id="section-forum" class="content-section">
             <div class="card card-forum">
-                <h2 data-key="forumTitle">💬 రైతు కమ్యూニటీ ఫోరమ్</h2>
+                <h2 data-key="forumTitle">💬 రైతు కమ్యూనిటీ ఫోరమ్</h2>
                 <label data-key="postPlaceholderTitle">శీర్షిక</label>
                 <input type="text" id="postTitle">
                 <label data-key="postPlaceholderContent">సందేశం</label>
@@ -445,14 +445,12 @@
     </nav>
 
     <script>
-        // Benchmark market rates per kg (Subsidized Urea ~₹6/kg, DAP ~₹27/kg, MOP/Potash ~₹34/kg)
         const MARKET_PRICES = {
             urea: 6,
             dap: 27,
             potash: 34
         };
 
-        // Crop standards per acre: [Urea_kg, DAP_kg, Potash_kg, Liters/day, Runtime_hrs]
         const CROP_DATA = {
             rice: { urea: 90, dap: 50, potash: 40, water: "రోజుకు 45-50 లీటర్లు / నిలకడ నీరు", hours: "3-4 గంటలు (కాల్వ/బోరు)" },
             cotton: { urea: 60, dap: 35, potash: 30, water: "రోజుకు 20-25 లీటర్లు", hours: "1.5 - 2 గంటలు" },
@@ -680,7 +678,6 @@
                 }
             });
 
-            // Update placeholders
             document.getElementById('postTitle').placeholder = langData.postPlaceholderTitle;
             document.getElementById('postContent').placeholder = langData.postPlaceholderContent;
 
@@ -719,7 +716,6 @@
             }
         }
 
-        // Calculation with Quantity & Estimated Market Cost
         function calculateFertilizer() {
             const acres = parseFloat(document.getElementById('landSize').value);
             const cropKey = document.getElementById('cropTypeCalc').value;
@@ -803,7 +799,6 @@
             resultParagraph.style.display = 'block';
         }
 
-        // Forum with Likes, Comments & Native Share
         function getStoredPosts() {
             const defaultPosts = [
                 {
@@ -875,14 +870,16 @@
         }
 
         function sharePost(title, content) {
+            const cleanTitle = decodeURIComponent(title);
+            const cleanContent = decodeURIComponent(content);
             if (navigator.share) {
                 navigator.share({
-                    title: title,
-                    text: `${title}\n\n${content}\n- Via Smart AgroVision App`,
+                    title: cleanTitle,
+                    text: `${cleanTitle}\n\n${cleanContent}\n- Via Smart AgroVision App`,
                     url: window.location.href
                 }).catch(() => {});
             } else {
-                navigator.clipboard.writeText(`${title} - ${content}`);
+                navigator.clipboard.writeText(`${cleanTitle} - ${cleanContent}`);
                 alert("పోస్ట్ లింక్/టెక్స్ట్ కాపీ చేయబడింది! (Copied to Clipboard)");
             }
         }
@@ -926,7 +923,6 @@
         }
 
         document.addEventListener('DOMContentLoaded', () => {
-            // Setup Tab Click Navigation
             document.querySelectorAll('.tab-btn').forEach(btn => {
                 btn.addEventListener('click', function(e) {
                     e.preventDefault();
@@ -935,7 +931,6 @@
                 });
             });
 
-            // Action Buttons Event Listeners
             document.getElementById('languageSelect').addEventListener('change', changeLanguage);
             document.getElementById('refreshWeatherBtn').addEventListener('click', getWeather);
             document.getElementById('tipsBtn').addEventListener('click', showTips);
@@ -943,7 +938,6 @@
             document.getElementById('calcFertilizerBtn').addEventListener('click', calculateFertilizer);
             document.getElementById('savePostBtn').addEventListener('click', savePost);
 
-            // Restore Language Preference
             const savedLang = localStorage.getItem('preferredLang');
             if (savedLang) {
                 currentLang = savedLang;
@@ -952,7 +946,6 @@
 
             updateUI();
 
-            // Online/Offline detection
             window.addEventListener('online', () => {
                 document.getElementById('offlineBanner').style.display = 'none';
                 getWeather();
