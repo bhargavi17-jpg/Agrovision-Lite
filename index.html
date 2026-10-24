@@ -17,7 +17,391 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Noto+Sans+Telugu:wght@400;600;700&family=Noto+Sans+Devanagari:wght@400;600;700&family=Noto+Sans+Tamil:wght@400;600;700&display=swap" rel="stylesheet">
+<!DOCTYPE html>
+<html lang="te">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart AgroVision</title>
+    <style>
+        :root {
+            --primary: #2e7d32;
+            --primary-light: #c8e6c9;
+            --secondary: #ffb300;
+            --dark: #333;
+            --light: #f4f4f9;
+            --white: #ffffff;
+            --danger: #d32f2f;
+        }
 
+        body { font-family: sans-serif; margin: 0; padding: 0; background: var(--light); color: var(--dark); padding-bottom: 60px; }
+        header { background: var(--primary); color: var(--white); padding: 15px; text-align: center; position: sticky; top: 0; z-index: 100; }
+        .container { padding: 15px; max-width: 600px; margin: auto; }
+        .card { background: var(--white); padding: 15px; border-radius: 12px; margin-bottom: 15px; box-shadow: 0 4px 6px rgba(0,0,0,0.05); }
+        h1 { margin: 0; font-size: 1.5rem; }
+        h2 { color: var(--primary); border-bottom: 2px solid var(--primary-light); padding-bottom: 5px; margin-top: 0; font-size: 1.2rem; }
+        button { background: var(--primary); color: var(--white); border: none; padding: 12px; border-radius: 8px; cursor: pointer; width: 100%; font-size: 1rem; font-weight: bold; transition: background 0.3s; }
+        button:hover { background: #1b5e20; }
+        input, textarea, select { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ccc; border-radius: 8px; box-sizing: border-box; font-size: 1rem; }
+        .post { border-bottom: 1px solid #eee; padding-bottom: 10px; margin-bottom: 10px; }
+        .post h3 { margin: 5px 0; color: var(--dark); }
+        .post p { margin: 0; font-size: 0.95rem; color: #555; }
+        .result { font-weight: bold; color: var(--primary); margin-top: 10px; padding: 10px; background: var(--primary-light); border-radius: 8px; display: none; }
+        .lang-selector { text-align: right; margin-bottom: 10px; }
+        .lang-selector select { width: auto; padding: 5px; font-size: 0.9rem; }
+        .offline-indicator { background: var(--danger); color: var(--white); text-align: center; padding: 5px; display: none; font-size: 0.8rem; }
+        
+        /* Bottom Navigation */
+        .bottom-nav { position: fixed; bottom: 0; width: 100%; height: 60px; background: var(--white); display: flex; justify-content: space-around; align-items: center; box-shadow: 0 -2px 5px rgba(0,0,0,0.05); z-index: 100; }
+        .nav-item { background: none; border: none; color: #757575; font-size: 0.85rem; font-weight: bold; display: flex; flex-direction: column; align-items: center; cursor: pointer; }
+        .nav-item.active { color: var(--primary); }
+        .nav-item svg { width: 24px; height: 24px; fill: currentColor; margin-bottom: 4px; }
+        
+        .content-section { display: none; }
+        .content-section.active { display: block; }
+    </style>
+</head>
+<body>
+
+    <div id="offlineBanner" class="offline-indicator" data-key="offlineStatus">మీరు ఆఫ్‌లైన్‌లో ఉన్నారు. కాష్ చేయబడిన సమాచారం మాత్రమే అందుబాటులో ఉంది.</div>
+
+    <header>
+        <div class="lang-selector">
+            <label for="languageSelect" data-key="languageLabel">భాష:</label>
+            <select id="languageSelect" onchange="changeLanguage()">
+                <option value="te">తెలుగు</option>
+                <option value="en">English</option>
+                <option value="hi">हिंदी</option>
+                <option value="ta">தமிழ்</option>
+            </select>
+        </div>
+        <h1>Smart AgroVision</h1>
+    </header>
+
+    <div class="container">
+        
+        <!-- Home Section -->
+        <div id="homeSection" class="content-section active">
+            <div class="card">
+                <h2 data-key="weatherTitle">వాతావరణ సూచనలు</h2>
+                <p id="weather" data-key="weatherLoading">సమాచారం లోడ్ అవుతోంది...</p>
+                <button onclick="getWeather()" data-key="refreshBtn">రిఫ్రెష్</button>
+            </div>
+
+            <div class="card">
+                <h2 data-key="tipsTitle">వ్యవసాయ చిట్కాలు & తెగుళ్ళ నివారణ</h2>
+                <label for="cropTypeHome" data-key="cropTypeLabel">పంట రకం:</label>
+                <select id="cropTypeHome">
+                    <option value="వరి" data-key="cropRice">వరి</option>
+                    <option value="ప్రత్తి" data-key="cropCotton">ప్రత్తి</option>
+                    <option value="మిరప" data-key="cropChili">మిరప</option>
+                </select>
+                <button onclick="showTips()" data-key="showTipsBtn">సూచనలను చూపించు</button>
+                <p id="agroTips" class="result"></p>
+            </div>
+        </div>
+
+        <!-- Irrigation Section -->
+        <div id="irrigationSection" class="content-section">
+            <div class="card">
+                <h2 data-key="irrigationTitle">నీటి ప్రణాళిక (Irrigation Planner)</h2>
+                <button onclick="calculateIrrigation()" data-key="calcIrrigationBtn">నీటి అవసరాన్ని లెక్కించు</button>
+                <p id="irrigationResult" class="result"></p>
+            </div>
+        </div>
+
+        <!-- Calculator Section -->
+        <div id="calcSection" class="content-section">
+            <div class="card">
+                <h2 data-key="calcTitle">ఎరువుల కాలిక్యులేటర్</h2>
+                <label for="landSize" data-key="landSizeLabel">భూమి వైశాల్యం (ఎకరాల్లో):</label>
+                <input type="number" id="landSize" placeholder="ఉదా: 2">
+                <label for="cropTypeCalc" data-key="cropTypeLabel">పంట రకం:</label>
+                <select id="cropTypeCalc">
+                    <option value="వరి" data-key="cropRice">వరి</option>
+                    <option value="ప్రత్తి" data-key="cropCotton">ప్రత్తి</option>
+                    <option value="మిరప" data-key="cropChili">మిరప</option>
+                </select>
+                <button onclick="calculateFertilizer()" data-key="calculateBtn">లెక్కించండి</button>
+                <p id="fertilizerResult" class="result"></p>
+            </div>
+        </div>
+
+        <!-- Forum Section -->
+        <div id="forumSection" class="content-section">
+            <div class="card">
+                <h2 data-key="forumTitle">కమ్యూనిటీ ఫోరమ్</h2>
+                <input type="text" id="postTitle">
+                <textarea id="postContent"></textarea>
+                <button onclick="savePost()" data-key="postBtn">పోస్ట్ చేయండి</button>
+                <div id="postsContainer"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- Bottom Navigation Bar -->
+    <nav class="bottom-nav">
+        <button class="nav-item active" onclick="showSection('home')">
+            <svg viewBox="0 0 24 24"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"/></svg>
+            <span data-key="navHome">హోమ్</span>
+        </button>
+        <button class="nav-item" onclick="showSection('irrigation')">
+            <svg viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8z"/></svg>
+            <span data-key="navWater">నీటి సరఫరా</span>
+        </button>
+        <button class="nav-item" onclick="showSection('calc')">
+            <svg viewBox="0 0 24 24"><path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-4 6c0 1.1-.9 2-2 2h-2v2h4v2H7v-4c0-1.1.9-2 2-2h2V7H7V5h6v4z"/></svg>
+            <span data-key="navCalc">కాలిక్యులేటర్</span>
+        </button>
+        <button class="nav-item" onclick="showSection('forum')">
+            <svg viewBox="0 0 24 24"><path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zM9 11H7v2h2v-2zm4 0h-2v2h2v-2zm4 0h-2v2h2v-2z"/></svg>
+            <span data-key="navForum">ఫోరమ్</span>
+        </button>
+    </nav>
+
+    <script>
+        const translations = {
+            te: {
+                languageLabel: "భాష:",
+                offlineStatus: "మీరు ఆఫ్‌లైన్‌లో ఉన్నారు. కాష్ చేయబడిన సమాచారం మాత్రమే అందుబాటులో ఉంది.",
+                navHome: "హోమ్",
+                navWater: "నీటి సరఫరా",
+                navCalc: "కాలిక్యులేటర్",
+                navForum: "ఫోరమ్",
+                weatherTitle: "వాతావరణ సూచనలు",
+                weatherLoading: "సమాచారం లోడ్ అవుతోంది...",
+                refreshBtn: "రిఫ్రెష్",
+                tipsTitle: "వ్యవసాయ చిట్కాలు & తెగుళ్ళ నివారణ",
+                cropTypeLabel: "పంట రకం:",
+                cropRice: "వరి",
+                cropCotton: "ప్రత్తి",
+                cropChili: "మిరప",
+                showTipsBtn: "సూచనలను చూపించు",
+                calcTitle: "ఎరువుల కాలిక్యులేటర్",
+                landSizeLabel: "భూమి వైశాల్యం (ఎకరాల్లో):",
+                calculateBtn: "లెక్కించండి",
+                calcResult: (crop, acres, nitro, phos) => `${crop} పంటకు, ${acres} ఎకరాలకు గాను ${nitro}కిలోల నత్రజని, ${phos}కిలోల భాస్వరం అవసరం.`,
+                calcError: "సరైన వైశాల్యం నమోదు చేయండి.",
+                tipsResult: "ఎరువులను వేసేటప్పుడు నేలలోని తేమను గమనించండి. తెగుళ్ళ నివారణకు ఆర్గానిక్ పద్ధతులను పాటించండి.",
+                irrigationTitle: "నీటి ప్రణాళిక",
+                calcIrrigationBtn: "నీటి అవసరాన్ని లెక్కించు",
+                irrigationResult: "ప్రస్తుత వాతావరణ పరిస్థితుల ప్రకారం, మీ పంటకు రోజుకు 20 లీటర్ల నీరు అవసరం.",
+                forumTitle: "కమ్యూనిటీ ఫోరమ్",
+                postPlaceholderTitle: "శీర్షిక...",
+                postPlaceholderContent: "మీ సందేశం ఇక్కడ రాయండి...",
+                postBtn: "పోస్ట్ చేయండి",
+                weatherOnline: "ఉష్ణోగ్రత: 30°C, వర్ష సూచన లేదు.",
+                weatherOffline: "ఇంటర్నెట్ లేదు (ఆఫ్‌లైన్ మోడ్)."
+            },
+            en: {
+                languageLabel: "Language:",
+                offlineStatus: "You are offline. Only cached data is available.",
+                navHome: "Home",
+                navWater: "Water Supply",
+                navCalc: "Calculator",
+                navForum: "Forum",
+                weatherTitle: "Weather Forecast",
+                weatherLoading: "Loading information...",
+                refreshBtn: "Refresh",
+                tipsTitle: "Agricultural Tips & Pest Control",
+                cropTypeLabel: "Crop Type:",
+                cropRice: "Rice",
+                cropCotton: "Cotton",
+                cropChili: "Chili",
+                showTipsBtn: "Show Instructions",
+                calcTitle: "Fertilizer Calculator",
+                landSizeLabel: "Land Size (in acres):",
+                calculateBtn: "Calculate",
+                calcResult: (crop, acres, nitro, phos) => `For ${acres} acres of ${crop}, you need ${nitro}kg of nitrogen and ${phos}kg of phosphorus.`,
+                calcError: "Please enter a valid size.",
+                tipsResult: "Check soil moisture when applying fertilizer. Follow organic methods to prevent pests.",
+                irrigationTitle: "Irrigation Planner",
+                calcIrrigationBtn: "Calculate Water Need",
+                irrigationResult: "Based on current weather conditions, your crop needs 20 liters of water per day.",
+                forumTitle: "Community Forum",
+                postPlaceholderTitle: "Title...",
+                postPlaceholderContent: "Write your message here...",
+                postBtn: "Post",
+                weatherOnline: "Temperature: 30°C, No rain forecast.",
+                weatherOffline: "No internet (offline mode)."
+            },
+            hi: {
+                languageLabel: "भाषा:",
+                offlineStatus: "आप ऑफ़लाइन हैं। केवल कैश्ड डेटा उपलब्ध है।",
+                navHome: "होम",
+                navWater: "जल आपूर्ति",
+                navCalc: "कैलकुलेटर",
+                navForum: "फोरम",
+                weatherTitle: "मौसम का पूर्वानुमान",
+                weatherLoading: "जानकारी लोड हो रही है...",
+                refreshBtn: "रिफ्रेश",
+                tipsTitle: "कृषि युक्तियाँ और कीट नियंत्रण",
+                cropTypeLabel: "फसल का प्रकार:",
+                cropRice: "चावल",
+                cropCotton: "कपास",
+                cropChili: "मिर्च",
+                showTipsBtn: "निर्देश दिखाएँ",
+                calcTitle: "उर्वरक कैलकुलेटर",
+                landSizeLabel: "भूमि का आकार (एकड़ में):",
+                calculateBtn: "गणना करें",
+                calcResult: (crop, acres, nitro, phos) => `${crop} की फसल और ${acres} एकड़ के लिए, ${nitro}kg नाइट्रोजन और ${phos}kg फास्फोरस की आवश्यकता है।`,
+                calcError: "कृपया सही आकार दर्ज करें।",
+                tipsResult: "उर्वरक डालना। कीटों को रोकने के लिए जैविक तरीकों का पालन करें।",
+                irrigationTitle: "सिंचाई योजनाकार",
+                calcIrrigationBtn: "पानी की आवश्यकता की गणना करें",
+                irrigationResult: "मौजूदा मौसम के हिसाब से आपकी फसल को रोजाना 20 लीटर पानी की जरूरत है।",
+                forumTitle: "सामुदायिक मंच",
+                postPlaceholderTitle: "शीर्षक...",
+                postPlaceholderContent: "अपना संदेश यहाँ लिखें...",
+                postBtn: "पोस्ट करें",
+                weatherOnline: "तापमान: 30°C, बारिश की कोई संभावना नहीं।",
+                weatherOffline: "इंटरनेट नहीं है (ऑफ़लाइन मोड)।"
+            },
+            ta: {
+                languageLabel: "மொழி:",
+                offlineStatus: "நீங்கள் ஆஃப்லைனில் உள்ளீர்கள். கேச் செய்யப்பட்ட தரவு மட்டுமே கிடைக்கும்.",
+                navHome: "முகப்பு",
+                navWater: "நீர்வழங்கல்",
+                navCalc: "கால்குலேட்டர்",
+                navForum: "மன்றம்",
+                weatherTitle: "வானிலை முன்னறிவிப்பு",
+                weatherLoading: "தகவல் ஏற்றப்படுகிறது...",
+                refreshBtn: "புதுப்பிக்கவும்",
+                tipsTitle: "விவசாய குறிப்புகள் & பூச்சிக் கட்டுப்பாடு",
+                cropTypeLabel: "பயிர் வகை:",
+                cropRice: "நெல்",
+                cropCotton: "பருத்தி",
+                cropChili: "மிளகாய்",
+                showTipsBtn: "வழிமுறைகளைக் காட்டு",
+                calcTitle: "உர கால்குலேட்டர்",
+                landSizeLabel: "நிலத்தின் அளவு (ஏக்கரில்):",
+                calculateBtn: "கணக்கிடு",
+                calcResult: (crop, acres, nitro, phos) => `${acres} ஏக்கர் ${crop} பயிருக்கு, ${nitro} கிலோ நைட்ரஜன் மற்றும் ${phos} கிலோ பாஸ்பரஸ் தேவை.`,
+                calcError: "தயவுசெய்து சரியான அளவை உள்ளிடவும்.",
+                tipsResult: "உரம் போடும்போது மண்ணின் ஈரப்பதத்தை சரிபார்க்கவும். பூச்சிகளைக் கட்டுப்படுத்த இயற்கை முறைகளைப் பின்பற்றவும்.",
+                irrigationTitle: "நீர்ப்பாசன திட்டமிடுபவர்",
+                calcIrrigationBtn: "நீரின் தேவையை கணக்கிடு",
+                irrigationResult: "தற்போதைய வானிலை நிலவரப்படி, உங்கள் பயிருக்கு ஒரு நாளைக்கு 20 லிட்டர் தண்ணீர் தேவை.",
+                forumTitle: "சமூக மன்றம்",
+                postPlaceholderTitle: "தலைப்பு...",
+                postPlaceholderContent: "உங்கள் செய்தியை இங்கே எழுதுங்கள்...",
+                postBtn: "பதிவிடு",
+                weatherOnline: "வெப்பநிலை: 30°C, மழை முன்னறிவிப்பு இல்லை.",
+                weatherOffline: "இணையம் இல்லை (ஆஃப்லைன் பயன்முறை)."
+            }
+        };
+
+        let currentLang = 'te';
+
+        function changeLanguage() {
+            const select = document.getElementById('languageSelect');
+            currentLang = select.value;
+            localStorage.setItem('preferredLang', currentLang);
+            updateUI();
+        }
+
+        function updateUI() {
+            const langData = translations[currentLang];
+            document.querySelectorAll('[data-key]').forEach(element => {
+                const key = element.getAttribute('data-key');
+                if (langData[key]) {
+                    element.innerText = langData[key];
+                }
+            });
+
+            document.getElementById('postTitle').placeholder = langData.postPlaceholderTitle;
+            document.getElementById('postContent').placeholder = langData.postPlaceholderContent;
+            
+            const acres = document.getElementById('landSize').value;
+            if (acres > 0) {
+                calculateFertilizer();
+            }
+        }
+
+        function showSection(sectionId) {
+            document.querySelectorAll('.nav-item').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.content-section').forEach(section => section.classList.remove('active'));
+            
+            const navItems = document.querySelectorAll('.nav-item');
+            if (sectionId === 'home') {
+                navItems[0].classList.add('active');
+                document.getElementById('homeSection').classList.add('active');
+            } else if (sectionId === 'irrigation') {
+                navItems[1].classList.add('active');
+                document.getElementById('irrigationSection').classList.add('active');
+            } else if (sectionId === 'calc') {
+                navItems[2].classList.add('active');
+                document.getElementById('calcSection').classList.add('active');
+            } else if (sectionId === 'forum') {
+                navItems[3].classList.add('active');
+                document.getElementById('forumSection').classList.add('active');
+            }
+        }
+
+        function getWeather() {
+            const weatherDiv = document.getElementById('weather');
+            const langData = translations[currentLang];
+            if (navigator.onLine) {
+                weatherDiv.innerText = langData.weatherOnline;
+                localStorage.setItem('cachedWeather', weatherDiv.innerText);
+            } else {
+                const cached = localStorage.getItem('cachedWeather');
+                weatherDiv.innerText = cached ? cached + " (ఆఫ్లైన్)" : langData.weatherOffline;
+            }
+        }
+
+        function calculateFertilizer() {
+            const acres = document.getElementById('landSize').value;
+            const crop = document.getElementById('cropTypeCalc').options[document.getElementById('cropTypeCalc').selectedIndex].text;
+            const resultParagraph = document.getElementById('fertilizerResult');
+            const langData = translations[currentLang];
+
+            if (acres > 0) {
+                let nitrogen = acres * 50; 
+                let phosphorus = acres * 25;
+                resultParagraph.innerText = langData.calcResult(crop, acres, nitrogen, phosphorus);
+                resultParagraph.style.display = 'block';
+            } else {
+                resultParagraph.innerText = langData.calcError;
+                resultParagraph.style.display = 'block';
+            }
+        }
+
+        function showTips() {
+            const resultParagraph = document.getElementById('agroTips');
+            resultParagraph.innerText = translations[currentLang].tipsResult;
+            resultParagraph.style.display = 'block';
+        }
+
+        function calculateIrrigation() {
+            const resultParagraph = document.getElementById('irrigationResult');
+            resultParagraph.innerText = translations[currentLang].irrigationResult;
+            resultParagraph.style.display = 'block';
+        }
+
+        function savePost() {
+            const titleInput = document.getElementById('postTitle');
+            const contentInput = document.getElementById('postContent');
+            const title = titleInput.value;
+            const content = contentInput.value;
+            if (title && content) {
+                const posts = JSON.parse(localStorage.getItem('forumPosts') || '[]');
+                posts.push({ title, content });
+                localStorage.setItem('forumPosts', JSON.stringify(posts));
+                titleInput.value = '';
+                contentInput.value = '';
+                renderPosts();
+            }
+        }
+
+        function renderPosts() {
+            const postsContainer = document.getElementById('postsContainer');
+            postsContainer.innerHTML = '';
+            const posts = JSON.parse(localStorage.getItem('forumPosts') || '[]');
+            posts.forEach(post => {
+                const postDiv = document.createElement('div');
+                postDiv.className = 'pos
   ```html
 <!DOCTYPE html>
 <html lang="te">
